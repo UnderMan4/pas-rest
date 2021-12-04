@@ -31,17 +31,17 @@ public class UserController {
         return userArrayList;
     }
 
-    public User findUserByLogin(String login) {
+    public User findUser(String login) {
         Optional<User> optional = userArrayList.stream().filter(u -> u.getLogin().equals(login)).findFirst();
         return optional.orElse(null);
     }
 
-    public User findAllUserByLogin(String login) {
+    public User findAllUser(String login) {
         Optional<User> optional = userArrayList.stream().filter(u -> u.getLogin().contains(login)).findAny();
         return optional.orElse(null);
     }
 
-    public User findUserByUUID(UUID uuid) {
+    public User findUser(UUID uuid) {
         Optional<User> optional = userArrayList.stream().filter(u -> u.getUuid().equals(uuid)).findFirst();
         return optional.orElse(null);
     }
@@ -70,7 +70,7 @@ public class UserController {
             return false;
         }
 
-        User u = findUserByUUID(uuid);
+        User u = findUser(uuid);
         // if login is being changed
         if (!u.getLogin().equals(login)) {
             // check if login is already in the database
