@@ -36,6 +36,11 @@ public class UserController {
         return optional.orElse(null);
     }
 
+    public User findAllUserByLogin(String login) {
+        Optional<User> optional = userArrayList.stream().filter(u -> u.getLogin().contains(login)).findAny();
+        return optional.orElse(null);
+    }
+
     public User findUserByUUID(UUID uuid) {
         Optional<User> optional = userArrayList.stream().filter(u -> u.getUuid().equals(uuid)).findFirst();
         return optional.orElse(null);
