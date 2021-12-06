@@ -86,4 +86,14 @@ public class UserController {
         return true;
     }
 
+    public boolean setUserActive(UUID uuid, boolean active) {
+        // uuid must exist
+        if (checkIfUUIDExists(uuid)) {
+            return false;
+        }
+        User u = findUser(uuid);
+        u.setActive(active);
+        return true;
+    }
+
 }

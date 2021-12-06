@@ -1,7 +1,6 @@
 package p.lodz.pl.pas.controller;
 
 import p.lodz.pl.pas.model.Job;
-import p.lodz.pl.pas.model.User;
 
 import java.util.ArrayList;
 import java.util.Optional;
@@ -9,6 +8,14 @@ import java.util.UUID;
 
 public class JobController {
     ArrayList<Job> jobList;
+
+    public JobController() {
+        jobList = new ArrayList<>();
+        this.createJob("Cleanup code", "Cleanup code in this program");
+        this.createJob("Pass ISRP", "Pass ISRP and achive greatness");
+        this.createJob("Find meaning in life", "Yes");
+        this.createJob("Finish pas", "Finish this task and move on to another");
+    }
 
     public boolean createJob(String name, String description) {
         UUID uuid;
@@ -46,7 +53,7 @@ public class JobController {
         j.setDescription(description);
         return true;
     }
-    
+
     public boolean removeJob(UUID uuid) {
         return jobList.removeIf(j -> j.getUuid().equals(uuid));
     }
