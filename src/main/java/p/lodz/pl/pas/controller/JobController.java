@@ -17,7 +17,7 @@ public class JobController {
         this.createJob("Finish pas", "Finish this task and move on to another");
     }
 
-    public boolean createJob(String name, String description) {
+    public synchronized boolean createJob(String name, String description) {
         UUID uuid;
         do {
             uuid = UUID.randomUUID();
@@ -44,7 +44,7 @@ public class JobController {
         return false;
     }
 
-    public boolean editJob(UUID uuid, String name, String description) {
+    public synchronized boolean editJob(UUID uuid, String name, String description) {
         if (!checkIfUUIDExists(uuid)) {
             return false;
         }
@@ -54,7 +54,7 @@ public class JobController {
         return true;
     }
 
-    public boolean removeJob(UUID uuid) {
+    public synchronized boolean removeJob(UUID uuid) {
         return jobList.removeIf(j -> j.getUuid().equals(uuid));
     }
 

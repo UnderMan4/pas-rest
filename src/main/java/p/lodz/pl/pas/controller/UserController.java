@@ -18,7 +18,7 @@ public class UserController {
         this.createUser("Restitutor", "Lucius", "Aurelianus", true, AccessLevel.UserAdministrator);
     }
 
-    public boolean createUser(String login, String name, String surname, Boolean active, AccessLevel accessLevel) {
+    public synchronized boolean createUser(String login, String name, String surname, Boolean active, AccessLevel accessLevel) {
         UUID uuid;
         do {
             uuid = UUID.randomUUID();
@@ -64,7 +64,7 @@ public class UserController {
         return false;
     }
 
-    public boolean editUserWithUUID(UUID uuid, String login, String name, String surname, Boolean active, AccessLevel accessLevel) {
+    public synchronized boolean editUserWithUUID(UUID uuid, String login, String name, String surname, Boolean active, AccessLevel accessLevel) {
         // uuid must exist
         if (checkIfUUIDExists(uuid)) {
             return false;
@@ -86,7 +86,7 @@ public class UserController {
         return true;
     }
 
-    public boolean setUserActive(UUID uuid, boolean active) {
+    public synchronized boolean setUserActive(UUID uuid, boolean active) {
         // uuid must exist
         if (checkIfUUIDExists(uuid)) {
             return false;
