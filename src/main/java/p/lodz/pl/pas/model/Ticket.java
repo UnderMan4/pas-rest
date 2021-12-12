@@ -3,28 +3,30 @@ package p.lodz.pl.pas.model;
 import java.util.Date;
 import java.util.UUID;
 
+import static p.lodz.pl.pas.model.TicketStatus.ToDo;
+
 public class Ticket {
     UUID uuid;
-    UUID clientUUID;
+    UUID userUUID;
     UUID jobUUID;
     Date jobStart;
     Date jobEnd;
     String description;
-    String status;
+    TicketStatus status;
 
-    public Ticket(UUID uuid, UUID clientUUID, UUID jobUUID, Date jobStart, Date jobEnd, String description, String status) {
+    public Ticket(UUID uuid, UUID userUUID, UUID jobUUID, Date jobStart, Date jobEnd, String description) {
         this.uuid = uuid;
-        this.clientUUID = clientUUID;
+        this.userUUID = userUUID;
         this.jobUUID = jobUUID;
         this.jobStart = jobStart;
         this.jobEnd = jobEnd;
         this.description = description;
-        this.status = status;
+        this.status = ToDo;
     }
 
-    public Ticket(UUID uuid, UUID clientUUID, UUID jobUUID, Date jobStart, Date jobEnd) {
+    public Ticket(UUID uuid, UUID userUUID, UUID jobUUID, Date jobStart, Date jobEnd) {
         this.uuid = uuid;
-        this.clientUUID = clientUUID;
+        this.userUUID = userUUID;
         this.jobUUID = jobUUID;
         this.jobStart = jobStart;
         this.jobEnd = jobEnd;
@@ -38,12 +40,12 @@ public class Ticket {
         this.uuid = uuid;
     }
 
-    public UUID getClientUUID() {
-        return clientUUID;
+    public UUID getUserUUID() {
+        return userUUID;
     }
 
-    public void setClientUUID(UUID clientUUID) {
-        this.clientUUID = clientUUID;
+    public void setUserUUID(UUID userUUID) {
+        this.userUUID = userUUID;
     }
 
     public UUID getJobUUID() {
@@ -78,11 +80,11 @@ public class Ticket {
         this.description = description;
     }
 
-    public String getStatus() {
+    public TicketStatus getStatus() {
         return status;
     }
 
-    public void setStatus(String status) {
+    public void setStatus(TicketStatus status) {
         this.status = status;
     }
 
