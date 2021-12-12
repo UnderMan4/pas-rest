@@ -1,4 +1,4 @@
-package p.lodz.pl.pas.controller;
+package p.lodz.pl.pas.manager;
 
 import p.lodz.pl.pas.exceptions.ItemNotFoundException;
 import p.lodz.pl.pas.model.AccessLevel;
@@ -8,10 +8,10 @@ import java.util.ArrayList;
 import java.util.Optional;
 import java.util.UUID;
 
-public class UserController {
+public class UserManager {
     ArrayList<User> users;
 
-    public UserController() {
+    public UserManager() {
         users = new ArrayList<>();
         this.createUser("jkowalski", "Jan", "Kowalski", true, AccessLevel.User);
         this.createUser("jjjkowal", "Jaroslaw", "Kowalski", true, AccessLevel.ResourceAdministrator);

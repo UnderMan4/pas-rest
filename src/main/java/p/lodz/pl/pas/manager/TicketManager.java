@@ -1,4 +1,4 @@
-package p.lodz.pl.pas.controller;
+package p.lodz.pl.pas.manager;
 
 import p.lodz.pl.pas.exceptions.ItemNotFoundException;
 import p.lodz.pl.pas.model.Job;
@@ -11,10 +11,10 @@ import java.util.Optional;
 import java.util.UUID;
 
 
-public class TicketController {
+public class TicketManager {
     ArrayList<Ticket> tickets;
 
-    public TicketController() {
+    public TicketManager() {
         this.tickets = new ArrayList<>();
     }
 

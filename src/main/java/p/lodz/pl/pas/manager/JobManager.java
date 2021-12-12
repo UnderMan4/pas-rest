@@ -1,4 +1,4 @@
-package p.lodz.pl.pas.controller;
+package p.lodz.pl.pas.manager;
 
 import p.lodz.pl.pas.exceptions.ItemNotFoundException;
 import p.lodz.pl.pas.model.Job;
@@ -7,10 +7,10 @@ import java.util.ArrayList;
 import java.util.Optional;
 import java.util.UUID;
 
-public class JobController {
+public class JobManager {
     ArrayList<Job> jobs;
 
-    public JobController() {
+    public JobManager() {
         jobs = new ArrayList<>();
         this.createJob("Cleanup code", "Cleanup code in this program");
         this.createJob("Pass ISRP", "Pass ISRP and achive greatness");
