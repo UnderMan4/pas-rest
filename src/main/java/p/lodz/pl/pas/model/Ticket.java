@@ -7,27 +7,27 @@ import static p.lodz.pl.pas.model.TicketStatus.ToDo;
 
 public class Ticket {
     UUID uuid;
-    UUID userUUID;
-    UUID jobUUID;
+    User user;
+    Job job;
     Date jobStart;
     Date jobEnd;
     String description;
     TicketStatus status;
 
-    public Ticket(UUID uuid, UUID userUUID, UUID jobUUID, Date jobStart, Date jobEnd, String description) {
+    public Ticket(UUID uuid, User user, Job job, Date jobStart, Date jobEnd, String description) {
         this.uuid = uuid;
-        this.userUUID = userUUID;
-        this.jobUUID = jobUUID;
+        this.user = user;
+        this.job = job;
         this.jobStart = jobStart;
         this.jobEnd = jobEnd;
         this.description = description;
         this.status = ToDo;
     }
 
-    public Ticket(UUID uuid, UUID userUUID, UUID jobUUID, Date jobStart, Date jobEnd) {
+    public Ticket(UUID uuid, User user, Job job, Date jobStart, Date jobEnd) {
         this.uuid = uuid;
-        this.userUUID = userUUID;
-        this.jobUUID = jobUUID;
+        this.user = user;
+        this.job = job;
         this.jobStart = jobStart;
         this.jobEnd = jobEnd;
     }
@@ -40,20 +40,20 @@ public class Ticket {
         this.uuid = uuid;
     }
 
-    public UUID getUserUUID() {
-        return userUUID;
+    public User getUser() {
+        return user;
     }
 
-    public void setUserUUID(UUID userUUID) {
-        this.userUUID = userUUID;
+    public void setUser(User user) {
+        this.user = user;
     }
 
-    public UUID getJobUUID() {
-        return jobUUID;
+    public Job getJob() {
+        return job;
     }
 
-    public void setJobUUID(UUID jobUUID) {
-        this.jobUUID = jobUUID;
+    public void setJob(Job job) {
+        this.job = job;
     }
 
     public Date getJobStart() {
