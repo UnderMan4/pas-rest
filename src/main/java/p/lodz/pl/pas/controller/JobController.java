@@ -1,5 +1,6 @@
 package p.lodz.pl.pas.controller;
 
+import p.lodz.pl.pas.exceptions.ItemNotFoundException;
 import p.lodz.pl.pas.model.Job;
 
 import java.util.ArrayList;
@@ -7,10 +8,10 @@ import java.util.Optional;
 import java.util.UUID;
 
 public class JobController {
-    ArrayList<Job> jobList;
+    ArrayList<Job> jobs;
 
     public JobController() {
-        jobList = new ArrayList<>();
+        jobs = new ArrayList<>();
         this.createJob("Cleanup code", "Cleanup code in this program");
         this.createJob("Pass ISRP", "Pass ISRP and achive greatness");
         this.createJob("Find meaning in life", "Yes");
@@ -23,20 +24,22 @@ public class JobController {
             uuid = UUID.randomUUID();
         }
         while (!checkIfUUIDExists(uuid));
-        return jobList.add(new Job(uuid, name, description));
+        return jobs.add(new Job(uuid, name, description));
     }
 
-    public ArrayList<Job> getJobList() {
-        return jobList;
+    public ArrayList<Job> getJobs() {
+        return jobs;
     }
 
-    public Job findJob(UUID uuid) {
-        Optional<Job> optional = jobList.stream().filter(j -> j.getUuid().equals(uuid)).findFirst();
-        return optional.orElse(null);
+    public Job findJob(UUID uuid) throws ItemNotFoundException {
+        Optional<Job> optional = jobs.stream().filter(j -> j.getUuid().equals(uuid)).findFirst();
+        return optional.orElseThrow(() -> new ItemNotFoundException(
+                "Job with UUID " + uuid + " not found"
+        ));
     }
 
     public boolean checkIfUUIDExists(UUID uuid) {
-        for ( Job j : jobList ) {
+        for ( Job j : jobs) {
             if (j.getUuid().equals(uuid)) {
                 return true;
             }
@@ -48,14 +51,19 @@ public class JobController {
         if (!checkIfUUIDExists(uuid)) {
             return false;
         }
-        Job j = findJob(uuid);
+        Job j = null;
+        try {
+            j = findJob(uuid);
+        } catch (ItemNotFoundException e) {
+            e.printStackTrace();
+        }
         j.setName(name);
         j.setDescription(description);
         return true;
     }
 
     public synchronized boolean removeJob(UUID uuid) {
-        return jobList.removeIf(j -> j.getUuid().equals(uuid));
+        return jobs.removeIf(j -> j.getUuid().equals(uuid));
     }
 
 

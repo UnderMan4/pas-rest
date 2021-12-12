@@ -1,19 +1,21 @@
 package p.lodz.pl.pas.controller;
 
+import p.lodz.pl.pas.exceptions.ItemNotFoundException;
 import p.lodz.pl.pas.model.Job;
 import p.lodz.pl.pas.model.Ticket;
 import p.lodz.pl.pas.model.User;
 
 import java.util.ArrayList;
 import java.util.Date;
+import java.util.Optional;
 import java.util.UUID;
 
 
 public class TicketController {
-    ArrayList<Ticket> ticketArrayList;
+    ArrayList<Ticket> tickets;
 
     public TicketController() {
-        this.ticketArrayList = new ArrayList<>();
+        this.tickets = new ArrayList<>();
     }
 
     public synchronized boolean createTicket(User user, Job job, Date jobStart, Date jobEnd, String description) {
@@ -21,7 +23,7 @@ public class TicketController {
         do {
             uuid = UUID.randomUUID();
         } while (!checkIfUUIDExists(uuid));
-        return ticketArrayList.add(new Ticket(
+        return tickets.add(new Ticket(
                 uuid,
                 user.getUuid(),
                 job.getUuid(),
@@ -32,12 +34,19 @@ public class TicketController {
     }
 
 
-    public boolean checkIfUUIDExists(UUID uuid) {
-        for (Ticket u : ticketArrayList) {
+    private boolean checkIfUUIDExists(UUID uuid) {
+        for (Ticket u : tickets) {
             if (u.getUuid().equals(uuid)) {
                 return true;
             }
         }
         return false;
+    }
+    
+    public Ticket findByUUID(UUID uuid) throws ItemNotFoundException {
+        Optional<Ticket> optional = tickets.stream().filter(j -> j.getUuid().equals(uuid)).findFirst();
+        return optional.orElseThrow(() -> new ItemNotFoundException(
+                "Ticke with UUID " + uuid.toString() + " not found"
+        ));
     }
 }
