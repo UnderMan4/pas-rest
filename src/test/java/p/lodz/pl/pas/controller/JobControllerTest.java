@@ -81,11 +81,6 @@ class JobControllerTest {
                 """;
         WebTarget target = client.target("http://localhost:8080/api/job");
 
-        Response response = target.path("list").request(MediaType.APPLICATION_JSON_TYPE).get();
-        assertNotNull(response);
-        assertEquals(202, response.getStatus());
-        assertEquals(response.readEntity(String.class), json);
-
         String jsonUpdated = """
                 {
                   "UUID": "b8344cdb-dc2d-42a0-8c0f-d35f676b8074",
@@ -93,7 +88,7 @@ class JobControllerTest {
                   "description": "Updated description"
                 }
                 """;
-        response = target.path("update").request(MediaType.APPLICATION_JSON)
+        Response response = target.path("update").request(MediaType.APPLICATION_JSON)
                 .post(Entity.entity(jsonUpdated, MediaType.APPLICATION_JSON_TYPE));
         assertNotNull(response);
         assertEquals(201, response.getStatus());
@@ -124,10 +119,10 @@ class JobControllerTest {
 
         target = client.target("http://localhost:8080/api/job");
         response = target.path("remove").queryParam("UUID", created_uuid).request(MediaType.APPLICATION_JSON_TYPE).get();
-        assertEquals(200, response.getStatus());
+        assertEquals(201, response.getStatus());
 
         // Assert job not found
         response = target.queryParam("UUID", created_uuid).request(MediaType.APPLICATION_JSON_TYPE).get();
-        assertEquals(404, response.getStatus());
+        assertEquals(204, response.getStatus());
     }
 }
