@@ -3,10 +3,12 @@ package p.lodz.pl.pas.DAO;
 import p.lodz.pl.pas.exceptions.ItemNotFoundException;
 import p.lodz.pl.pas.model.Job;
 
+import javax.enterprise.context.ApplicationScoped;
 import java.util.ArrayList;
 import java.util.Optional;
 import java.util.UUID;
 
+@ApplicationScoped
 public class JobDAO implements DAO<Job> {
     ArrayList<Job> jobs;
 
