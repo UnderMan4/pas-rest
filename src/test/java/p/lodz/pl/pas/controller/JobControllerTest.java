@@ -32,20 +32,6 @@ class JobControllerTest {
     void tearDown() {
     }
 
-    @Test
-    void createJob() {
-        WebTarget target = client.target("http://localhost:8080/api/job");
-        String json = """
-                {
-                   "name": "Nazwa zadania",
-                  "description": "Opis zadania"
-                }
-                """;
-        Response response = target.path("create").request(MediaType.APPLICATION_JSON)
-                        .post(Entity.entity(json, MediaType.APPLICATION_JSON_TYPE));
-        assertNotNull(response);
-        assertEquals(201, response.getStatus());
-    }
 
     @Test
     void getList() {
@@ -75,8 +61,9 @@ class JobControllerTest {
         String uuid = "b8344cdb-dc2d-42a0-8c0f-d35f676b8074";
         String json = """
                 {
+                   "UUID": "b8344cdb-dc2d-42a0-8c0f-d35f676b8074",
                    "name": "Cleanup code",
-                  "description": "Cleanup code in this program"
+                   "description": "Cleanup code in this program"
                 }
                 """;
         WebTarget target = client.target("http://localhost:8080/api/job");
@@ -84,7 +71,7 @@ class JobControllerTest {
         String jsonUpdated = """
                 {
                   "UUID": "b8344cdb-dc2d-42a0-8c0f-d35f676b8074",
-                   "name": "Updated name",
+                  "name": "Updated name",
                   "description": "Updated description"
                 }
                 """;
@@ -100,10 +87,15 @@ class JobControllerTest {
         Job j = gson.fromJson(s, Job.class);
         assertEquals(j.getName(), "Updated name");
         assertEquals(j.getDescription(), "Updated description");
+
+        response = target.path("update").request(MediaType.APPLICATION_JSON)
+                .post(Entity.entity(json, MediaType.APPLICATION_JSON_TYPE));
+        assertNotNull(response);
+        assertEquals(201, response.getStatus());
     }
 
     @Test
-    void removeJob() {
+    void createJobRemoveJob() {
         WebTarget target = client.target("http://localhost:8080/api/job");
         String json = """
                 {

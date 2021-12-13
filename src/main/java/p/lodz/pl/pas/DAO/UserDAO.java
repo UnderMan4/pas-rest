@@ -4,19 +4,21 @@ import p.lodz.pl.pas.exceptions.ItemNotFoundException;
 import p.lodz.pl.pas.model.AccessLevel;
 import p.lodz.pl.pas.model.User;
 
+import javax.enterprise.context.ApplicationScoped;
 import java.util.ArrayList;
 import java.util.Optional;
 import java.util.UUID;
 
+@ApplicationScoped
 public class UserDAO implements DAO<User> {
     ArrayList<User> users;
 
     public UserDAO() {
         users = new ArrayList<>();
-        this.create(new User(UUID.randomUUID(), "jkowalski", "Jan", "Kowalski", true, AccessLevel.User));
-        this.create(new User(UUID.randomUUID(), "jjjkowal", "Jaroslaw", "Kowalski", true, AccessLevel.ResourceAdministrator));
-        this.create(new User(UUID.randomUUID(), "ttttt", "Tomasz", "Kowalski", true, AccessLevel.User));
-        this.create(new User(UUID.randomUUID(), "Restitutor", "Lucius", "Aurelianus", true, AccessLevel.UserAdministrator));
+        this.create(new User(UUID.fromString("54ceb043-5f89-41bb-a29b-f2c0e9909dad"), "jkowalski", "Jan", "Kowalski", true, AccessLevel.User));
+        this.create(new User(UUID.fromString("40d68ba5-39ba-4f2e-9e61-a55daf7b3e8e"), "jjjkowal", "Jaroslaw", "Kowalski", true, AccessLevel.ResourceAdministrator));
+        this.create(new User(UUID.fromString("84d267cf-6dc4-40cd-b1d3-000733a85458"), "ttttt", "Tomasz", "Kowalski", true, AccessLevel.User));
+        this.create(new User(UUID.fromString("295eea09-5541-42e4-ac24-126a0d87607e"), "Restitutor", "Lucius", "Aurelianus", true, AccessLevel.UserAdministrator));
     }
 
     @Override
