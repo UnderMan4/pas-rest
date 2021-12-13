@@ -4,10 +4,12 @@ import p.lodz.pl.pas.DAO.JobDAO;
 import p.lodz.pl.pas.exceptions.ItemNotFoundException;
 import p.lodz.pl.pas.model.Job;
 
+import javax.inject.Inject;
 import java.util.ArrayList;
 import java.util.UUID;
 
 public class JobManager {
+    @Inject
     JobDAO jobDAO;
 
 
