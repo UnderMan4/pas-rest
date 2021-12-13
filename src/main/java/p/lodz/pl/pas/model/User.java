@@ -1,5 +1,6 @@
 package p.lodz.pl.pas.model;
 
+import java.util.ArrayList;
 import java.util.UUID;
 
 public class User {
