@@ -35,7 +35,7 @@ public class TicketDAO implements DAO<Ticket> {
         this.create(new Ticket(UUID.fromString("229ef12a-13a9-4d0f-9ae7-239dfd4c17b9"),
                 new User(UUID.fromString("84d267cf-6dc4-40cd-b1d3-000733a85458"), "ttttt", "Tomasz", "Kowalski", true, AccessLevel.User),
                 new Job(UUID.fromString("858908da-ae32-4527-bdcb-13a91b0a49b9"), "Pass ISRP", "Pass ISRP and achive greatness"),
-                Date.valueOf("2021-10-01"),
+                Date.valueOf("2021-08-01"),
                 Date.valueOf("2021-11-20"),
                 "Pass isrp and enjoy life"
         ));
