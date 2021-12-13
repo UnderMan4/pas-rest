@@ -51,7 +51,7 @@ class JobControllerTest {
         String s = target.queryParam("UUID", uuid).request(MediaType.APPLICATION_JSON_TYPE)
                 .get(String.class);
         Gson gson = new Gson();
-       Job j = gson.fromJson(s, Job.class);
+        Job j = gson.fromJson(s, Job.class);
         assertEquals(j.getName(), "Cleanup code");
         assertEquals(j.getDescription(), "Cleanup code in this program");
     }
