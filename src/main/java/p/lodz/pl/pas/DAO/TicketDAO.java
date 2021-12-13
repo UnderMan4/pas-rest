@@ -1,8 +1,13 @@
 package p.lodz.pl.pas.DAO;
 
 import p.lodz.pl.pas.exceptions.ItemNotFoundException;
+import p.lodz.pl.pas.exceptions.cantDeleteException;
 import p.lodz.pl.pas.model.Ticket;
 
+import java.sql.Date;
+import java.time.Instant;
+import java.time.LocalDateTime;
+import java.time.ZoneId;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
@@ -16,7 +21,7 @@ public class TicketDAO implements DAO<Ticket> {
     }
 
     @Override
-    public List<Ticket> readAll() {
+    public ArrayList<Ticket> readAll() {
         return tickets;
     }
 
@@ -34,8 +39,13 @@ public class TicketDAO implements DAO<Ticket> {
     }
 
     @Override
-    public boolean delete(UUID uuid) throws ItemNotFoundException {
-        return tickets.remove(readOne(uuid));
+    public boolean delete(UUID uuid) throws ItemNotFoundException, cantDeleteException {
+        Ticket toDelete = readOne(uuid);
+        if (toDelete.getJobEnd().toInstant().isAfter(Instant.from(LocalDateTime.now()))) {
+            return tickets.remove(readOne(uuid));
+        } else {
+            throw new cantDeleteException("Can't delete ticket because it has already ended");
+        }
     }
 
     @Override

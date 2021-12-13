@@ -5,11 +5,13 @@ import p.lodz.pl.pas.DAO.TicketDAO;
 import p.lodz.pl.pas.DAO.UserDAO;
 import p.lodz.pl.pas.exceptions.DateException;
 import p.lodz.pl.pas.exceptions.ItemNotFoundException;
+import p.lodz.pl.pas.exceptions.cantDeleteException;
 import p.lodz.pl.pas.model.Job;
 import p.lodz.pl.pas.model.Ticket;
 import p.lodz.pl.pas.model.User;
 
 import javax.inject.Inject;
+import java.util.ArrayList;
 import java.util.Date;
 import java.util.UUID;
 
@@ -36,5 +38,13 @@ public class TicketManager {
 
     public Ticket findByUUID(UUID uuid) throws ItemNotFoundException {
         return findByUUID(uuid);
+    }
+
+    public ArrayList<Ticket> getTicketList() {
+        return ticketDAO.readAll();
+    }
+    
+    public boolean delete(UUID uuid) throws ItemNotFoundException, cantDeleteException {
+        return ticketDAO.delete(uuid);
     }
 }

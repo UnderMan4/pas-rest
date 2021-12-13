@@ -44,7 +44,13 @@ public class UserController {
             return Response.status(Response.Status.BAD_REQUEST).entity("").build();
         }
 
-        if (userManager.createUser(jsonObject.get("login").getAsString(), jsonObject.get("name").getAsString(), jsonObject.get("surname").getAsString(), jsonObject.get("active").getAsBoolean(), AccessLevel.valueOf(jsonObject.get("accessLevel").getAsString()))){
+        if (userManager.createUser(
+                jsonObject.get("login").getAsString(), 
+                jsonObject.get("name").getAsString(), 
+                jsonObject.get("surname").getAsString(), 
+                jsonObject.get("active").getAsBoolean(), 
+                AccessLevel.valueOf(jsonObject.get("accessLevel").getAsString())
+        )){
             return Response.status(Response.Status.CREATED).build();
         } else {
             return Response.status(Response.Status.BAD_REQUEST).build();

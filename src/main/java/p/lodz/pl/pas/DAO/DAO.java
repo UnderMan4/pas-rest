@@ -1,6 +1,7 @@
 package p.lodz.pl.pas.DAO;
 
 import p.lodz.pl.pas.exceptions.ItemNotFoundException;
+import p.lodz.pl.pas.exceptions.cantDeleteException;
 
 import java.util.List;
 import java.util.UUID;
@@ -12,7 +13,7 @@ public interface DAO<T> {
 
     boolean create(T object);
 
-    boolean delete(UUID uuid) throws ItemNotFoundException;
+    boolean delete(UUID uuid) throws ItemNotFoundException, cantDeleteException;
 
     boolean update(T object) throws ItemNotFoundException;
 }
