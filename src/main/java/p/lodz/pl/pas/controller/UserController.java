@@ -89,6 +89,7 @@ public class UserController {
     }
 
     @GET
+    @Path("login")
     public Response findUser(@QueryParam("login") String login) {
         Gson gson = new Gson();
         try {
