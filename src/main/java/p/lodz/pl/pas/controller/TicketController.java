@@ -1,5 +1,7 @@
 package p.lodz.pl.pas.controller;
 
+import p.lodz.pl.pas.exceptions.DateException;
+import p.lodz.pl.pas.exceptions.ItemNotFoundException;
 import p.lodz.pl.pas.manager.TicketManager;
 import com.google.gson.JsonObject;
 import com.google.gson.JsonParser;
@@ -11,8 +13,14 @@ import javax.ws.rs.POST;
 import javax.ws.rs.Path;
 import javax.ws.rs.core.MediaType;
 import javax.ws.rs.core.Response;
+import java.text.DateFormat;
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
 import java.util.Date;
+import java.util.UUID;
 
+
+@Path("ticket")
 public class TicketController {
     @Inject
     TicketManager ticketManager;
@@ -20,52 +28,55 @@ public class TicketController {
     @POST
     @Path("create")
     @Consumes(MediaType.APPLICATION_JSON)
-    public Response createTicket(String json) {
+    public Response createTicket(String json){
         JsonObject jsonObject = JsonParser.parseString(json).getAsJsonObject();
-        String user = jsonObject.get("user").getAsString();
-        String job = jsonObject.get("job").getAsString();
-        String jobStart = jsonObject.get("jobStart").getAsString();
-        String jobEnd = jsonObject.get("jobEnd").getAsString();
+        UUID user = UUID.fromString(jsonObject.get("user").getAsString());
+        UUID job = UUID.fromString(jsonObject.get("job").getAsString());
+        Date jobStart;
+        Date jobEnd;
         String description = jsonObject.get("description").getAsString();
-
-        if(!verifyUser(user)){
-            return Response.status(Response.Status.BAD_REQUEST).entity("").build();
-        } else if (!verifyJob(job)) {
-            return Response.status(Response.Status.BAD_REQUEST).entity("").build();
-        } else if (!verifyJobStart(jobStart)) {
-            return Response.status(Response.Status.BAD_REQUEST).entity("").build();
-        } else if (!verifyJobEnd(jobEnd)) {
-            return Response.status(Response.Status.BAD_REQUEST).entity("").build();
-        } else if (!verifyDescription(description)) {
-            return Response.status(Response.Status.BAD_REQUEST).entity("Description not valid").build();
+        
+        
+        SimpleDateFormat format = new SimpleDateFormat("dd-MM-yyyy");
+        try {
+            jobStart = format.parse(jsonObject.get("jobStart").getAsString());
+        } catch (ParseException e) {
+            return Response.status(Response.Status.BAD_REQUEST).entity(
+                    "jobStart is in wrong format: " + jsonObject.get("jobStart").getAsString()
+            ).build();
+        }
+        try {
+            jobEnd = format.parse(jsonObject.get("jobEnd").getAsString());
+        } catch (ParseException e) {
+            return Response.status(Response.Status.BAD_REQUEST).entity(
+                    "jobEnd is in wrong format: " + jsonObject.get("jobEnd").getAsString()
+            ).build();
         }
 
-        if (ticketManager.createTicket(jsonObject.get("user").getAsString(), jsonObject.get("job").getAsString(), jsonObject.get("jobStart").getAsString(), jsonObject.get("jobEnd").getAsString(), jsonObject.get("description").getAsString())) {
-            return Response.status(Response.Status.CREATED).build();
-        } else {
+
+        // if(!verifyUser(user)){
+        //     return Response.status(Response.Status.BAD_REQUEST).entity("").build();
+        // } else if (!verifyJob(job)) {
+        //     return Response.status(Response.Status.BAD_REQUEST).entity("").build();
+        // } else if (!verifyJobStart(jobStart)) {
+        //     return Response.status(Response.Status.BAD_REQUEST).entity("").build();
+        // } else if (!verifyJobEnd(jobEnd)) {
+        //     return Response.status(Response.Status.BAD_REQUEST).entity("").build();
+        // } else if (!verifyDescription(description)) {
+        //     return Response.status(Response.Status.BAD_REQUEST).entity("Description not valid").build();
+        // }
+
+        try {
+            if (ticketManager.createTicket(user, job, jobStart, jobEnd, description)) {
+                return Response.status(Response.Status.CREATED).build();
+            } else {
+                return Response.status(Response.Status.BAD_REQUEST).build();
+            }
+        } catch (DateException | ItemNotFoundException e) {
             return Response.status(Response.Status.BAD_REQUEST).build();
         }
     }
 
-    private boolean verifyJobEnd(String jobEnd) {
-        return RegexList.todo.matcher(jobEnd).matches();
-    }
-
-    private boolean verifyJobStart(String jobStart) {
-        return RegexList.todo.matcher(jobStart).matches();
-    }
-
-    private boolean verifyJob(String job) {
-        return RegexList.todo.matcher(job).matches();
-    }
-
-    private boolean verifyUser(String user) {
-        return RegexList.todo.matcher(user).matches();
-    }
-
-    private boolean verifyDescription(String description) {
-        return RegexList.todo.matcher(description).matches();
-    }
 
 
 }
