@@ -93,7 +93,7 @@ public class JobController {
     @GET
     @Path("remove")
     @Consumes(MediaType.APPLICATION_JSON)
-    public Response updateJob(UUID uuid) {
+    public Response removeJob(UUID uuid) {
 
         try {
             jobManager.removeJob(uuid);
