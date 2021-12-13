@@ -7,7 +7,6 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 import java.util.UUID;
-import java.util.stream.Collectors;
 
 public class TicketDAO implements DAO<Ticket> {
     ArrayList<Ticket> tickets;
@@ -47,10 +46,6 @@ public class TicketDAO implements DAO<Ticket> {
         t.setDescription(object.getDescription());
         t.setStatus(object.getStatus());
         return true;
-    }
-    
-    public List<Ticket> findTicketByUser(UUID userUuid){
-        return tickets.stream().parallel().filter(j -> j.getUuid().equals(userUuid)).collect(Collectors.toList());
     }
 
 }

@@ -1,7 +1,6 @@
 package p.lodz.pl.pas.manager;
 
 import p.lodz.pl.pas.DAO.TicketDAO;
-import p.lodz.pl.pas.exceptions.UserNotActiveException;
 import p.lodz.pl.pas.exceptions.DateException;
 import p.lodz.pl.pas.exceptions.ItemNotFoundException;
 import p.lodz.pl.pas.model.Job;
@@ -19,11 +18,7 @@ public class TicketManager {
         ticketDAO = new TicketDAO();
     }
 
-    public synchronized boolean createTicket(
-            User user, Job job, 
-            Date jobStart, Date jobEnd, 
-            String description
-    ) throws DateException, ItemNotFoundException, UserNotActiveException {
+    public synchronized boolean createTicket(User user, Job job, Date jobStart, Date jobEnd, String description) throws DateException, ItemNotFoundException {
         if (jobStart.compareTo(jobEnd) >= 0) {
             throw new DateException("Job Start must be before Job End");
         }
@@ -31,12 +26,6 @@ public class TicketManager {
             throw new ItemNotFoundException("User not found");
         } else if (job == null) {
             throw new ItemNotFoundException("Job not found");
-        } else if (!user.getActive()) {
-            throw new UserNotActiveException(
-                    "User with username " + user.getLogin() 
-                            + " and UUID " + user.getUuid().toString() 
-                            + " is not active"
-            );
         }
         return ticketDAO.create(new Ticket(UUID.randomUUID(), user, job, jobStart, jobEnd, description));
     }
