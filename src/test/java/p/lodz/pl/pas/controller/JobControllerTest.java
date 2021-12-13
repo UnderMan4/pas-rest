@@ -1,6 +1,8 @@
 package p.lodz.pl.pas.controller;
 
+import com.google.gson.Gson;
 import org.junit.jupiter.api.*;
+import p.lodz.pl.pas.model.Job;
 
 import javax.ws.rs.client.Client;
 import javax.ws.rs.client.ClientBuilder;
@@ -58,6 +60,14 @@ class JobControllerTest {
 
     @Test
     void findJob() {
+        String uuid = "b8344cdb-dc2d-42a0-8c0f-d35f676b8074";
+        WebTarget target = client.target("http://localhost:8080/api/job");
+        String s = target.queryParam("UUID", uuid).request(MediaType.APPLICATION_JSON_TYPE)
+                .get(String.class);
+        Gson gson = new Gson();
+       Job j = gson.fromJson(s, Job.class);
+        assertEquals(j.getName(), "Cleanup code");
+        assertEquals(j.getDescription(), "Cleanup code in this program");
     }
 
     @Test
