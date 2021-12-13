@@ -94,6 +94,7 @@ public class TicketController {
     }
 
     @GET
+    @Consumes(MediaType.APPLICATION_JSON)
     public Response findUser(@QueryParam("UUID") UUID uuid) {
         Gson gson = new Gson();
         try {
@@ -106,6 +107,7 @@ public class TicketController {
     }
 
     @GET
+    @Path("remove")
     public  Response deleteUser(@QueryParam("UUID") UUID uuid) {
         try {
             return Response.status(ACCEPTED).entity(ticketManager.delete(uuid)).build();
