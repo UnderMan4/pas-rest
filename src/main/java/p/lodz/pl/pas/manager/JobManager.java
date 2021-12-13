@@ -17,8 +17,14 @@ public class JobManager {
         jobDAO = new JobDAO();
     }
 
-    public synchronized boolean createJob(String name, String description) {
-        return jobDAO.create(new Job(UUID.randomUUID(), name, description));
+    public synchronized UUID createJob(String name, String description) {
+        UUID uuid = UUID.randomUUID();
+        if (jobDAO.create(new Job(uuid, name, description))){
+            return uuid;
+        } else {
+            return null;
+        }
+
     }
 
     public ArrayList<Job> getJobs() {
