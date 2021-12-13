@@ -14,10 +14,10 @@ public class JobDAO implements DAO<Job> {
 
     public JobDAO() {
         jobs = new ArrayList<>();
-        this.create(new Job(UUID.randomUUID(), "Cleanup code", "Cleanup code in this program"));
-        this.create(new Job(UUID.randomUUID(), "Pass ISRP", "Pass ISRP and achive greatness"));
-        this.create(new Job(UUID.randomUUID(), "Find meaning in life", "Yes"));
-        this.create(new Job(UUID.randomUUID(), "Finish pas", "Finish this task and move on to another"));
+        this.create(new Job(UUID.fromString("b8344cdb-dc2d-42a0-8c0f-d35f676b8074"), "Cleanup code", "Cleanup code in this program"));
+        this.create(new Job(UUID.fromString("858908da-ae32-4527-bdcb-13a91b0a49b9"), "Pass ISRP", "Pass ISRP and achive greatness"));
+        this.create(new Job(UUID.fromString("20edf313-9c1c-43e8-ae39-e1703d3928f8"), "Find meaning in life", "Yes"));
+        this.create(new Job(UUID.fromString("d749db34-3f68-47e1-9e73-fe22d421b70a"), "Finish pas", "Finish this task and move on to another"));
     }
 
     @Override
