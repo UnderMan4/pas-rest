@@ -6,6 +6,7 @@ import com.google.gson.JsonParser;
 import p.lodz.pl.pas.RegexList;
 import p.lodz.pl.pas.exceptions.ItemNotFoundException;
 import p.lodz.pl.pas.manager.JobManager;
+import p.lodz.pl.pas.model.Job;
 
 import javax.inject.Inject;
 import javax.ws.rs.*;
@@ -65,12 +66,12 @@ public class JobController {
     }
 
     @GET
-    public Response findJob(@QueryParam("UUID") UUID uuid) {
-        Gson gson = new Gson();
+    @Produces(MediaType.APPLICATION_JSON)
+    public Job findJob(@QueryParam("UUID") UUID uuid) {
         try {
-            return Response.status(Response.Status.ACCEPTED).entity(gson.toJson(jobManager.findJob(uuid))).build();
+            return jobManager.findJob(uuid);
         } catch (ItemNotFoundException e) {
-            return Response.status(Response.Status.NOT_FOUND).build();
+            return null;
         }
     }
 

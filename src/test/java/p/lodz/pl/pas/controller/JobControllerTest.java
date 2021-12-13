@@ -1,6 +1,8 @@
 package p.lodz.pl.pas.controller;
 
+import com.google.gson.Gson;
 import org.junit.jupiter.api.*;
+import p.lodz.pl.pas.model.Job;
 
 import javax.ws.rs.client.Client;
 import javax.ws.rs.client.ClientBuilder;
@@ -18,6 +20,7 @@ class JobControllerTest {
     ClientBuilder clientBuilder;
     Client client;
     WebTarget target;
+    String created_uuid;
 
     @BeforeEach
     void setUp() {
@@ -42,7 +45,6 @@ class JobControllerTest {
                         .post(Entity.entity(json, MediaType.APPLICATION_JSON_TYPE));
         assertNotNull(response);
         assertEquals(201, response.getStatus());
-        assertEquals(response.readEntity(UUID.class).getClass(), UUID.class);
     }
 
     @Test
@@ -58,13 +60,69 @@ class JobControllerTest {
 
     @Test
     void findJob() {
+        String uuid = "b8344cdb-dc2d-42a0-8c0f-d35f676b8074";
+        WebTarget target = client.target("http://localhost:8080/api/job");
+        String s = target.queryParam("UUID", uuid).request(MediaType.APPLICATION_JSON_TYPE)
+                .get(String.class);
+        Gson gson = new Gson();
+       Job j = gson.fromJson(s, Job.class);
+        assertEquals(j.getName(), "Cleanup code");
+        assertEquals(j.getDescription(), "Cleanup code in this program");
     }
 
     @Test
     void updateJob() {
+        String uuid = "b8344cdb-dc2d-42a0-8c0f-d35f676b8074";
+        String json = """
+                {
+                   "name": "Cleanup code",
+                  "description": "Cleanup code in this program"
+                }
+                """;
+        WebTarget target = client.target("http://localhost:8080/api/job");
+
+        String jsonUpdated = """
+                {
+                  "UUID": "b8344cdb-dc2d-42a0-8c0f-d35f676b8074",
+                   "name": "Updated name",
+                  "description": "Updated description"
+                }
+                """;
+        Response response = target.path("update").request(MediaType.APPLICATION_JSON)
+                .post(Entity.entity(jsonUpdated, MediaType.APPLICATION_JSON_TYPE));
+        assertNotNull(response);
+        assertEquals(201, response.getStatus());
+
+
+        String s = target.queryParam("UUID", uuid).request(MediaType.APPLICATION_JSON_TYPE)
+                .get(String.class);
+        Gson gson = new Gson();
+        Job j = gson.fromJson(s, Job.class);
+        assertEquals(j.getName(), "Updated name");
+        assertEquals(j.getDescription(), "Updated description");
     }
 
     @Test
     void removeJob() {
+        WebTarget target = client.target("http://localhost:8080/api/job");
+        String json = """
+                {
+                   "name": "Nazwa zadania",
+                  "description": "Opis zadania"
+                }
+                """;
+        Response response = target.path("create").request(MediaType.APPLICATION_JSON)
+                .post(Entity.entity(json, MediaType.APPLICATION_JSON_TYPE));
+        assertNotNull(response);
+        assertEquals(201, response.getStatus());
+        created_uuid = response.readEntity(UUID.class).toString();
+
+        target = client.target("http://localhost:8080/api/job");
+        response = target.path("remove").queryParam("UUID", created_uuid).request(MediaType.APPLICATION_JSON_TYPE).get();
+        assertEquals(201, response.getStatus());
+
+        // Assert job not found
+        response = target.queryParam("UUID", created_uuid).request(MediaType.APPLICATION_JSON_TYPE).get();
+        assertEquals(204, response.getStatus());
     }
 }

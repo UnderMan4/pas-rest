@@ -94,8 +94,8 @@ public class TicketController {
     }
 
     @GET
-    @Path("find/{id}")
-    public Response findTicket(@PathParam("id") UUID uuid) {
+    @Consumes(MediaType.APPLICATION_JSON)
+    public Response findUser(@QueryParam("UUID") UUID uuid) {
         Gson gson = new Gson();
         try {
             return Response.status(ACCEPTED).entity(
@@ -107,7 +107,8 @@ public class TicketController {
     }
 
     @GET
-    public  Response deleteTicket(@QueryParam("UUID") UUID uuid) {
+    @Path("remove")
+    public  Response deleteUser(@QueryParam("UUID") UUID uuid) {
         try {
             return Response.status(ACCEPTED).entity(ticketManager.delete(uuid)).build();
         } catch (cantDeleteException | ItemNotFoundException e) {
