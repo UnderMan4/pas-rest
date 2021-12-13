@@ -87,7 +87,9 @@ public class UserController {
     public Response findUser(@QueryParam("UUID") UUID uuid) {
         Gson gson = new Gson();
         try {
-            return Response.status(Response.Status.ACCEPTED).entity(gson.toJson(userManager.findUser(uuid))).build();
+            return Response.status(Response.Status.ACCEPTED).entity(
+                    gson.toJson(userManager.findUser(uuid))
+            ).build();
         } catch (ItemNotFoundException e) {
             return Response.status(Response.Status.NOT_FOUND).build();
         }
