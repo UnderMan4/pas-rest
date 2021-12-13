@@ -4,10 +4,12 @@ import p.lodz.pl.pas.exceptions.ItemNotFoundException;
 import p.lodz.pl.pas.model.AccessLevel;
 import p.lodz.pl.pas.model.User;
 
+import javax.enterprise.context.ApplicationScoped;
 import java.util.ArrayList;
 import java.util.Optional;
 import java.util.UUID;
 
+@ApplicationScoped
 public class UserDAO implements DAO<User> {
     ArrayList<User> users;
 

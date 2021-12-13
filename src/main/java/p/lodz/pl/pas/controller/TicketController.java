@@ -8,6 +8,7 @@ import p.lodz.pl.pas.manager.TicketManager;
 import com.google.gson.JsonObject;
 import com.google.gson.JsonParser;
 import p.lodz.pl.pas.model.AccessLevel;
+import p.lodz.pl.pas.model.Ticket;
 
 import javax.inject.Inject;
 import javax.ws.rs.*;
@@ -95,14 +96,11 @@ public class TicketController {
 
     @GET
     @Consumes(MediaType.APPLICATION_JSON)
-    public Response findUser(@QueryParam("UUID") UUID uuid) {
-        Gson gson = new Gson();
+    public Ticket findTicket(@QueryParam("UUID") UUID uuid) {
         try {
-            return Response.status(ACCEPTED).entity(
-                    gson.toJson(ticketManager.findByUUID(uuid))
-            ).build();
+            return ticketManager.findByUUID(uuid);
         } catch (ItemNotFoundException e) {
-            return Response.status(Response.Status.NOT_FOUND).build();
+            return null;
         }
     }
 
