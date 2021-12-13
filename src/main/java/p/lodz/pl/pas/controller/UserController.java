@@ -72,7 +72,6 @@ public class UserController {
 
     @GET
     @Path("list")
-    @Consumes(MediaType.APPLICATION_JSON)
     public Response getUserList() {
         Gson gson = new Gson();
         return Response.status(Response.Status.ACCEPTED).entity(gson.toJson(userManager.getUserList())).build();
@@ -133,8 +132,7 @@ public class UserController {
 
     @GET
     @Path("setUserActive")
-    @Consumes(MediaType.APPLICATION_JSON)
-    public Response setUserActive(UUID uuid, boolean active) {
+    public Response setUserActive(@QueryParam("UUID")UUID uuid, @QueryParam("status") boolean active) {
 
         try {
             userManager.findUser(uuid);

@@ -59,7 +59,6 @@ public class JobController {
 
     @GET
     @Path("list")
-    @Consumes(MediaType.APPLICATION_JSON)
     public Response getList() {
         Gson gson = new Gson();
         return Response.status(Response.Status.ACCEPTED).entity(gson.toJson(jobManager.getJobs())).build();
@@ -99,7 +98,7 @@ public class JobController {
 
     @GET
     @Path("remove")
-    public Response removeJob(UUID uuid) {
+    public Response removeJob(@QueryParam("UUID") UUID uuid) {
 
         try {
             jobManager.removeJob(uuid);
