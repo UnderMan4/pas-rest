@@ -69,7 +69,7 @@ public class UserController {
         return RegexList.Login.matcher(login).matches();
     }
     private boolean verifyName(String name) {
-        return RegexList.User_Name.matcher(name).matches();
+        return RegexList.Surname.matcher(name).matches();
     }
 
     private boolean verifySurname(String surname) {

@@ -28,7 +28,7 @@ public class JobController {
     }
 
     private boolean verifyDescription(String description) {
-        return !RegexList.JOB_DESCRIPTION.matcher(description).matches();
+        return !RegexList.DESCRIPTION.matcher(description).matches();
     }
 
     @POST
