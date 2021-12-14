@@ -11,6 +11,8 @@ import p.lodz.pl.pas.model.Ticket;
 import p.lodz.pl.pas.model.User;
 
 import javax.inject.Inject;
+import java.time.LocalDateTime;
+import java.time.chrono.ChronoLocalDateTime;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.UUID;
@@ -27,7 +29,7 @@ public class TicketManager {
     JobDAO jobDAO;
     
 
-    public synchronized boolean createTicket(UUID userUUID, UUID jobUUID, Date jobStart, Date jobEnd, String description) throws DateException, ItemNotFoundException {
+    public synchronized boolean createTicket(UUID userUUID, UUID jobUUID, LocalDateTime jobStart, LocalDateTime jobEnd, String description) throws DateException, ItemNotFoundException {
         if (jobStart.compareTo(jobEnd) >= 0) {
             throw new DateException("Job Start must be before Job End");
         }
@@ -37,7 +39,7 @@ public class TicketManager {
     }
 
     public Ticket findByUUID(UUID uuid) throws ItemNotFoundException {
-        return findByUUID(uuid);
+        return ticketDAO.readOne(uuid);
     }
 
     public ArrayList<Ticket> getTicketList() {

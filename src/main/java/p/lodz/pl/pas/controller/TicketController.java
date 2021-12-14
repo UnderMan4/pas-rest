@@ -1,25 +1,24 @@
 package p.lodz.pl.pas.controller;
 
-import com.google.gson.Gson;
+import com.google.gson.JsonObject;
+import com.google.gson.JsonParser;
+import p.lodz.pl.pas.RegexList;
 import p.lodz.pl.pas.exceptions.DateException;
 import p.lodz.pl.pas.exceptions.ItemNotFoundException;
 import p.lodz.pl.pas.exceptions.cantDeleteException;
 import p.lodz.pl.pas.manager.TicketManager;
-import com.google.gson.JsonObject;
-import com.google.gson.JsonParser;
-import p.lodz.pl.pas.model.AccessLevel;
 import p.lodz.pl.pas.model.Ticket;
 
 import javax.inject.Inject;
 import javax.ws.rs.*;
 import javax.ws.rs.core.MediaType;
 import javax.ws.rs.core.Response;
-import java.text.ParseException;
-import java.text.SimpleDateFormat;
-import java.util.Date;
+import java.time.LocalDateTime;
+import java.time.format.DateTimeFormatter;
 import java.util.UUID;
 
 import static javax.ws.rs.core.Response.Status.*;
+import static p.lodz.pl.pas.conversion.GsonLocalDateTime.getGsonSerializer;
 
 
 @Path("ticket")
@@ -27,46 +26,50 @@ public class TicketController {
     @Inject
     TicketManager ticketManager;
 
+    private boolean verifyDescription(String description) {
+        return !RegexList.DESCRIPTION.matcher(description).matches();
+    }
+
     @POST
     @Path("create")
     @Consumes(MediaType.APPLICATION_JSON)
     public Response createTicket(String json){
         JsonObject jsonObject = JsonParser.parseString(json).getAsJsonObject();
-        UUID user = UUID.fromString(jsonObject.get("user").getAsString());
-        UUID job = UUID.fromString(jsonObject.get("job").getAsString());
-        Date jobStart;
-        Date jobEnd;
+        UUID user;
+        UUID job;
+        try {
+            user = UUID.fromString(jsonObject.get("user").getAsString());
+            job = UUID.fromString(jsonObject.get("job").getAsString());
+        } catch (NullPointerException n) {
+            return Response.status(BAD_REQUEST).entity(
+                    "Wrong json format"
+            ).build();
+        }
+
+        LocalDateTime jobStart;
+        LocalDateTime jobEnd;
         String description = jsonObject.get("description").getAsString();
         
-        
-        SimpleDateFormat format = new SimpleDateFormat("dd-MM-yyyy");
+
+        DateTimeFormatter dtf = DateTimeFormatter.ISO_LOCAL_DATE_TIME;
         try {
-            jobStart = format.parse(jsonObject.get("jobStart").getAsString());
-        } catch (ParseException e) {
+            jobStart = LocalDateTime.parse(jsonObject.get("jobStart").getAsString(), dtf);
+        } catch (Exception e) { // catch all possible exceptions for parsing dates
             return Response.status(BAD_REQUEST).entity(
                     "jobStart is in wrong format: " + jsonObject.get("jobStart").getAsString()
             ).build();
         }
         try {
-            jobEnd = format.parse(jsonObject.get("jobEnd").getAsString());
-        } catch (ParseException e) {
+            jobEnd = LocalDateTime.parse(jsonObject.get("jobEnd").getAsString(), dtf);
+        } catch (Exception e) { // catch all possible exceptions for parsing dates
             return Response.status(BAD_REQUEST).entity(
                     "jobEnd is in wrong format: " + jsonObject.get("jobEnd").getAsString()
             ).build();
         }
 
-
-        // if(!verifyUser(user)){
-        //     return Response.status(Response.Status.BAD_REQUEST).entity("").build();
-        // } else if (!verifyJob(job)) {
-        //     return Response.status(Response.Status.BAD_REQUEST).entity("").build();
-        // } else if (!verifyJobStart(jobStart)) {
-        //     return Response.status(Response.Status.BAD_REQUEST).entity("").build();
-        // } else if (!verifyJobEnd(jobEnd)) {
-        //     return Response.status(Response.Status.BAD_REQUEST).entity("").build();
-        // } else if (!verifyDescription(description)) {
-        //     return Response.status(Response.Status.BAD_REQUEST).entity("Description not valid").build();
-        // }
+        if (!verifyDescription(description)) {
+             return Response.status(Response.Status.BAD_REQUEST).entity("Description not valid").build();
+         }
 
         try {
             if (ticketManager.createTicket(
@@ -88,9 +91,8 @@ public class TicketController {
     @GET
     @Path("list")
     public Response getTicketList() {
-        Gson gson = new Gson();
         return Response.status(ACCEPTED).entity(
-                gson.toJson(ticketManager.getTicketList())
+                getGsonSerializer().toJson(ticketManager.getTicketList())
         ).build();
     }
 

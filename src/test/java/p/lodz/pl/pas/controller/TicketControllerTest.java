@@ -6,6 +6,7 @@ import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import p.lodz.pl.pas.model.Job;
 import p.lodz.pl.pas.model.Ticket;
+import p.lodz.pl.pas.model.TicketStatus;
 
 import javax.ws.rs.client.Client;
 import javax.ws.rs.client.ClientBuilder;
@@ -13,7 +14,11 @@ import javax.ws.rs.client.WebTarget;
 import javax.ws.rs.core.MediaType;
 import javax.ws.rs.core.Response;
 
+import java.time.LocalDateTime;
+import java.time.format.DateTimeFormatter;
+
 import static org.junit.jupiter.api.Assertions.*;
+import static p.lodz.pl.pas.conversion.GsonLocalDateTime.getGsonSerializer;
 
 class TicketControllerTest {
 
@@ -78,8 +83,8 @@ class TicketControllerTest {
                       "name": "Cleanup code",
                       "description": "Cleanup code in this program"
                     },
-                    "jobStart": "gru 9, 2021",
-                    "jobEnd": "gru 13, 2021",
+                    "jobStart": "2021-12-09T08:00:00",
+                    "jobEnd": "2021-12-13T16:00:00",
                     "description": "Cleanup code ticket description",
                     "status": "ToDo"
                   },
@@ -98,33 +103,31 @@ class TicketControllerTest {
                       "name": "Pass ISRP",
                       "description": "Pass ISRP and achive greatness"
                     },
-                    "jobStart": "lis 1, 2021",
-                    "jobEnd": "lis 20, 2021",
+                    "jobStart": "2021-08-01T08:00:00",
+                    "jobEnd": "2021-11-20T16:00:00",
                     "description": "Pass isrp and enjoy life",
                     "status": "ToDo"
                   }
-                ]
-                """;
+                ]""";
         WebTarget target = client.target("http://localhost:8080/api/ticket");
         Response response = target.path("list").request(MediaType.APPLICATION_JSON_TYPE).get();
         assertNotNull(response);
         assertEquals(202, response.getStatus());
-        assertEquals(response.readEntity(String.class), json);
+        assertEquals(json, response.readEntity(String.class));
 
     }
 
     @Test
     void findTicket() {
-        String uuid = "229ef12a-13a9-4d0f-9ae7-239dfd4c17b9";
+        String uuid = "86600b3f-2d48-4d88-a26b-45ec2eeb4845";
         WebTarget target = client.target("http://localhost:8080/api/ticket");
         String s = target.queryParam("UUID", uuid).request(MediaType.APPLICATION_JSON_TYPE)
                 .get(String.class);
-        Gson gson = new Gson();
-        Ticket j = gson.fromJson(s, Ticket.class);
-        assertEquals(j.getJobStart(), "lis 1, 2021");
-        assertEquals(j.getJobEnd(), "lis 20, 2021");
-        assertEquals(j.getDescription(), "Pass isrp and enjoy life");
-        assertEquals(j.getStatus(), "ToDo");
+        Ticket j = getGsonSerializer().fromJson(s, Ticket.class);
+        assertEquals(j.getJobStart(), LocalDateTime.parse("2021-12-09T08:00:00", DateTimeFormatter.ISO_LOCAL_DATE_TIME));
+        assertEquals(j.getJobEnd(), LocalDateTime.parse("2021-12-13T16:00:00", DateTimeFormatter.ISO_LOCAL_DATE_TIME));
+        assertEquals(j.getDescription(), "Cleanup code ticket description");
+        assertEquals(j.getStatus(), TicketStatus.ToDo);
     }
 
 }

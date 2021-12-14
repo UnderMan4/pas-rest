@@ -1,5 +1,6 @@
 package p.lodz.pl.pas.model;
 
+import java.time.LocalDateTime;
 import java.util.Date;
 import java.util.UUID;
 
@@ -9,12 +10,12 @@ public class Ticket {
     UUID uuid;
     User user;
     Job job;
-    Date jobStart;
-    Date jobEnd;
+    LocalDateTime jobStart;
+    LocalDateTime jobEnd;
     String description;
     TicketStatus status;
 
-    public Ticket(UUID uuid, User user, Job job, Date jobStart, Date jobEnd, String description) {
+    public Ticket(UUID uuid, User user, Job job, LocalDateTime jobStart, LocalDateTime jobEnd, String description) {
         this.uuid = uuid;
         this.user = user;
         this.job = job;
@@ -24,7 +25,7 @@ public class Ticket {
         this.status = ToDo;
     }
 
-    public Ticket(UUID uuid, User user, Job job, Date jobStart, Date jobEnd) {
+    public Ticket(UUID uuid, User user, Job job, LocalDateTime jobStart, LocalDateTime jobEnd) {
         this.uuid = uuid;
         this.user = user;
         this.job = job;
@@ -56,19 +57,19 @@ public class Ticket {
         this.job = job;
     }
 
-    public Date getJobStart() {
+    public LocalDateTime getJobStart() {
         return jobStart;
     }
 
-    public void setJobStart(Date jobStart) {
+    public void setJobStart(LocalDateTime jobStart) {
         this.jobStart = jobStart;
     }
 
-    public Date getJobEnd() {
+    public LocalDateTime getJobEnd() {
         return jobEnd;
     }
 
-    public void setJobEnd(Date jobEnd) {
+    public void setJobEnd(LocalDateTime jobEnd) {
         this.jobEnd = jobEnd;
     }
 
