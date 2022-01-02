@@ -6,11 +6,9 @@
         <sourceOutputDir name="target/generated-sources/annotations" />
         <sourceTestOutputDir name="target/generated-test-sources/test-annotations" />
         <outputRelativeToContentRoot value="true" />
-        <module name="pas" />
+        <module name="Web" />
+        <module name="Rest" />
       </profile>
     </annotationProcessing>
-    <bytecodeTargetLevel>
-      <module name="pas" target="16" />
-    </bytecodeTargetLevel>
   </component>
 </project>
