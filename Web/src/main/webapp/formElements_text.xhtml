@@ -1,0 +1,33 @@
+<?xml version='1.0' encoding='UTF-8' ?>
+<!DOCTYPE composition PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<ui:composition xmlns:ui="http://java.sun.com/jsf/facelets" 
+                xmlns="http://www.w3.org/1999/xhtml"
+                template="./templates/MainTemplate.xhtml">
+
+    <ui:define name="top">
+        <p>${msg["main.page"]}/${msg["menu.templates"]}</p>
+    </ui:define>
+
+    <ui:define name="left">
+        <ui:include src="./templates/menu.xhtml" />
+    </ui:define>
+
+    <ui:define name="content">
+        <p>Wszystkie strony aplikacji zbudowane są w oparciu o szablon <i>templates/MainTemplate.xhtml</i></p>
+        <p>Szablon ten definiuje cztery obszary (ui:insert), bazując na blokach (div) oraz arkuszach stylów:</p>
+        <ul>
+            <li>top - obszar nagłówka. Obszar ten jest wypełniany przez każdą stronę indywidualnie (ui:define) (w przykładzie zawiera on lokalizację w ramach interfejsu użytkownika).</li>
+            <li>left - obszar menu. Obszar ten jest wypełniany przez każdą stronę poprzez włączanie (ui:include) pliku <i>templates/menu.xhtml</i>.</li>
+            <li>content - obszar zawartości. Obszar ten jest wypełniany przez każdą stronę indywidualnie (ui:define).</li>
+            <li>bottom - obszar stopki. Obszar ten jest wypełniany w samym szablonie.</li>
+        </ul>
+        <p>Warto także zwrócić uwagę na biblioteki włączane jako przestrzenie nazw (xmlns) dokumentu xhtml. W przykładowej aplikacji wykorzystywane są cztery biblioteki:</p>
+        <ul>
+            <li><code>xmlns="http://www.w3.org/1999/xhtml"</code> - umożliwia korzystanie ze standardowych elemntów HTML.</li>
+            <li><code>xmlns:ui="http://java.sun.com/jsf/facelets"</code> - umożliwia korzystanie z rozszerzenia facelets (które praktycznie stało sie standardem), np. do tworzenia szablonów stron.</li>
+            <li><code>xmlns:h="http://java.sun.com/jsf/html"</code> - umożliwia korzystanie z podstawowych elementów JSF, które powodują wygenerowanie odpowiednich elementów HTML.</li>
+            <li><code>xmlns:f="http://java.sun.com/jsf/core"</code> - umożliwia korzystanie z podstawowych mechanizmów JSF, np. konwersji, walidacji itp.</li>
+        </ul>
+    </ui:define>
+
+</ui:composition>

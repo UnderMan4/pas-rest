@@ -1,0 +1,51 @@
+<?xml version='1.0' encoding='UTF-8' ?>
+<!DOCTYPE composition PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<ui:composition xmlns:ui="http://java.sun.com/jsf/facelets" 
+                xmlns="http://www.w3.org/1999/xhtml"
+                template="./templates/MainTemplate.xhtml"
+                xmlns:h="http://java.sun.com/jsf/html"
+                xmlns:f="http://java.sun.com/jsf/core">
+
+    <ui:define name="top">
+        <p>${msg["main.page"]}/${msg["menu.navigation"]}</p>
+    </ui:define>
+
+    <ui:define name="left">
+        <ui:include src="./templates/menu.xhtml" />
+    </ui:define>
+    <ui:define name="content">
+        <p>Nawigacja po aplikacji może odbywać się na dwa sposoby.</p>
+        <p>Element JSF <code>h:outputLink</code> powoduje wygenerowanie odnośnika HTML (element <code>a</code>). Strona docelowa jest wartością atrybutu <code>value</code> elementu <code>h:outputLink</code>.<br />
+            Przykłady zastosowania elementu <code>h:outputLink</code> znajdują się w menu przykładowej aplikacji (<i>templates/menu.xhtml</i>)</p>
+        <p>Możliwe jest także zdefiniowanie alternatywnych przypadków nawigacji (navigation case) pozwalających określić stronę docelową na podstawie strony pierwotnej oraz wartości wyjścia (outcome).
+            W przykładowej aplikacji zdefiniowano przypadki nawigacji ze strony <i>navigation.xhtml</i> do strony <i>navigation_target.xhtml</i> (sprawdź w pliku <i>faces-config.xml</i>).</p>
+        <h:form>
+            <hr />
+            <p>Elementy <code>h:commandButton</code> oraz <code>h:commandLink</code> zastosowane poniżej określają docelową stronę wprost poprzez podanie nazwy strony (bez rozszerzenia xhtml). Przejście jest typu forward (bez zmiany URL).</p>
+            <p><h:outputText class="red_alert" value='Elementy te muszą być umieszczone w formularzu (element h:form)!' /></p>
+
+            <h:commandButton action="navigationTarget" value="Przejdź bezpośrednio (action=navigationTarget)" /><h:commandLink action="navigationTarget" value="Przejdź bezpośrednio (action=navigationTarget)" />
+            <hr />
+            <p>Analogiczne elementy zastosowane poniżej określają docelową stronę wprost poprzez podanie wartości wyjścia (outcome). Wartość <code>forwardToNavigationTarget</code> oznacza przejście typu forward (bez zmiany URL) zgodnie z ustawieniami w pliku <i>faces-config.xml</i>.</p>
+            <h:commandButton action="forwardToNavigationTarget" value="Przejdź bezpośrednio przez outcome (action=forwardToNavigationTarget)" /><h:commandLink action="forwardToNavigationTarget" value="Przejdź bezpośrednio przez outcome (action=forwardToNavigationTarget)" />
+            <hr />
+            <p>Analogiczne elementy zastosowane poniżej określają docelową stronę wprost poprzez podanie wartości wyjścia (outcome). Wartość <code>redirectToNavigationTarget</code> oznacza przejście typu redirect (ze zmianą URL) zgodnie z ustawieniami w pliku <i>faces-config.xml</i>.</p>
+            <h:commandButton action="redirectToNavigationTarget" value="Przejdź bezpośrednio przez outcome (action=redirectToNavigationTarget)" /><h:commandLink action="redirectToNavigationTarget" value="Przejdź bezpośrednio przez outcome (action=redirectToNavigationTarget)" />
+            <hr />
+            <p>Element <code>h:selectOneRadio</code> pozwala na wybór jednej z wartości, która zostanie umieszczona w związanej z nim właściwości <code>navigationBean.selectedValue</code>. </p>
+            <p>Element <code>h:commandButton</code> wywołuje metodę <code>navigationBean.performNavigation()</code>, a ta zwraca jako wartość wyjścia (outcome) wartość wybraną z listy. Powoduje to stosowny skutek nawigacji. </p>
+            <h:selectOneRadio value="#{navigationBean.selectedValue}" layout="pageDirection">
+                    <f:selectItem itemValue="forwardToNavigationTarget" itemLabel="Przejście metodą forward (bez zmiany URL, outcome forwardToNavigationTarget)" />
+                    <f:selectItem itemValue="redirectToNavigationTarget" itemLabel="Przejście metodą redirect (ze zmianą URL, outcome redirectToNavigationTarget)" />
+                    <f:selectItem itemValue="" itemLabel="Pusty - bez przejścia (identyczny wynika daje wartość pustej referencji null)" />
+                    <f:selectItem itemValue="nonexisting" itemLabel="Nieistniejący (dokładna wartość nonexisting) - bez przejścia (błąd nawigacji)" />
+            </h:selectOneRadio>
+            <h:commandButton action="#{navigationBean.performNavigation()}" value="Przejdź przez metodę akcji (action=navigationBean.performNavigation())" /><h:commandLink action="#{navigationBean.performNavigation()}" value="Przejdź przez metodę akcji (action=navigationBean.performNavigation())" />
+            <hr />
+            <p>Element <code>h:commandButton</code> wywołuje metodę <code>navigationBean.setCustomValue(tekst)</code>, zaś element <code>h:outputText</code> prezentuje ustawioną w ten sposób właściwość <code>navigationBean.customValue</code>. Należy sprawdzić także logi aplikacji!</p>
+            <h:commandButton action="#{navigationBean.setCustomValue('Kanał lewy')}" value="Wywołaj metodę akcji (action=navigationBean).setCustomValue('Kanał lewy')" /><h:commandButton action="#{navigationBean.setCustomValue('Kanał prawy')}" value="Wywołaj metodę akcji (action=navigationBean).setCustomValue('Kanał prawy')" /><br />
+            Wynik (wartość właściwości <code>navigationBean.customValue</code>): <h:outputText value="#{navigationBean.customValue}" />
+        </h:form>
+    </ui:define>
+
+</ui:composition>

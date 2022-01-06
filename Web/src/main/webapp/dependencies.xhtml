@@ -1,0 +1,21 @@
+<?xml version='1.0' encoding='UTF-8' ?>
+<!DOCTYPE composition PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<ui:composition xmlns:ui="http://java.sun.com/jsf/facelets" 
+                xmlns="http://www.w3.org/1999/xhtml"
+                template="./templates/MainTemplate.xhtml">
+
+    <ui:define name="top">
+        <p>${msg["main.page"]}/${msg["menu.dependencies"]}</p>
+    </ui:define>
+
+    <ui:define name="left">
+        <ui:include src="./templates/menu.xhtml" />
+    </ui:define>
+
+    <ui:define name="content">
+        <p>Warto zwrócić uwagę na zależności projektu.</p>
+        <p>Biblioteka <i>javaee-web-api</i> to standardowe API kontenera WEB aplikacji JEE, czyli kontenera serwletów. Implementacji dostarcza sam kontener, stąd zasięg <i>provided</i>.</p>
+        <p>Jeżeli kontener Java EE nie dostarcza implementacji JSF niezbędne jest dodanie do zależności bibliotek: <i>jsf-api</i> oraz <i>jsf-impl</i> w zasięgu <i>compile</i> aby zapewnić dostępność bibliotek w środowisku uruchomieniowym aplikacji.</p>
+    </ui:define>
+
+</ui:composition>

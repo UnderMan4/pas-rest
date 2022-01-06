@@ -1,0 +1,30 @@
+<?xml version='1.0' encoding='UTF-8' ?>
+<!DOCTYPE composition PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<ui:composition xmlns:ui="http://java.sun.com/jsf/facelets" 
+                xmlns="http://www.w3.org/1999/xhtml"
+                template="./templates/MainTemplate.xhtml">
+
+    <ui:define name="top">
+        <p>${msg["main.page"]}</p>
+    </ui:define>
+
+    <ui:define name="left">
+        <ui:include src="./templates/menu.xhtml" />
+    </ui:define>
+
+    <ui:define name="content">
+        Aplikacja zawiera przykłady zastosowania podstawowych mechanizmów Java Server Faces:<br />
+        <ul>
+            <li>Szablony stron</li>
+            <li>Arkusze stylów</li>
+            <li>Wersje językowe</li>
+            <li>Walidacja danych</li>
+            <li>Nawigacja</li>
+            <li>Ziarna i atrybuty o różnych zasięgach</li>
+<!--            <li>Elementy formularza</li>
+            <li>Elementy warunkowe</li>
+            <li>Tabele danych</li>-->
+        </ul>
+    </ui:define>
+
+</ui:composition>

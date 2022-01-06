@@ -1,0 +1,51 @@
+<?xml version='1.0' encoding='UTF-8' ?>
+<!DOCTYPE composition PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<ui:composition xmlns:ui="http://java.sun.com/jsf/facelets" 
+                xmlns="http://www.w3.org/1999/xhtml"
+                template="./templates/MainTemplate.xhtml"
+                xmlns:h="http://java.sun.com/jsf/html"
+                xmlns:f="http://java.sun.com/jsf/core">
+
+    <ui:define name="top">
+        <p>${msg["main.page"]}/${msg["menu.beans"]}</p>
+    </ui:define>
+
+    <ui:define name="left">
+        <ui:include src="./templates/menu.xhtml" />
+    </ui:define>
+    <ui:define name="content">
+        <p>Ta strona wykorzystuje liczniki klasy <code>CounterBean</code>. Ta sama klasa jest zarejestrowana w pliku <i>faces-config.xml</i> jako ziarno zarządzane w trzech różnych zasięgach:
+            <ul>
+                <li>żądania (nazwa ziarna zarządzanego: <code>counterBeanRequestScope</code>)</li>
+                <li>sesji (nazwa ziarna zarządzanego: <code>counterBeanSessionScope</code>)</li>
+                <li>aplikacji (nazwa ziarna zarządzanego: <code>counterBeanApplicationScope</code>)</li>
+            </ul>
+        </p>
+        <hr />
+        <p>Poniższe elementy odwołują się do ziaren o odpowiednich zasięgach. Przycisk powoduje wywołanie metody <code>incrementCount()</code> zwiększającej licznik, zaś pole tekstowe eksponuje wartość licznika.</p>
+        <p>Uwaga! Aby w pełni dostrzec sposób działania ziaren w poszczególnych zasięgach należy uruchomić inny widok aplikacji (inna karta lub okno tej samej przeglądarki) oraz drugą sesję aplikacji (np. w innej przeglądarce).</p>
+        <h:form>
+            <ul>
+                <li><h:commandButton action="#{requestScopedCounterBean.incrementCount()}" value="Zwiększ licznik o zasięgu żądania (RequestScopedCounterBean)" /> Stan licznika: <h:outputText value="#{requestScopedCounterBean.count}" /></li>
+                <li><h:commandButton action="#{sessionScopedCounterBean.incrementCount()}" value="Zwiększ licznik o zasięgu sesji (SessionScopedCounterBean)" /> Stan licznika: <h:outputText value="#{sessionScopedCounterBean.count}" /></li>
+                <li><h:commandButton action="#{applicationScopedCounterBean.incrementCount()}" value="Zwiększ licznik o zasięgu aplikacji (ApplicationScopedCounterBean)" /> Stan licznika: <h:outputText value="#{applicationScopedCounterBean.count}" /></li>
+                <li><h:commandButton action="#{conversationScopedCounterBean.incrementCount()}" value="Zwiększ licznik o zasięgu aplikacji (ConversationScopedCounterBean)" /> Stan licznika: <h:outputText value="#{conversationScopedCounterBean.count}" /></li>
+            </ul>
+            <hr />
+            <p>Poniższy przycisk uruchamia metodę <code>invalidate()</code> na obiekcie sesji HTTP (za pośrednictwem analogicznej metody klasy narzędziowej <code>ContextUtils</code>). Z kolei pole tekstowe eksponuje bieżącą wartość klucza sesji pozyskiwaną z tej samej klasy narzędziowej.</p>
+            <h:commandButton action="#{beansBean.closeSession()}" value="Zamknij bieżącą sesję HTTP (invalidate())" /> Identyfikator sesji: <h:outputText value="#{beansBean.sessionID}" /><br />
+            <p>Poniższe przyciski uruchamiają metody <code>begin()</code> oraz <code>end()</code> na obiekcie kowersacji CDI tym samym rozpoczynając i kończąc kowersację (ściśle: przełączając w stan długotrwały i ulotny).</p>
+            <h:commandButton action="#{beansBean.beginConversation()}" value="Rozpocznij konwersację" disabled="#{beansBean.conversationInProgress}"/>
+            <h:commandButton action="#{beansBean.endConversation()}" value="Zakończ konwersację" disabled="#{not beansBean.conversationInProgress}"/><br />
+            <hr />
+            <p>Poniższy obszar tekstowy eksponuje wartość zwracaną przez metodę <code>beansBean.getCountersDescription()</code>. Używa ona referencji wstrzykiwanych do ziarna <code>BeansBean</code> adnotacją CDI <code>@Inject</code> aby uzyskiwać dostęp do ziaren o poszczególnych zasięgach. Eksponowane są wyniki zwracane przez metody <code>toString()</code> ziaren.</p>
+            <p>Dodatkowo eksponowana jest wartość zwracana przez metodę <code>toString()</code> obiektu konwersacji.</p>
+            <h:inputTextarea readonly="true" cols="100" rows="6" value="#{beansBean.countersDescription}" />
+            <hr />
+            <p>Poniższy tekst stanowi przykład uzyskania dostępu do parametru inicjalizacyjnego aplikacji <code>"application.description"</code>, określonego w deskryptorze <i>web.xml</i>. Wartość parametru jest zwracana przez
+                metodę <code>beansBean.getApplicationDescriptionParam()</code>, która z kolei używa metody klasy narzędziowej <code>ContextUtils.getContextParameter()</code>, aby uzyskiwać dostęp do wartości parametru.</p>
+            Wartość parametru <code>"application.description"</code> to: <i>${beansBean.applicationDescriptionParam}</i>.
+        </h:form>
+    </ui:define>
+
+</ui:composition>
