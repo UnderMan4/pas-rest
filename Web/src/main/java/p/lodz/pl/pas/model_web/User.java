@@ -1,4 +1,4 @@
-package p.lodz.pl.pas.model;
+package p.lodz.pl.pas.model_web;
 
 import java.util.UUID;
 

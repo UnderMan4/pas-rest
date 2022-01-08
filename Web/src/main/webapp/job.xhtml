@@ -3,7 +3,8 @@
 <ui:composition xmlns:ui="http://java.sun.com/jsf/facelets"
                 xmlns="http://www.w3.org/1999/xhtml"
                 xmlns:h="http://java.sun.com/jsf/html"
-                template="./templates/MainTemplate.xhtml">
+                template="./templates/MainTemplate.xhtml"
+                xmlns:f="http://java.sun.com/jsf/core">
 
     <ui:define name="top">
         <p>${msg["main.page"]}</p>
@@ -16,20 +17,26 @@
     <ui:define name="content">
         <h:form id="job-form">
             <h2>Job list</h2>
-            <h:dataTable value="#{jobBean.jobList}" var="job">
+            <h:dataTable value="#{jobListBean.jobList}" var="job">
                 <h:column>
+                    <f:facet name="header">${msg["column.name"]}</f:facet>
                     <h:outputText value="#{job.name}"/>
                 </h:column>
                 <h:column>
+                    <f:facet name="header">${msg["column.description"]}</f:facet>
                     <h:outputText value="#{job.description}"/>
                 </h:column>
                 <h:column>
+                    <f:facet name="header">${msg["column.uuid"]}</f:facet>
                     <h:outputText value="#{job.uuid}"/>
                 </h:column>
             </h:dataTable>
 <!--            <h:inputText required="true" value="#{simpleValidationBean.requiredField}"-->
 <!--                         requiredMessage="Username is required"/><br/>-->
 
+        </h:form>
+        <h:form id="navigate-to-create-job">
+        <h:commandButton action="redirectToCreateJob" value="Craete job page" />
         </h:form>
 
     </ui:define>

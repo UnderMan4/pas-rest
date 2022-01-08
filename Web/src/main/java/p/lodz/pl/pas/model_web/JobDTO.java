@@ -1,21 +1,12 @@
-package p.lodz.pl.pas.model;
+package p.lodz.pl.pas.model_web;
 
 import java.util.UUID;
 
-public class Job {
-    UUID uuid;
+public class JobDTO {
     String name;
     String description;
 
-    public Job() {
-    }
-
-    public UUID getUuid() {
-        return uuid;
-    }
-
-    public void setUuid(UUID uuid) {
-        this.uuid = uuid;
+    public JobDTO() {
     }
 
     public String getName() {
@@ -32,5 +23,13 @@ public class Job {
 
     public void setDescription(String description) {
         this.description = description;
+    }
+
+    @Override
+    public String toString() {
+        return "JobDTO{" +
+                "name='" + name + '\'' +
+                ", description='" + description + '\'' +
+                '}';
     }
 }

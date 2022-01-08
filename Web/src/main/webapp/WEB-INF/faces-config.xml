@@ -33,5 +33,15 @@
             <redirect />
         </navigation-case>
     </navigation-rule>
+
+    <navigation-rule>
+        <from-view-id>/job.xhtml</from-view-id>
+        <navigation-case>
+            <from-outcome>redirectToCreateJob</from-outcome>
+            <to-view-id>/createJob.xhtml</to-view-id>
+            <redirect />
+        </navigation-case>
+    </navigation-rule>
+
     
 </faces-config>

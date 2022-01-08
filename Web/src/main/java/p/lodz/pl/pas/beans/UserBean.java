@@ -1,6 +1,6 @@
 package p.lodz.pl.pas.beans;
 
-import p.lodz.pl.pas.model.User;
+import p.lodz.pl.pas.model_web.User;
 import p.lodz.pl.pas.services.Const;
 
 import javax.enterprise.context.SessionScoped;
