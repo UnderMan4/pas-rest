@@ -3,9 +3,9 @@ package p.lodz.pl.pas.model_web;
 import java.util.UUID;
 
 public class Job {
-    UUID uuid;
-    String name;
-    String description;
+    private UUID uuid;
+    private String name;
+    private String description;
 
     @Override
     public String toString() {

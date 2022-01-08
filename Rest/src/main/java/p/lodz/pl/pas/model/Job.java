@@ -3,9 +3,9 @@ package p.lodz.pl.pas.model;
 import java.util.UUID;
 
 public class Job {
-    UUID uuid;
-    String name;
-    String description;
+    private UUID uuid;
+    private String name;
+    private String description;
 
     public Job(UUID uuid, String name, String description) {
         this.uuid = uuid;

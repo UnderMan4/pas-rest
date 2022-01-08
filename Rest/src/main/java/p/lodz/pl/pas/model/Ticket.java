@@ -7,13 +7,13 @@ import java.util.UUID;
 import static p.lodz.pl.pas.model.TicketStatus.ToDo;
 
 public class Ticket {
-    UUID uuid;
-    User user;
-    Job job;
-    LocalDateTime jobStart;
-    LocalDateTime jobEnd;
-    String description;
-    TicketStatus status;
+    private UUID uuid;
+    private User user;
+    private Job job;
+    private LocalDateTime jobStart;
+    private LocalDateTime jobEnd;
+    private String description;
+    private TicketStatus status;
 
     public Ticket(UUID uuid, User user, Job job, LocalDateTime jobStart, LocalDateTime jobEnd, String description) {
         this.uuid = uuid;

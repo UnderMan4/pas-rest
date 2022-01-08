@@ -3,8 +3,8 @@ package p.lodz.pl.pas.model_web;
 import java.util.UUID;
 
 public class JobDTO {
-    String name;
-    String description;
+    private String name;
+    private String description;
 
     public JobDTO() {
     }

@@ -3,12 +3,12 @@ package p.lodz.pl.pas.model_web;
 import java.util.UUID;
 
 public class User {
-    String login;
-    String name;
-    String surname;
-    UUID uuid;
-    Boolean active;
-    AccessLevel accessLevel;
+    private String login;
+    private String name;
+    private String surname;
+    private UUID uuid;
+    private Boolean active;
+    private AccessLevel accessLevel;
 
     public User() {
     }
