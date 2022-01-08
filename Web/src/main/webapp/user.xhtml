@@ -14,18 +14,35 @@
     </ui:define>
 
     <ui:define name="content">
-        <h:form id="job-form">
-            <h2>Job list</h2>
-            <h:dataTable value="#{jobBean.jobList}" var="job">
+        <h:form id="user-form">
+            <h2>User list</h2>
+<!--            String login;-->
+<!--            String name;-->
+<!--            String surname;-->
+<!--            UUID uuid;-->
+<!--            Boolean active;-->
+<!--            AccessLevel accessLevel;-->
+            <h:dataTable value="#{userBean.userList}" var="user">
                 <h:column>
-                    <h:outputText value="#{job.name}"/>
+                    <h:outputText value="#{user.login}"/>
                 </h:column>
                 <h:column>
-                    <h:outputText value="#{job.description}"/>
+                    <h:outputText value="#{user.name}"/>
                 </h:column>
                 <h:column>
-                    <h:outputText value="#{job.uuid}"/>
+                    <h:outputText value="#{user.surname}"/>
                 </h:column>
+                <h:column>
+                    <h:outputText value="#{user.uuid}"/>
+                </h:column>
+                <h:column>
+                    <h:outputText value="#{user.active}"/>
+                </h:column>
+                <h:column>
+                    <h:outputText value="#{user.accessLevel}"/>
+                </h:column>
+
+
             </h:dataTable>
 <!--            <h:inputText required="true" value="#{simpleValidationBean.requiredField}"-->
 <!--                         requiredMessage="Username is required"/><br/>-->

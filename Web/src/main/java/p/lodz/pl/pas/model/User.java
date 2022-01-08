@@ -10,13 +10,7 @@ public class User {
     Boolean active;
     AccessLevel accessLevel;
 
-    public User(UUID uuid, String login, String name, String surname, Boolean active, AccessLevel accessLevel) {
-        this.uuid = uuid;
-        this.login = login;
-        this.name = name;
-        this.surname = surname;
-        this.active = active;
-        this.accessLevel = accessLevel;
+    public User() {
     }
 
     public String getLogin() {
@@ -66,7 +60,6 @@ public class User {
     public void setAccessLevel(AccessLevel accessLevel) {
         this.accessLevel = accessLevel;
     }
-
-    // ------------------------------------------------------------------------------------------------
+// ------------------------------------------------------------------------------------------------
 
 }

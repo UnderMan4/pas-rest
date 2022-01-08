@@ -7,10 +7,7 @@ public class Job {
     String name;
     String description;
 
-    public Job(UUID uuid, String name, String description) {
-        this.uuid = uuid;
-        this.name = name;
-        this.description = description;
+    public Job() {
     }
 
     public UUID getUuid() {
@@ -36,6 +33,4 @@ public class Job {
     public void setDescription(String description) {
         this.description = description;
     }
-
-    // ------------------------------------------------------------------------------------------------
 }
