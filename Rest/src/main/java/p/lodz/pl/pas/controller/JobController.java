@@ -80,7 +80,7 @@ public class JobController {
     @Consumes(MediaType.APPLICATION_JSON)
     public Response updateJob(String json) {
         JsonObject jsonObject = JsonParser.parseString(json).getAsJsonObject();
-        UUID uuid = UUID.fromString(jsonObject.get("UUID").getAsString());
+        UUID uuid = UUID.fromString(jsonObject.get("uuid").getAsString());
         String name = jsonObject.get("name").getAsString();
         String description = jsonObject.get("description").getAsString();
         if (verifyName(name)) {
