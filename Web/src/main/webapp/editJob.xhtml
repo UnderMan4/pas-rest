@@ -1,0 +1,39 @@
+<?xml version='1.0' encoding='UTF-8' ?>
+<!DOCTYPE composition PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+        "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<ui:composition xmlns:ui="http://java.sun.com/jsf/facelets"
+                xmlns="http://www.w3.org/1999/xhtml"
+                xmlns:h="http://java.sun.com/jsf/html"
+                template="templates/MainTemplate.xhtml"
+                xmlns:f="http://java.sun.com/jsf/core">
+
+    <ui:define name="top">
+        <p>${msg["main.page"]}</p>
+    </ui:define>
+
+    <ui:define name="left">
+        <ui:include src="templates/menu.xhtml"/>
+    </ui:define>
+
+    <ui:define name="content">
+        <h:form id="edit-job-form">
+            <h2>Edit job</h2>
+            <f:facet name="header">${msg["column.name"]}</f:facet>
+            Name<h:inputText value="#{jobEditBean.editedJob.name}"  requiredMessage="Name is required"/>
+            <f:facet name="header">${msg["column.description"]}</f:facet>
+            <br/>
+            Description<h:inputText value="#{jobEditBean.editedJob.description}"/>
+            <br/>
+            UUID<h:outputText value="#{jobEditBean.editedJob.uuid}"/>
+            <br/>
+            <h:commandButton action="#{jobEditBean.saveEditedJob}" value="Edit"/>
+        </h:form>
+
+
+        <!--            <h:inputText required="true" value="#{simpleValidationBean.requiredField}"-->
+        <!--                         requiredMessage="Username is required"/><br/>-->
+
+    </ui:define>
+
+
+</ui:composition>

@@ -30,6 +30,10 @@
                     <f:facet name="header">${msg["column.uuid"]}</f:facet>
                     <h:outputText value="#{job.uuid}"/>
                 </h:column>
+                <h:column>
+                    <h:commandButton action="#{jobListBean.editJob(job)}" value="Edit job"/>
+                </h:column>
+
             </h:dataTable>
 <!--            <h:inputText required="true" value="#{simpleValidationBean.requiredField}"-->
 <!--                         requiredMessage="Username is required"/><br/>-->
