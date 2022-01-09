@@ -38,4 +38,6 @@ public class JobListBean implements Serializable {
         jobEditBean.setEditedJob(job);
         return "editJob";
     }
+
+   
 }

@@ -80,3 +80,9 @@ target
 pas.iml
 
 */.idea
+
+.idea/compiler.xml
+
+.run/
+
+*.iml

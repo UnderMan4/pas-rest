@@ -2,9 +2,11 @@ package p.lodz.pl.pas.beans;
 
 import p.lodz.pl.pas.model_web.User;
 import p.lodz.pl.pas.services.Const;
+import p.lodz.pl.pas.services.UserService;
 
 import javax.enterprise.context.SessionScoped;
 import javax.inject.Named;
+import javax.inject.Inject;
 import javax.ws.rs.client.Client;
 import javax.ws.rs.client.ClientBuilder;
 import javax.ws.rs.client.WebTarget;
@@ -21,9 +23,12 @@ import java.util.List;
 
 @Named
 @SessionScoped
-public class UserBean implements Serializable {
+public class UserListBean implements Serializable {
+    
+    @Inject
+    UserService userService;
 
-    public UserBean() {
+    public UserListBean() {
     }
 
     public List<User> getUserList() {
