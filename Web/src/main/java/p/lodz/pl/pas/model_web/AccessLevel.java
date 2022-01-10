@@ -1,5 +1,18 @@
 package p.lodz.pl.pas.model_web;
 
 public enum AccessLevel {
-    UserAdministrator, ResourceAdministrator, User
+
+    UserAdministrator("UserAdministrator"),
+    ResourceAdministrator("ResourceAdministrator"),
+    User("User");
+
+    private String label;
+
+    AccessLevel(String label) {
+        this.label = label;
+    }
+
+    public String getLabel() {
+        return label;
+    }
 }

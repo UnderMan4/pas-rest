@@ -3,8 +3,10 @@ package p.lodz.pl.pas.beans;
 import com.google.gson.Gson;
 import p.lodz.pl.pas.model_web.User;
 import p.lodz.pl.pas.services.Const;
+import p.lodz.pl.pas.services.UserService;
 
 import javax.enterprise.context.SessionScoped;
+import javax.inject.Inject;
 import javax.inject.Named;
 import javax.ws.rs.client.Client;
 import javax.ws.rs.client.ClientBuilder;
@@ -20,6 +22,8 @@ import java.util.logging.Logger;
 public class UserEditBean implements Serializable {
     private final Logger LOGGER = Logger.getLogger(UserCreateBean.class.getName());
     private User editedUser;
+    @Inject
+    UserService userService;
 
     public UserEditBean() {
 
@@ -34,11 +38,9 @@ public class UserEditBean implements Serializable {
     }
 
     public String saveEditedUser() {
-        LOGGER.log(Level.INFO, editedUser.toString());
         if (editedUser != null) {
-            Client client = ClientBuilder.newClient();
-            WebTarget target = client.target(Const.MAIN_URL);
-            Response response = target.path("api").path("user").path("editUserWithUUID").request().post(Entity.json(new Gson().toJson(editedUser)));
+            LOGGER.log(Level.INFO, editedUser.toString());
+            Response response = userService.saveEditedUser(editedUser);
             LOGGER.log(Level.INFO, response.toString());
         } else {
             throw new IllegalArgumentException("Edited user is null");

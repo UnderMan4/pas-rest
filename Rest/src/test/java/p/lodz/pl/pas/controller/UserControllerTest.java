@@ -67,22 +67,22 @@ public class UserControllerTest {
                   "login": "Login",
                   "name": "Imie uzytkownika",
                   "surname": "Nazwisko",
-                  "active": "Status uzytkownika",
-                  "AccessLevel": "Poziom dostepu"
+                  "active": "true",
+                  "AccessLevel": "User"
                 }
                 """;
-        WebTarget target = client.target("http://localhost:8080/api/job");
+        WebTarget target = client.target("http://localhost:8080/api/user");
 
         String jsonUpdated = """
                 {
                   "login": "Zedytowany login",
                   "name": "Zedytowane imie uzytkownika",
                   "surname": "Zedytowane nazwisko",
-                  "active": "Zedytowany status uzytkownika",
-                  "AccessLevel": "Zedytowany poziom dostepu"
+                  "active": "true",
+                  "AccessLevel": "User"
                 }
                 """;
-        Response response = target.path("edit").request(MediaType.APPLICATION_JSON).post(Entity.entity(jsonUpdated, MediaType.APPLICATION_JSON_TYPE));
+        Response response = target.path("editUserWithUUID").request(MediaType.APPLICATION_JSON).post(Entity.entity(jsonUpdated, MediaType.APPLICATION_JSON_TYPE));
         assertNotNull(response);
         assertEquals(200, response.getStatus());
 

@@ -111,7 +111,7 @@ public class UserController {
     @Consumes(MediaType.APPLICATION_JSON)
     public Response editUserWithUUID(String json) {
         JsonObject jsonObject = JsonParser.parseString(json).getAsJsonObject();
-        UUID uuid = UUID.fromString(jsonObject.get("UUID").getAsString());
+        UUID uuid = UUID.fromString(jsonObject.get("uuid").getAsString());
         String login = jsonObject.get("login").getAsString();
         String name = jsonObject.get("name").getAsString();
         String surname = jsonObject.get("surname").getAsString();
@@ -124,15 +124,11 @@ public class UserController {
             return Response.status(Response.Status.BAD_REQUEST).entity("Invalid name").build();
         } else if (!verifySurname(surname)) {
             return Response.status(Response.Status.BAD_REQUEST).entity("Invalid surname").build();
-        } else if (!verifyActive(active)) {
-            return Response.status(Response.Status.BAD_REQUEST).entity("").build();
-        } else if (!verifyAccessLevel(accessLevel)){
-            return Response.status(Response.Status.BAD_REQUEST).entity("").build();
         }
 
         try {
-            userManager.editUserWithUUID(uuid, jsonObject.get("login").getAsString(), jsonObject.get("name").getAsString(), jsonObject.get("surname").getAsString(), jsonObject.get("active").getAsBoolean(), AccessLevel.valueOf(jsonObject.get("accessLevel").getAsString()));
-            return Response.status(Response.Status.CREATED).entity("User edited").build();
+            userManager.editUserWithUUID(uuid, login, name, surname, active, accessLevel);
+            return Response.status(Response.Status.ACCEPTED).entity("User edited").build();
         } catch (ItemNotFoundException e) {
             return Response.status(Response.Status.BAD_REQUEST).entity("User not found").build();
         }

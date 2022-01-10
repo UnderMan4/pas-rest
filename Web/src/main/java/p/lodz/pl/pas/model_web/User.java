@@ -60,6 +60,19 @@ public class User {
     public void setAccessLevel(AccessLevel accessLevel) {
         this.accessLevel = accessLevel;
     }
-// ------------------------------------------------------------------------------------------------
+
+    @Override
+    public String toString() {
+        return "User{" +
+                "login='" + login + '\'' +
+                ", name='" + name + '\'' +
+                ", surname='" + surname + '\'' +
+                ", uuid=" + uuid +
+                ", active=" + active +
+                ", accessLevel=" + accessLevel +
+                '}';
+    }
+
+    // ------------------------------------------------------------------------------------------------
 
 }

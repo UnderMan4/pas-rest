@@ -6,10 +6,12 @@ import p.lodz.pl.pas.exceptions.LoginNotUnique;
 import p.lodz.pl.pas.model.AccessLevel;
 import p.lodz.pl.pas.model.User;
 
+import javax.inject.Inject;
 import java.util.ArrayList;
 import java.util.UUID;
 
 public class UserManager {
+    @Inject
     UserDAO userDAO;
 
     public UserManager() {

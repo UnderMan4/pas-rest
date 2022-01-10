@@ -3,10 +3,12 @@ package p.lodz.pl.pas.beans;
 import com.google.gson.Gson;
 import p.lodz.pl.pas.model_web.Job;
 import p.lodz.pl.pas.services.Const;
+import p.lodz.pl.pas.services.JobService;
 
 import javax.annotation.PostConstruct;
 import javax.enterprise.context.SessionScoped;
 import javax.faces.flow.FlowScoped;
+import javax.inject.Inject;
 import javax.inject.Named;
 import javax.ws.rs.client.Client;
 import javax.ws.rs.client.ClientBuilder;
@@ -25,6 +27,9 @@ public class JobEditBean implements Serializable {
 
     private Job editedJob;
 
+    @Inject
+    JobService jobService;
+
     /**
      * Creates a new instance of JobBean
      */
@@ -42,10 +47,7 @@ public class JobEditBean implements Serializable {
     public String saveEditedJob() {
         LOGGER.log(Level.INFO, editedJob.toString());
         if (editedJob != null) {
-            Client client = ClientBuilder.newClient();
-            WebTarget target = client.target(Const.MAIN_URL);
-            Response response = target.path("api").path("job").path("update").request()
-                    .post(Entity.json(new Gson().toJson(editedJob)));
+            Response response = jobService.saveEditedJob(editedJob);
             LOGGER.log(Level.INFO, response.toString());
         } else {
             throw new IllegalArgumentException("Edited Job is null");
