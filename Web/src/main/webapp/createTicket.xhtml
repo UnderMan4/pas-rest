@@ -19,28 +19,38 @@
         <h:form id="edit-ticket-form">
             <h2>Create ticket</h2>
 
-
             <a name="header">${msg["column.userUUID"]}</a>
-            User uuid<h:inputText value="#{ticketCreateBean.newTicket.user}" requiredMessage="User uuid is required"/>
+            <h:inputText value="#{ticketCreateBean.newTicket.user}" requiredMessage="User uuid is required">
+                <a:converter converterId="p.lodz.pl.pas.UUIDConverter"/>
+            </h:inputText>
+
             <br/>
             <a name="header">${msg["column.jobUUID"]}</a>
-            Job uuid<h:inputText value="#{ticketCreateBean.newTicket.job}" requiredMessage="Job uuid is required"/>
-            <br/>
+            <h:inputText value="#{ticketCreateBean.newTicket.job}" requiredMessage="Job uuid is required">
+                <a:converter converterId="p.lodz.pl.pas.UUIDConverter"/>
+            </h:inputText>
 
+            <br/>
             <a name="header">${msg["column.jobStart"]}</a>
-            <h:inputText value="#{ticketCreateBean.newTicket.jobStart}"/>
+            <h:inputText value="#{ticketCreateBean.newTicket.jobStart}">
+                <a:converter converterId="p.lodz.pl.pas.LocalDateTimeConverter"/>
+            </h:inputText>
+
             <br/>
             <a name="header">${msg["column.jobEnd"]}</a>
-            <h:inputText value="#{ticketCreateBean.newTicket.jobStart}"/>
+            <h:inputText value="#{ticketCreateBean.newTicket.jobEnd}">
+                <a:converter converterId="p.lodz.pl.pas.LocalDateTimeConverter"/>
+            </h:inputText>
 
+            <br/>
             <a name="header">${msg["column.description"]}</a>
-            <h:outputText value="#{ticketCreateBean.newTicket.description}"/>
+            <h:inputText value="#{ticketCreateBean.newTicket.description}"/>
 
             <br/>
             <a name="header">${msg["column.ticketStatus"]}</a>
             <h:selectOneMenu value="#{ticketCreateBean.newTicket.status}">
-            <a:selectItems value="#{ticketStatusBean.ticketStatusList}" var="status"
-                           itemValue="#{status}" itemLabel="#{msg['ticketStatus.' += status]}"/>
+                <a:selectItems value="#{ticketStatusBean.ticketStatusList}" var="status"
+                               itemValue="#{status}" itemLabel="#{msg['ticketStatus.' += status]}"/>
             </h:selectOneMenu>
             <br/>
             <h:commandButton action="#{ticketCreateBean.createNewTicket}" value="Create"/>

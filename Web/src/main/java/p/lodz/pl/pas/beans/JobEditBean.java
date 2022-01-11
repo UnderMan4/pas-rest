@@ -42,6 +42,5 @@ public class JobEditBean implements Serializable {
             throw new IllegalArgumentException("Edited Job is null");
         }
         return "job";
-
     }
 }

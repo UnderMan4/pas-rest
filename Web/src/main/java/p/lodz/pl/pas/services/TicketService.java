@@ -1,6 +1,7 @@
 package p.lodz.pl.pas.services;
 
 import com.google.gson.Gson;
+import p.lodz.pl.pas.conversion.GsonLocalDateTime;
 import p.lodz.pl.pas.model_web.Ticket;
 import p.lodz.pl.pas.model_web.TicketDTO;
 
@@ -16,6 +17,8 @@ import java.util.List;
 
 public class TicketService implements Serializable {
     private final Ticket newTicket = new Ticket();
+
+    private GsonLocalDateTime gsonLocalDateTime;
 
     public TicketService() {
 
@@ -38,6 +41,6 @@ public class TicketService implements Serializable {
 
     public Response createTicket(TicketDTO editTicket) {
         return getTicketWebTarget().path("create").request()
-                .post(Entity.json(new Gson().toJson(editTicket)));
+                .post(Entity.json(gsonLocalDateTime.getGsonSerializer().toJson(editTicket)));
     }
 }
