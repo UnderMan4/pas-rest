@@ -13,6 +13,7 @@ import javax.ws.rs.core.MediaType;
 import javax.ws.rs.core.Response;
 import java.io.Serializable;
 import java.util.List;
+import java.util.UUID;
 
 public class UserService implements Serializable {
     private User newUser = new User();
@@ -44,5 +45,10 @@ public class UserService implements Serializable {
     public Response createUser(UserDTO newUser) {
         return getUserWebTarget().path("create").request()
                 .post(Entity.json(new Gson().toJson(newUser)));
+    }
+
+    public Response setUserActive(UUID uuid, boolean status) {
+        return getUserWebTarget().path("setUserActive").queryParam("UUID", uuid)
+                .queryParam("status", status).request().get();
     }
 }
