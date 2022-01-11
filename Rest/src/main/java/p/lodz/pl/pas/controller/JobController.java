@@ -6,7 +6,9 @@ import com.google.gson.JsonParser;
 import p.lodz.pl.pas.RegexList;
 import p.lodz.pl.pas.exceptions.ItemNotFoundException;
 import p.lodz.pl.pas.manager.JobManager;
+import p.lodz.pl.pas.manager.TicketManager;
 import p.lodz.pl.pas.model.Job;
+import p.lodz.pl.pas.model.Ticket;
 
 import javax.inject.Inject;
 import javax.ws.rs.*;
@@ -19,6 +21,8 @@ import java.util.UUID;
 public class JobController {
     @Inject
     JobManager jobManager;
+    @Inject
+    TicketManager ticketManager;
 
     public JobController() {
     }
@@ -100,14 +104,24 @@ public class JobController {
     @GET
     @Path("remove")
     public Response removeJob(@QueryParam("UUID") UUID uuid) {
-
+        // search if job exists
         try {
-            jobManager.removeJob(uuid);
-            return Response.status(Response.Status.CREATED).entity("Job removed").build();
+            jobManager.findJob(uuid);
         } catch (ItemNotFoundException e) {
             return Response.status(Response.Status.BAD_REQUEST).entity("Job not found").build();
         }
+
+        try {
+            Ticket t = ticketManager.searchByJobUUID(uuid);
+            return Response.status(Response.Status.CREATED).entity("Job is used in a ticket " + t.getUuid()).build();
+        } catch (ItemNotFoundException e) {
+            try {
+                jobManager.removeJob(uuid);
+                return Response.status(Response.Status.ACCEPTED).entity("Job removed successfully").build();
+            } catch (ItemNotFoundException unexpectedException) {
+                // if job is not found in the first search it should
+                return Response.status(Response.Status.BAD_REQUEST).entity("Job not found").build();
+            }
+        }
     }
-
-
 }

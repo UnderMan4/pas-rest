@@ -77,4 +77,11 @@ public class TicketDAO implements DAO<Ticket> {
         return true;
     }
 
+    public Ticket searchByJobUUID(UUID uuid) throws ItemNotFoundException {
+        Optional<Ticket> optional = tickets.stream().parallel().filter(j -> j.getJob().getUuid().equals(uuid)).findFirst();
+        return optional.orElseThrow(() -> new ItemNotFoundException(
+                "Ticket with job UUID " + uuid + " not found"
+        ));
+    }
+
 }

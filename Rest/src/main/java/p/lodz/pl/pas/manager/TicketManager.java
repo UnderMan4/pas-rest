@@ -49,4 +49,8 @@ public class TicketManager {
     public boolean delete(UUID uuid) throws ItemNotFoundException, cantDeleteException {
         return ticketDAO.delete(uuid);
     }
+
+    public Ticket searchByJobUUID(UUID jobUUID) throws ItemNotFoundException {
+        return ticketDAO.searchByJobUUID(jobUUID);
+    }
 }
