@@ -17,29 +17,27 @@
 
     <ui:define name="content">
         <h:form id="edit-job-form">
-            <h2>Edit user</h2>
+            <h2>Create user</h2>
 
             <f:facet name="header">${msg["column.login"]}</f:facet>
-            <h:outputText value="#{userEditBean.editedUser.login}"/>
+            login<h:inputText value="#{userCreateBean.newUser.login}" requiredMessage="Login is required"/>
             <br/>
+
             <f:facet name="header">${msg["column.name"]}</f:facet>
-            <h:inputText value="#{userEditBean.editedUser.name}"/>
+            name<h:inputText value="#{userCreateBean.newUser.name}"/>
             <br/>
             <f:facet name="header">${msg["column.surname"]}</f:facet>
-            <h:inputText value="#{userEditBean.editedUser.surname}"/>
+            surename<h:inputText value="#{userCreateBean.newUser.surname}"/>
             <br/>
-            <f:facet name="header">${msg["column.uuid"]}</f:facet>
-            <h:outputText value="#{userEditBean.editedUser.uuid}"/>
+            active status<f:facet name="header">${msg["column.active"]}</f:facet>
+            <h:selectBooleanCheckbox value="#{userCreateBean.newUser.active}"/>
             <br/>
-            <f:facet name="header">${msg["column.active"]}</f:facet>
-            <h:selectBooleanCheckbox value="#{userEditBean.editedUser.active}"/>
-            <br/>
-            <h:selectOneMenu value="#{userEditBean.editedUser.accessLevel}">
+            access level<h:selectOneMenu value="#{userCreateBean.newUser.accessLevel}">
                 <f:selectItems value="#{accessLevelBean.accessLevelsList}" var="level"
                                itemValue="#{level}" itemLabel="#{msg['accessLevel.' += level]}"/>
             </h:selectOneMenu>
             <br/>
-            <h:commandButton action="#{userEditBean.saveEditedUser}" value="Save"/>
+            <h:commandButton action="#{userCreateBean.createNewUser}" value="Save"/>
         </h:form>
     </ui:define>
 

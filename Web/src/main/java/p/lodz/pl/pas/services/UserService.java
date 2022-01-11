@@ -2,6 +2,7 @@ package p.lodz.pl.pas.services;
 
 import com.google.gson.Gson;
 import p.lodz.pl.pas.model_web.User;
+import p.lodz.pl.pas.model_web.UserDTO;
 
 import javax.ws.rs.client.Client;
 import javax.ws.rs.client.ClientBuilder;
@@ -36,5 +37,12 @@ public class UserService implements Serializable {
         WebTarget target = client.target(Const.MAIN_URL);
         return target.path("api").path("user").path("editUserWithUUID").request()
                 .post(Entity.json(new Gson().toJson(user)));
+    }
+
+    public Response createUser(UserDTO newUser) {
+        Client client = ClientBuilder.newClient();
+        WebTarget target = client.target(Const.MAIN_URL);
+        return target.path("api").path("user").path("create").request()
+                .post(Entity.json(new Gson().toJson(newUser)));
     }
 }

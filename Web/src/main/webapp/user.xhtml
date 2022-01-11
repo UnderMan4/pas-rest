@@ -16,12 +16,6 @@
     <ui:define name="content">
         <h:form id="user-form">
             <h2>User list</h2>
-<!--            String login;-->
-<!--            String name;-->
-<!--            String surname;-->
-<!--            UUID uuid;-->
-<!--            Boolean active;-->
-<!--            AccessLevel accessLevel;-->
             <h:dataTable value="#{userListBean.userList}" var="user">
                 <h:column>
                     <f:facet name="header">${msg["column.login"]}</f:facet>
@@ -50,12 +44,10 @@
                 <h:column>
                     <h:commandButton action="#{userListBean.editUser(user)}" value="Edit User"/>
                 </h:column>
-
-
             </h:dataTable>
-<!--            <h:inputText required="true" value="#{simpleValidationBean.requiredField}"-->
-<!--                         requiredMessage="Username is required"/><br/>-->
-
+        </h:form>
+        <h:form id="navigate-to-create-user">
+            <h:commandButton action="redirectToCreateUser" value="Craete user page" />
         </h:form>
 
     </ui:define>

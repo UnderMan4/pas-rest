@@ -1,19 +1,11 @@
 package p.lodz.pl.pas.beans;
 
-import com.google.gson.Gson;
 import p.lodz.pl.pas.model_web.Job;
-import p.lodz.pl.pas.services.Const;
 import p.lodz.pl.pas.services.JobService;
 
-import javax.annotation.PostConstruct;
 import javax.enterprise.context.SessionScoped;
-import javax.faces.flow.FlowScoped;
 import javax.inject.Inject;
 import javax.inject.Named;
-import javax.ws.rs.client.Client;
-import javax.ws.rs.client.ClientBuilder;
-import javax.ws.rs.client.Entity;
-import javax.ws.rs.client.WebTarget;
 import javax.ws.rs.core.Response;
 import java.io.Serializable;
 import java.util.logging.Level;

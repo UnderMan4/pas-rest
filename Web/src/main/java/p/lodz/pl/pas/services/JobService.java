@@ -3,6 +3,7 @@ package p.lodz.pl.pas.services;
 
 import com.google.gson.Gson;
 import p.lodz.pl.pas.model_web.Job;
+import p.lodz.pl.pas.model_web.JobDTO;
 
 import javax.ws.rs.client.Client;
 import javax.ws.rs.client.ClientBuilder;
@@ -23,6 +24,13 @@ public class JobService implements Serializable {
 
     public Job getNewJob(){
         return newJob;
+    }
+
+    public Response createJob(JobDTO newJob) {
+        Client client = ClientBuilder.newClient();
+        WebTarget target = client.target(Const.MAIN_URL);
+        return target.path("api").path("job").path("create").request()
+                .post(Entity.json(new Gson().toJson(newJob)));
     }
 
     public List<Job> getAllJobs() {

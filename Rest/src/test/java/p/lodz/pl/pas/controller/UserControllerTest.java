@@ -35,10 +35,10 @@ public class UserControllerTest {
         String json = """
                 {
                   "login": Login",
-                  "name": "Imie uzytkownika",
+                  "name": "Imiewnika",
                   "surname": "Nazwisko",
-                  "active": "Status uzytkownika",
-                  "AccessLevel": "Poziom dostepu"
+                  "active": "true",
+                  "AccessLevel": "User"
                 }
                 """;
         Response response = target.path("create").request(MediaType.APPLICATION_JSON).post(Entity.entity(json, MediaType.APPLICATION_JSON_TYPE));

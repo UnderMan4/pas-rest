@@ -38,31 +38,19 @@ public class UserController {
             return Response.status(Response.Status.BAD_REQUEST).entity("Invalid name").build();
         } else if (!verifySurname(surname)) {
             return Response.status(Response.Status.BAD_REQUEST).entity("Invalid surname").build();
-        } else if (!verifyActive(active)) {
-            return Response.status(Response.Status.BAD_REQUEST).entity("").build();
-        } else if (!verifyAccessLevel(accessLevel)){
-            return Response.status(Response.Status.BAD_REQUEST).entity("").build();
         }
 
         if (userManager.createUser(
-                jsonObject.get("login").getAsString(), 
-                jsonObject.get("name").getAsString(), 
-                jsonObject.get("surname").getAsString(), 
-                jsonObject.get("active").getAsBoolean(), 
-                AccessLevel.valueOf(jsonObject.get("accessLevel").getAsString())
-        )){
+                login,
+                name,
+                surname,
+                active,
+                accessLevel)
+        ){
             return Response.status(Response.Status.CREATED).build();
         } else {
             return Response.status(Response.Status.BAD_REQUEST).build();
         }
-    }
-
-    private boolean verifyActive(Boolean active) {
-        return false;
-    }
-
-    private boolean verifyAccessLevel(AccessLevel accessLevel) {
-        return false;
     }
 
     private boolean verifyLogin(String login) {
