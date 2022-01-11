@@ -121,7 +121,7 @@ public class JobController {
                 return Response.status(Response.Status.ACCEPTED).entity("Job removed successfully").build();
             } catch (ItemNotFoundException unexpectedException) {
                 // if job is not found in the first search it should
-                return Response.serverError().status(Response.Status.NOT_FOUND).type(MediaType.TEXT_PLAIN_TYPE).entity("Job not found").build();
+                return Response.status(Response.Status.NOT_FOUND).entity("Job not found").build();
             }
         }
     }
