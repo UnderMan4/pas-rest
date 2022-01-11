@@ -11,9 +11,10 @@ import javax.ws.rs.client.WebTarget;
 import javax.ws.rs.core.GenericType;
 import javax.ws.rs.core.MediaType;
 import javax.ws.rs.core.Response;
+import java.io.Serializable;
 import java.util.List;
 
-public class TicketService {
+public class TicketService implements Serializable {
     private Ticket newTicket = new Ticket();
 
     public TicketService() {

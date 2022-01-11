@@ -1,5 +1,6 @@
 package p.lodz.pl.pas.model_web;
 
+import javax.ws.rs.core.Response;
 import java.time.LocalDateTime;
 import java.util.UUID;
 
@@ -76,6 +77,18 @@ public class TicketDTO {
 
     public void setStatus(TicketStatus status) {
         this.status = status;
+    }
+
+    @Override
+    public String toString() {
+        return "TicketDTO{" +
+                "user=" + user +
+                ", job=" + job +
+                ", jobStart=" + jobStart +
+                ", jobEnd=" + jobEnd +
+                ", description='" + description + '\'' +
+                ", status=" + status +
+                '}';
     }
 
     // ------------------------------------------------------------------------------------------------

@@ -89,5 +89,18 @@ public class Ticket {
         this.status = status;
     }
 
+    @Override
+    public String toString() {
+        return "Ticket{" +
+                "uuid=" + uuid +
+                ", user=" + user +
+                ", job=" + job +
+                ", jobStart=" + jobStart +
+                ", jobEnd=" + jobEnd +
+                ", description='" + description + '\'' +
+                ", status=" + status +
+                '}';
+    }
+
     // ------------------------------------------------------------------------------------------------
 }
