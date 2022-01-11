@@ -16,7 +16,7 @@ import java.io.Serializable;
 import java.util.List;
 
 public class JobService implements Serializable {
-    private Job newJob = new Job();
+    private final Job newJob = new Job();
 
     public JobService() {
     }

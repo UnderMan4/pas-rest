@@ -19,8 +19,6 @@ public class Job {
     public Job() {
     }
 
-
-
     public UUID getUuid() {
         return uuid;
     }

@@ -30,18 +30,11 @@ public class JobListBean implements Serializable {
 
     private UIComponent deleteJobButton;
 
-    /**
-     * Creates a new instance of JobBean
-     */
     public JobListBean() {
     }
 
     public List<Job> getJobList() {
         return jobService.getAllJobs();
-    }
-
-    public String goBack() {
-        return "/start";
     }
 
     public String editJob(Job job) {

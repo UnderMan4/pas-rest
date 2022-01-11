@@ -22,9 +22,6 @@ public class JobEditBean implements Serializable {
     @Inject
     JobService jobService;
 
-    /**
-     * Creates a new instance of JobBean
-     */
     public JobEditBean() {
     }
 

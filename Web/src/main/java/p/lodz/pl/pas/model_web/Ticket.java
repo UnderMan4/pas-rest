@@ -12,24 +12,6 @@ public class Ticket {
     private String description;
     private TicketStatus status;
 
-    public Ticket(UUID uuid, User user, Job job, LocalDateTime jobStart, LocalDateTime jobEnd, String description) {
-        this.uuid = uuid;
-        this.user = user;
-        this.job = job;
-        this.jobStart = jobStart;
-        this.jobEnd = jobEnd;
-        this.description = description;
-        this.status = TicketStatus.ToDo;
-    }
-
-    public Ticket(UUID uuid, User user, Job job, LocalDateTime jobStart, LocalDateTime jobEnd) {
-        this.uuid = uuid;
-        this.user = user;
-        this.job = job;
-        this.jobStart = jobStart;
-        this.jobEnd = jobEnd;
-    }
-
     public Ticket() {
     }
 

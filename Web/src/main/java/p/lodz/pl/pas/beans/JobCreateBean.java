@@ -20,11 +20,8 @@ public class JobCreateBean implements Serializable {
 
     private static final Logger LOGGER = Logger.getLogger(JobCreateBean.class.getName());
 
-    private JobDTO newJob = new JobDTO();
+    private final JobDTO newJob = new JobDTO();
 
-    /**
-     * Creates a new instance of JobBean
-     */
     public JobCreateBean() {
     }
 

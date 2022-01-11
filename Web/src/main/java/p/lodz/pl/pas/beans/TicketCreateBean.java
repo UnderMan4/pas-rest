@@ -22,7 +22,7 @@ public class TicketCreateBean implements Serializable {
 
     private static final Logger LOGGER = Logger.getLogger(JobCreateBean.class.getName());
 
-    private TicketDTO newTicket = new TicketDTO();
+    private final TicketDTO newTicket = new TicketDTO();
 
     /**
      * Creates a new instance of JobBean

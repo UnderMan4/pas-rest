@@ -16,7 +16,7 @@ import java.util.List;
 import java.util.UUID;
 
 public class UserService implements Serializable {
-    private User newUser = new User();
+    private final User newUser = new User();
 
     public UserService() {
 

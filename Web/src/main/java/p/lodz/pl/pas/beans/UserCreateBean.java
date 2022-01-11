@@ -19,7 +19,7 @@ public class UserCreateBean implements Serializable {
     @Inject
     UserService userService;
     private static final Logger LOGGER = Logger.getLogger(UserCreateBean.class.getName());
-    private UserDTO newUser = new UserDTO();
+    private final UserDTO newUser = new UserDTO();
 
     public UserCreateBean() {
         // default access level

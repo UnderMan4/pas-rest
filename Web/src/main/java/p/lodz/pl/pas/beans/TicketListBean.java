@@ -22,7 +22,7 @@ public class TicketListBean implements Serializable {
     private static final Logger LOGGER = Logger.getLogger(JobCreateBean.class.getName());
 
 
-    private TicketDTO ticketDTO = new TicketDTO();
+    private final TicketDTO ticketDTO = new TicketDTO();
 
     public TicketListBean() {
     }

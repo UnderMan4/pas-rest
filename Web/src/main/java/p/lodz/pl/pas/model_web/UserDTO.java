@@ -1,7 +1,5 @@
 package p.lodz.pl.pas.model_web;
 
-import java.util.UUID;
-
 public class UserDTO {
     private String login;
     private String name;

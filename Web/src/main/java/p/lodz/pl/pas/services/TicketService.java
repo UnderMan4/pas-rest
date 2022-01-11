@@ -15,7 +15,7 @@ import java.io.Serializable;
 import java.util.List;
 
 public class TicketService implements Serializable {
-    private Ticket newTicket = new Ticket();
+    private final Ticket newTicket = new Ticket();
 
     public TicketService() {
 

@@ -6,7 +6,7 @@ public enum AccessLevel {
     ResourceAdministrator("ResourceAdministrator"),
     User("User");
 
-    private String label;
+    private final String label;
 
     AccessLevel(String label) {
         this.label = label;

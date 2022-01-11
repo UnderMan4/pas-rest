@@ -1,6 +1,5 @@
 package p.lodz.pl.pas.beans;
 
-import p.lodz.pl.pas.model_web.AccessLevel;
 import p.lodz.pl.pas.model_web.TicketStatus;
 
 import javax.enterprise.context.SessionScoped;
