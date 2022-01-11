@@ -8,6 +8,7 @@ import p.lodz.pl.pas.exceptions.ItemNotFoundException;
 import p.lodz.pl.pas.exceptions.LoginNotUnique;
 import p.lodz.pl.pas.manager.UserManager;
 import p.lodz.pl.pas.model.AccessLevel;
+import p.lodz.pl.pas.model.User;
 
 import javax.inject.Inject;
 import javax.ws.rs.*;
@@ -121,26 +122,16 @@ public class UserController {
         }
     }
 
-    // it is possible to make it better by creating a new function, but it is not worth it
     @GET
-    @Path("activate")
-    public Response setUserActive(@QueryParam("UUID")UUID uuid) {
+    @Path("setUserActive")
+    public Response setUserActive(@QueryParam("UUID")UUID uuid, @QueryParam("status") boolean status) {
+
         try {
-            userManager.setUserActive(uuid, true);
-            return Response.status(Response.Status.ACCEPTED).entity("User activted").build();
+            userManager.setUserActive(uuid, status);
+            return Response.status(Response.Status.ACCEPTED).entity("User active").build();
         } catch (ItemNotFoundException e) {
-            return Response.status(Response.Status.BAD_REQUEST).entity("User not found").build();
+            return Response.status(Response.Status.NOT_FOUND).entity("User not found").build();
         }
     }
 
-    @GET
-    @Path("deactivate")
-    public Response setUserInactive(@QueryParam("UUID")UUID uuid) {
-        try {
-            userManager.setUserActive(uuid, false);
-            return Response.status(Response.Status.ACCEPTED).entity("User deactivted").build();
-        } catch (ItemNotFoundException e) {
-            return Response.status(Response.Status.BAD_REQUEST).entity("User not found").build();
-        }
-    }
 }
