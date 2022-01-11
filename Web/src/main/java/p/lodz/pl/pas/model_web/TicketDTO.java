@@ -1,49 +1,32 @@
 package p.lodz.pl.pas.model_web;
 
-import javax.ws.rs.core.Response;
 import java.time.LocalDateTime;
 import java.util.UUID;
 
 public class TicketDTO {
-    private User user;
-    private Job job;
+    private UUID user;
+    private UUID job;
     private LocalDateTime jobStart;
     private LocalDateTime jobEnd;
     private String description;
     private TicketStatus status;
 
-    public TicketDTO(User user, Job job, LocalDateTime jobStart, LocalDateTime jobEnd, String description) {
-        this.user = user;
-        this.job = job;
-        this.jobStart = jobStart;
-        this.jobEnd = jobEnd;
-        this.description = description;
-        this.status = TicketStatus.ToDo;
-    }
-
-    public TicketDTO(User user, Job job, LocalDateTime jobStart, LocalDateTime jobEnd) {
-        this.user = user;
-        this.job = job;
-        this.jobStart = jobStart;
-        this.jobEnd = jobEnd;
-    }
-
     public TicketDTO() {
     }
 
-    public User getUser() {
+    public UUID getUser() {
         return user;
     }
 
-    public void setUser(User user) {
+    public void setUser(UUID user) {
         this.user = user;
     }
 
-    public Job getJob() {
+    public UUID getJob() {
         return job;
     }
 
-    public void setJob(Job job) {
+    public void setJob(UUID job) {
         this.job = job;
     }
 

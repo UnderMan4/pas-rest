@@ -1,5 +1,6 @@
 package p.lodz.pl.pas.beans;
 
+import p.lodz.pl.pas.model_web.AccessLevel;
 import p.lodz.pl.pas.model_web.UserDTO;
 import p.lodz.pl.pas.services.UserService;
 
@@ -21,6 +22,8 @@ public class UserCreateBean implements Serializable {
     private UserDTO newUser = new UserDTO();
 
     public UserCreateBean() {
+        // default access level
+        newUser.setAccessLevel(AccessLevel.User);
     }
 
     public UserDTO getNewUser() {
