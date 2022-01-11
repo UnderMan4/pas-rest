@@ -31,8 +31,9 @@
                     <h:outputText value="#{job.uuid}"/>
                 </h:column>
                 <h:column>
-                    <h:commandButton action="#{jobListBean.deleteJob(job)}" value="Delete job"/>
+                    <h:commandButton id="deleteJobButton" action="#{jobListBean.deleteJob(job)}" value="Delete job" binding="#{jobListBean.deleteJobButton}"/>
                 </h:column>
+                <h:message for="deleteJobButton" />
                 <h:column>
                     <h:commandButton action="#{jobListBean.editJob(job)}" value="Edit job"/>
                 </h:column>
@@ -41,6 +42,7 @@
         <h:form id="navigate-to-create-job">
         <h:commandButton action="redirectToCreateJob" value="Craete job page" />
         </h:form>
+        <h:messages />
 
     </ui:define>
 

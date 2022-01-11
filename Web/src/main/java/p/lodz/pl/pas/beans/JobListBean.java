@@ -4,6 +4,9 @@ import p.lodz.pl.pas.model_web.Job;
 import p.lodz.pl.pas.services.JobService;
 
 import javax.enterprise.context.SessionScoped;
+import javax.faces.application.FacesMessage;
+import javax.faces.component.UIComponent;
+import javax.faces.context.FacesContext;
 import javax.faces.flow.FlowScoped;
 import javax.inject.Inject;
 import javax.inject.Named;
@@ -24,6 +27,8 @@ public class JobListBean implements Serializable {
 
     @Inject
     JobEditBean jobEditBean;
+
+    private UIComponent deleteJobButton;
 
     /**
      * Creates a new instance of JobBean
@@ -47,8 +52,19 @@ public class JobListBean implements Serializable {
     public void deleteJob(Job job) {
         LOGGER.log(Level.INFO, "Job to remove " + job.toString());
         Response response = jobService.deleteJob(job);
+        if (response.getStatus() == 406) {
+            FacesMessage message = new FacesMessage(response.readEntity(String.class));
+            FacesContext context = FacesContext.getCurrentInstance();
+            context.addMessage(deleteJobButton.getClientId(context), message);
+        }
         LOGGER.log(Level.INFO, response.toString());
     }
 
-   
+    public UIComponent getDeleteJobButton() {
+        return deleteJobButton;
+    }
+
+    public void setDeleteJobButton(UIComponent deleteJobButton) {
+        this.deleteJobButton = deleteJobButton;
+    }
 }

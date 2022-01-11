@@ -108,19 +108,20 @@ public class JobController {
         try {
             jobManager.findJob(uuid);
         } catch (ItemNotFoundException e) {
-            return Response.status(Response.Status.BAD_REQUEST).entity("Job not found").build();
+            return Response.status(Response.Status.NOT_FOUND).entity("Job not found").build();
         }
 
         try {
             Ticket t = ticketManager.searchByJobUUID(uuid);
-            return Response.status(Response.Status.CREATED).entity("Job is used in a ticket " + t.getUuid()).build();
+            // return Response.serverError().status(Response.Status.NOT_ACCEPTABLE).type(MediaType.TEXT_PLAIN_TYPE).entity("Job is used in a ticket " + t.getUuid()).build();
+            return Response.status(Response.Status.NOT_ACCEPTABLE).entity("Job is used in a ticket " + t.getUuid()).build();
         } catch (ItemNotFoundException e) {
             try {
                 jobManager.removeJob(uuid);
                 return Response.status(Response.Status.ACCEPTED).entity("Job removed successfully").build();
             } catch (ItemNotFoundException unexpectedException) {
                 // if job is not found in the first search it should
-                return Response.status(Response.Status.BAD_REQUEST).entity("Job not found").build();
+                return Response.serverError().status(Response.Status.NOT_FOUND).type(MediaType.TEXT_PLAIN_TYPE).entity("Job not found").build();
             }
         }
     }
