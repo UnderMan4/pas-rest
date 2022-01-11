@@ -35,11 +35,6 @@ public class TicketService {
         });
     }
 
-    public Response saveEditedTicket(Ticket ticket) {
-        return getTicketWebTarget().path("editUserWithUUID").request()
-                .post(Entity.json(new Gson().toJson(ticket)));
-    }
-
     public Response createTicket(TicketDTO editTicket) {
         return getTicketWebTarget().path("create").request()
                 .post(Entity.json(new Gson().toJson(editTicket)));
