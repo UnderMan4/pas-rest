@@ -3,8 +3,7 @@ package p.lodz.pl.pas.model_web;
 import java.time.LocalDateTime;
 import java.util.UUID;
 
-public class Ticket {
-    private UUID uuid;
+public class TicketDTO {
     private User user;
     private Job job;
     private LocalDateTime jobStart;
@@ -12,8 +11,7 @@ public class Ticket {
     private String description;
     private TicketStatus status;
 
-    public Ticket(UUID uuid, User user, Job job, LocalDateTime jobStart, LocalDateTime jobEnd, String description) {
-        this.uuid = uuid;
+    public TicketDTO(User user, Job job, LocalDateTime jobStart, LocalDateTime jobEnd, String description) {
         this.user = user;
         this.job = job;
         this.jobStart = jobStart;
@@ -22,23 +20,14 @@ public class Ticket {
         this.status = TicketStatus.ToDo;
     }
 
-    public Ticket(UUID uuid, User user, Job job, LocalDateTime jobStart, LocalDateTime jobEnd) {
-        this.uuid = uuid;
+    public TicketDTO(User user, Job job, LocalDateTime jobStart, LocalDateTime jobEnd) {
         this.user = user;
         this.job = job;
         this.jobStart = jobStart;
         this.jobEnd = jobEnd;
     }
 
-    public Ticket() {
-    }
-
-    public UUID getUuid() {
-        return uuid;
-    }
-
-    public void setUuid(UUID uuid) {
-        this.uuid = uuid;
+    public TicketDTO() {
     }
 
     public User getUser() {

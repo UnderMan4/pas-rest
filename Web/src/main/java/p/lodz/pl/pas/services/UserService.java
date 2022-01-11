@@ -25,24 +25,24 @@ public class UserService implements Serializable {
         return newUser;
     }
 
-    public List<User> getAllUsers() {
+    private WebTarget getUserWebTarget(){
         Client client = ClientBuilder.newClient();
         WebTarget target = client.target(Const.MAIN_URL);
-        return target.path("api").path("user").path("list").request(MediaType.APPLICATION_JSON).get(new GenericType<List<User>>() {
+        return target.path("api").path("user");
+    }
+
+    public List<User> getAllUsers() {
+        return getUserWebTarget().path("list").request(MediaType.APPLICATION_JSON).get(new GenericType<List<User>>() {
         });
     }
 
     public Response saveEditedUser(User user) {
-        Client client = ClientBuilder.newClient();
-        WebTarget target = client.target(Const.MAIN_URL);
-        return target.path("api").path("user").path("editUserWithUUID").request()
+        return getUserWebTarget().path("editUserWithUUID").request()
                 .post(Entity.json(new Gson().toJson(user)));
     }
 
     public Response createUser(UserDTO newUser) {
-        Client client = ClientBuilder.newClient();
-        WebTarget target = client.target(Const.MAIN_URL);
-        return target.path("api").path("user").path("create").request()
+        return getUserWebTarget().path("create").request()
                 .post(Entity.json(new Gson().toJson(newUser)));
     }
 }
