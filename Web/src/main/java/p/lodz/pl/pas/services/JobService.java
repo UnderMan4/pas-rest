@@ -48,4 +48,9 @@ public class JobService implements Serializable {
     }
 
 
+    public Response deleteJob(Job job) {
+        Client client = ClientBuilder.newClient();
+        WebTarget target = client.target(Const.MAIN_URL);
+        return target.path("api").path("job").path("remove").queryParam("UUID", job.getUuid()).request().get();
+    }
 }

@@ -31,6 +31,9 @@
                     <h:outputText value="#{job.uuid}"/>
                 </h:column>
                 <h:column>
+                    <h:commandButton action="#{jobListBean.deleteJob(job)}" value="Delete job"/>
+                </h:column>
+                <h:column>
                     <h:commandButton action="#{jobListBean.editJob(job)}" value="Edit job"/>
                 </h:column>
             </h:dataTable>
