@@ -18,13 +18,17 @@
     <ui:define name="content">
         <h:form id="edit-job-form">
             <h2>Edit job</h2>
-            <f:facet name="header">${msg["column.name"]}</f:facet>
-            Name<h:inputText value="#{jobEditBean.editedJob.name}"  requiredMessage="Name is required"/>
-            <f:facet name="header">${msg["column.description"]}</f:facet>
+            <a name="header">${msg["column.name"]}</a>
             <br/>
-            Description<h:inputText value="#{jobEditBean.editedJob.description}"/>
+            <h:inputText value="#{jobEditBean.editedJob.name}"  requiredMessage="Name is required"/>
             <br/>
-            UUID<h:outputText value="#{jobEditBean.editedJob.uuid}"/>
+            <a name="header">${msg["column.description"]}</a>
+            <br/>
+            <h:inputText value="#{jobEditBean.editedJob.description}"/>
+            <br/>
+            <a name="header">${msg["column.uuid"]}</a>
+            <br/>
+            <h:outputText value="#{jobEditBean.editedJob.uuid}"/>
             <br/>
             <h:commandButton action="#{jobEditBean.saveEditedJob}" value="Edit"/>
         </h:form>

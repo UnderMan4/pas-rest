@@ -19,19 +19,24 @@
         <h:form id="edit-job-form">
             <h2>Edit user</h2>
 
-            <f:facet name="header">${msg["column.login"]}</f:facet>
+            <a name="header">${msg["column.login"]}</a>
+            <br/>
             <h:outputText value="#{userEditBean.editedUser.login}"/>
             <br/>
-            <f:facet name="header">${msg["column.name"]}</f:facet>
+            <a name="header">${msg["column.name"]}</a>
+            <br/>
             <h:inputText value="#{userEditBean.editedUser.name}"/>
             <br/>
-            <f:facet name="header">${msg["column.surname"]}</f:facet>
+            <a name="header">${msg["column.surname"]}</a>
+            <br/>
             <h:inputText value="#{userEditBean.editedUser.surname}"/>
             <br/>
-            <f:facet name="header">${msg["column.uuid"]}</f:facet>
+            <a name="header">${msg["column.uuid"]}</a>
+            <br/>
             <h:outputText value="#{userEditBean.editedUser.uuid}"/>
             <br/>
-            <f:facet name="header">${msg["column.active"]}</f:facet>
+            <a name="header">${msg["column.active"]}</a>
+            <br/>
             <h:selectBooleanCheckbox value="#{userEditBean.editedUser.active}"/>
             <br/>
             <h:selectOneMenu value="#{userEditBean.editedUser.accessLevel}">

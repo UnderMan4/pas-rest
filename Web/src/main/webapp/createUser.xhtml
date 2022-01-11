@@ -19,20 +19,21 @@
         <h:form id="edit-user-form">
             <h2>Create user</h2>
 
-            <f:facet name="header">${msg["column.login"]}</f:facet>
-            login<h:inputText value="#{userCreateBean.newUser.login}" requiredMessage="Login is required"/>
+            <a name="header">${msg["column.login"]}</a>
+            <br/>
+            <h:inputText value="#{userCreateBean.newUser.login}" requiredMessage="Login is required"/>
             <br/>
 
-            <f:facet name="header">${msg["column.name"]}</f:facet>
-            name<h:inputText value="#{userCreateBean.newUser.name}"/>
+            <a name="header">${msg["column.name"]}</a>
             <br/>
-            <f:facet name="header">${msg["column.surname"]}</f:facet>
-            surename<h:inputText value="#{userCreateBean.newUser.surname}"/>
+            <h:inputText value="#{userCreateBean.newUser.name}"/>
             <br/>
-            active status<f:facet name="header">${msg["column.active"]}</f:facet>
-            <h:selectBooleanCheckbox value="#{userCreateBean.newUser.active}"/>
+            <a name="header">${msg["column.surname"]}</a>
             <br/>
-            access level<h:selectOneMenu value="#{userCreateBean.newUser.accessLevel}">
+            <h:inputText value="#{userCreateBean.newUser.surname}"/>
+            <br/>
+            <br/>
+            <h:selectOneMenu value="#{userCreateBean.newUser.accessLevel}">
                 <f:selectItems value="#{accessLevelBean.accessLevelsList}" var="level"
                                itemValue="#{level}" itemLabel="#{msg['accessLevel.' += level]}"/>
             </h:selectOneMenu>
