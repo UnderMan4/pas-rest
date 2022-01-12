@@ -23,6 +23,7 @@ public class TicketCreateBean implements Serializable {
     private final TicketDTO newTicket = new TicketDTO();
 
     public TicketCreateBean() {
+        newTicket.setJobEnd(null);
     }
 
     public TicketDTO getNewTicket() {

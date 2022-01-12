@@ -36,7 +36,7 @@ public class TicketDAO implements DAO<Ticket> {
                 new User(UUID.fromString("84d267cf-6dc4-40cd-b1d3-000733a85458"), "ttttt", "Tomasz", "Kowalski", true, AccessLevel.User),
                 new Job(UUID.fromString("858908da-ae32-4527-bdcb-13a91b0a49b9"), "Pass ISRP", "Pass ISRP and achive greatness"),
                 LocalDateTime.parse("2021-08-01T08:00:00", dtf),
-                LocalDateTime.parse("2021-11-20T16:00:00", dtf),
+                null,
                 "Pass isrp and enjoy life"
         ));
     }
@@ -110,5 +110,33 @@ public class TicketDAO implements DAO<Ticket> {
             );
         }
         return new ArrayList<Ticket>(list);
+    }
+
+    // return ticket that has the job in specified time
+    public Ticket tryToGetJob(UUID jobUUID, LocalDateTime jobStart) {
+        Optional<Ticket> optional = tickets.stream()
+                // get tickets with job uuid
+                .filter(t -> t.getJob().getUuid().equals(jobUUID))
+                // get jobs that ARE NOT FINISHED
+                .filter(t -> t.getJobEnd() == null)
+                // search for jobs that started before our job, and are not yet finished
+                .filter(t -> t.getJobStart().isBefore(jobStart))
+                .findFirst();
+        if (optional.isEmpty()) {
+            optional = tickets.stream()
+                    // get tickets with job uuid
+                    .filter(t -> t.getJob().getUuid().equals(jobUUID))
+                    // get jobs that ARE FINISHED
+                    .filter(t -> t.getJobEnd() != null)
+                    // check if they are finished before creating this
+                    .filter(t -> t.getJobEnd().isAfter(jobStart))
+                    .findFirst();
+
+            // if second condition is empty then we return null
+            return optional.orElse(null);
+        } else {
+            // there is a job that ends after we want to start our job
+            return optional.get();
+        }
     }
 }

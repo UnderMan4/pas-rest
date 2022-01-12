@@ -5,6 +5,7 @@ import p.lodz.pl.pas.DAO.TicketDAO;
 import p.lodz.pl.pas.DAO.UserDAO;
 import p.lodz.pl.pas.exceptions.DateException;
 import p.lodz.pl.pas.exceptions.ItemNotFoundException;
+import p.lodz.pl.pas.exceptions.JobAlreadyTaken;
 import p.lodz.pl.pas.exceptions.cantDeleteException;
 import p.lodz.pl.pas.model.Job;
 import p.lodz.pl.pas.model.Ticket;
@@ -29,9 +30,16 @@ public class TicketManager {
     JobDAO jobDAO;
     
 
-    public synchronized boolean createTicket(UUID userUUID, UUID jobUUID, LocalDateTime jobStart, LocalDateTime jobEnd, String description) throws DateException, ItemNotFoundException {
-        if (jobStart.compareTo(jobEnd) >= 0) {
-            throw new DateException("Job Start must be before Job End");
+    public synchronized boolean createTicket(UUID userUUID, UUID jobUUID, LocalDateTime jobStart, LocalDateTime jobEnd, String description) throws DateException, ItemNotFoundException, JobAlreadyTaken {
+        if (jobEnd != null) {
+            if (jobStart.isBefore(jobEnd)) {
+                throw new DateException("Job Start must be before Job End");
+            }
+        }
+        Ticket t = ticketDAO.tryToGetJob(jobUUID, jobStart);
+        // if list is not empty, we cant
+        if (t != null) {
+            throw new JobAlreadyTaken("Job is already taken by ticket " + t.getUuid());
         }
         User user = userDAO.readOne(userUUID);
         Job job = jobDAO.readOne(jobUUID);

@@ -5,6 +5,7 @@ import com.google.gson.JsonParser;
 import p.lodz.pl.pas.RegexList;
 import p.lodz.pl.pas.exceptions.DateException;
 import p.lodz.pl.pas.exceptions.ItemNotFoundException;
+import p.lodz.pl.pas.exceptions.JobAlreadyTaken;
 import p.lodz.pl.pas.exceptions.cantDeleteException;
 import p.lodz.pl.pas.manager.TicketManager;
 
@@ -46,7 +47,6 @@ public class TicketController {
         }
 
         LocalDateTime jobStart;
-        LocalDateTime jobEnd;
         String description = jsonObject.get("description").getAsString();
         
 
@@ -58,26 +58,21 @@ public class TicketController {
                     "jobStart is in wrong format: " + jsonObject.get("jobStart").getAsString()
             ).build();
         }
-        try {
-            jobEnd = LocalDateTime.parse(jsonObject.get("jobEnd").getAsString(), dtf);
-        } catch (Exception e) { // catch all possible exceptions for parsing dates
-            return Response.status(BAD_REQUEST).entity(
-                    "jobEnd is in wrong format: " + jsonObject.get("jobEnd").getAsString()
-            ).build();
-        }
 
         if (!verifyDescription(description)) {
              return Response.status(Response.Status.BAD_REQUEST).entity("Description not valid").build();
          }
 
         try {
-            ticketManager.createTicket(user, job, jobStart, jobEnd, description);
+            ticketManager.createTicket(user, job, jobStart, null, description);
             return Response.status(CREATED).entity("Ticket created").build();
         } catch (DateException e) {
             // if user inputs wrong date in correct format, ex. day that does not exists
             return Response.status(BAD_REQUEST).entity(e.getMessage()).build();
         } catch (ItemNotFoundException e) {
             return Response.status(NOT_FOUND).entity(e.getMessage()).build();
+        } catch (JobAlreadyTaken e) {
+            return Response.status(NOT_ACCEPTABLE).entity(e.getMessage()).build();
         }
     }
 
