@@ -14,6 +14,7 @@ import javax.ws.rs.core.MediaType;
 import javax.ws.rs.core.Response;
 import java.io.Serializable;
 import java.util.List;
+import java.util.UUID;
 
 public class TicketService implements Serializable {
     private final Ticket newTicket = new Ticket();
@@ -42,5 +43,9 @@ public class TicketService implements Serializable {
     public Response createTicket(TicketDTO editTicket) {
         return getTicketWebTarget().path("create").request()
                 .post(Entity.json(gsonLocalDateTime.getGsonSerializer().toJson(editTicket)));
+    }
+
+    public Ticket searchTicket(UUID uuid) {
+        return getTicketWebTarget().queryParam("UUID", uuid).request().get(Ticket.class);
     }
 }

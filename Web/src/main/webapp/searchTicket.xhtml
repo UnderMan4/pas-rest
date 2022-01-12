@@ -1,0 +1,60 @@
+<?xml version='1.0' encoding='UTF-8' ?>
+<!DOCTYPE composition PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+        "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<ui:composition xmlns:ui="http://java.sun.com/jsf/facelets"
+                xmlns="http://www.w3.org/1999/xhtml"
+                xmlns:h="http://java.sun.com/jsf/html"
+                template="templates/MainTemplate.xhtml"
+                xmlns:a="http://java.sun.com/jsf/core">
+
+    <ui:define name="top">
+        <p>${msg["main.page"]}</p>
+    </ui:define>
+
+    <ui:define name="left">
+        <ui:include src="templates/menu.xhtml"/>
+    </ui:define>
+
+    <ui:define name="content">
+        <h:form id="search-ticket-form">
+            <h2>Search ticket</h2>
+
+            <a name="header">${msg["column.uuid"]}</a>
+            <h:inputText value="#{ticketSearchBean.uuid}" requiredMessage="uuid is required">
+                <a:converter converterId="p.lodz.pl.pas.UUIDConverter"/>
+            </h:inputText>
+            <br/>
+
+            <h:commandButton action="#{ticketSearchBean.searchTicket}" value="Search"/>
+            <br/>
+
+            <a name="header">${msg["column.userUUID"]}</a>
+            <h:outputText value="#{ticketSearchBean.ticket.user}"/>
+
+            <br/>
+            <a name="header">${msg["column.jobUUID"]}</a>
+            <h:outputText value="#{ticketSearchBean.ticket.job}"/>
+
+            <br/>
+            <a name="header">${msg["column.jobStart"]}</a>
+            <h:outputText value="#{ticketSearchBean.ticket.jobStart}"/>
+
+            <br/>
+            <a name="header">${msg["column.jobEnd"]}</a>
+            <h:outputText value="#{ticketSearchBean.ticket.jobEnd}"/>
+
+            <br/>
+            <a name="header">${msg["column.description"]}</a>
+            <h:outputText value="#{ticketSearchBean.ticket.description}"/>
+
+            <br/>
+            <a name="header">${msg["column.ticketStatus"]}</a>
+            <h:outputText value="#{ticketSearchBean.ticket.status}"/>
+
+            <br/>
+            <input type="button" onclick="history.go(-1)" value="Go back"/>
+        </h:form>
+    </ui:define>
+
+
+</ui:composition>

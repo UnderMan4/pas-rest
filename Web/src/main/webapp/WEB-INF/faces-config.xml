@@ -44,7 +44,13 @@
             <to-view-id>/createTicket.xhtml</to-view-id>
             <redirect />
         </navigation-case>
+        <navigation-case>
+            <from-outcome>redirectToSearchTicket</from-outcome>
+            <to-view-id>/searchTicket.xhtml</to-view-id>
+            <redirect />
+        </navigation-case>
     </navigation-rule>
+
 
 
 
