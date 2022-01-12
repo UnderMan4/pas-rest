@@ -14,7 +14,7 @@ import java.util.logging.Logger;
 @Named
 @SessionScoped
 public class UserEditBean implements Serializable {
-    private final Logger LOGGER = Logger.getLogger(UserCreateBean.class.getName());
+    private final Logger LOGGER = Logger.getLogger(getClass().getName());
     private User editedUser;
     @Inject
     UserService userService;

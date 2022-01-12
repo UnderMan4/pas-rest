@@ -18,7 +18,7 @@ public class JobCreateBean implements Serializable {
     @Inject
     JobService jobService;
 
-    private static final Logger LOGGER = Logger.getLogger(JobCreateBean.class.getName());
+    private final Logger LOGGER = Logger.getLogger(getClass().getName());
 
     private final JobDTO newJob = new JobDTO();
 

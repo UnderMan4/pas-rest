@@ -18,7 +18,7 @@ public class UserCreateBean implements Serializable {
 
     @Inject
     UserService userService;
-    private static final Logger LOGGER = Logger.getLogger(UserCreateBean.class.getName());
+    private final Logger LOGGER = Logger.getLogger(getClass().getName());
     private final UserDTO newUser = new UserDTO();
 
     public UserCreateBean() {

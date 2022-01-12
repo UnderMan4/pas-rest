@@ -19,7 +19,7 @@ public class TicketListBean implements Serializable {
     @Inject
     TicketService ticketService;
 
-    private static final Logger LOGGER = Logger.getLogger(JobCreateBean.class.getName());
+    private final Logger LOGGER = Logger.getLogger(getClass().getName());
 
 
     private final TicketDTO ticketDTO = new TicketDTO();
