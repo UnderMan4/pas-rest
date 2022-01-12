@@ -49,12 +49,12 @@ public class TicketService implements Serializable {
     }
 
     public List<Ticket> getUserTicketList(String uuid) {
-        List<Ticket> res = getTicketWebTarget().path("getUserTickets").queryParam("UUID", uuid).request().get(new GenericType<List<Ticket>>() {
+        return getTicketWebTarget().path("getUserTickets").queryParam("UUID", uuid).request().get(new GenericType<List<Ticket>>() {
         });
-        if (res == null) {
-            return null;
-        } else {
-            return res;
-        }
+    }
+
+    public List<Ticket> getJobTicketList(String uuid) {
+        return getTicketWebTarget().path("getJobTickets").queryParam("UUID", uuid).request().get(new GenericType<List<Ticket>>() {
+        });
     }
 }

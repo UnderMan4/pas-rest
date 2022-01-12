@@ -1,13 +1,11 @@
 package p.lodz.pl.pas.beans;
 
+import p.lodz.pl.pas.model_web.Job;
 import p.lodz.pl.pas.model_web.Ticket;
-import p.lodz.pl.pas.model_web.User;
 import p.lodz.pl.pas.services.TicketService;
 
 import javax.enterprise.context.SessionScoped;
-import javax.faces.application.FacesMessage;
 import javax.faces.component.UIComponent;
-import javax.faces.context.FacesContext;
 import javax.inject.Inject;
 import javax.inject.Named;
 import java.io.Serializable;
@@ -17,25 +15,25 @@ import java.util.logging.Logger;
 
 @Named
 @SessionScoped
-public class UserDetailsBean implements Serializable {
+public class JobDetailsBean implements Serializable {
     private final Logger LOGGER = Logger.getLogger(getClass().getName());
-    private User user;
+    private Job job;
 
     @Inject
     TicketService ticketService;
 
     List<Ticket> ticketList;
 
-    public UserDetailsBean() {
+    public JobDetailsBean() {
 
     }
 
-    public User getUser() {
-        return user;
+    public Job getJob() {
+        return job;
     }
 
-    public void setUser(User user) {
-        this.user = user;
+    public void setJob(Job job) {
+        this.job = job;
     }
 
     public List<Ticket> getTicketList() {
@@ -46,11 +44,11 @@ public class UserDetailsBean implements Serializable {
         this.ticketList = ticketList;
     }
 
-    public void userDetails() {
-        if (user != null) {
-            LOGGER.log(Level.INFO, "Getting details for " + user.getLogin());
+    public void jobDetails() {
+        if (job != null) {
+            LOGGER.log(Level.INFO, "Getting details for " + job.getUuid());
             try {
-                setTicketList(ticketService.getUserTicketList(user.getUuid().toString()));
+                setTicketList(ticketService.getJobTicketList(job.getUuid().toString()));
                 LOGGER.log(Level.INFO, ticketList.toString());
             } catch (javax.ws.rs.NotFoundException e) {
                 LOGGER.log(Level.INFO, "No tickets found for the user");

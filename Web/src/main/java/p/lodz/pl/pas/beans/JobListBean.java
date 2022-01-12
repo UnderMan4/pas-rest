@@ -28,6 +28,9 @@ public class JobListBean implements Serializable {
     @Inject
     JobEditBean jobEditBean;
 
+    @Inject
+    JobDetailsBean jobDetailsBean;
+
     private UIComponent deleteJobButton;
 
     public JobListBean() {
@@ -59,5 +62,11 @@ public class JobListBean implements Serializable {
 
     public void setDeleteJobButton(UIComponent deleteJobButton) {
         this.deleteJobButton = deleteJobButton;
+    }
+
+    public String detailsUser(Job job) {
+        jobDetailsBean.setJob(job);
+        jobDetailsBean.jobDetails();
+        return "detailsJob";
     }
 }

@@ -17,27 +17,18 @@
 
     <ui:define name="content">
         <h:form>
-            <h2>Details user</h2>
+            <h2>Details job</h2>
 
             <a name="header">${msg["column.uuid"]}</a>
             <br/>
-            <h:outputText value="#{userDetailsBean.user.uuid}"/>
-            <br/>
-            <a name="header">${msg["column.login"]}</a>
-            <br/>
-            <h:outputText value="#{userDetailsBean.user.login}"/>
+            <h:outputText value="#{jobDetailsBean.job.uuid}"/>
             <br/>
             <a name="header">${msg["column.name"]}</a>
             <br/>
-            <h:outputText value="#{userDetailsBean.user.name}"/>
+            <h:outputText value="#{jobDetailsBean.job.name}"/>
             <br/>
-            <a name="header">${msg["column.surname"]}</a>
-            <br/>
-            <h:outputText value="#{userDetailsBean.user.surname}"/>
-            <br/>
-
         </h:form>
-        <h:dataTable value="#{userDetailsBean.ticketList}" var="ticket">
+        <h:dataTable value="#{jobDetailsBean.ticketList}" var="ticket">
             <h:column>
                 <f:facet name="header">${msg["column.uuid"]}</f:facet>
                 <h:outputText value="#{ticket.uuid}"/>

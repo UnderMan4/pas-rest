@@ -37,6 +37,9 @@
                 <h:column>
                     <h:commandButton action="#{jobListBean.editJob(job)}" value="Edit job"/>
                 </h:column>
+                <h:column>
+                    <h:commandButton action="#{jobListBean.detailsUser(job)}" value="Details"/>
+                </h:column>
             </h:dataTable>
         </h:form>
         <h:form id="navigate-to-create-job">
