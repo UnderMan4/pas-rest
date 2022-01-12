@@ -6,8 +6,10 @@ import p.lodz.pl.pas.model.User;
 
 import javax.enterprise.context.ApplicationScoped;
 import java.util.ArrayList;
+import java.util.List;
 import java.util.Optional;
 import java.util.UUID;
+import java.util.stream.Collectors;
 
 @ApplicationScoped
 public class UserDAO implements DAO<User> {
@@ -65,22 +67,28 @@ public class UserDAO implements DAO<User> {
         return true;
     }
 
-    public User findUser(String login) throws ItemNotFoundException {
-        Optional<User> optional = users.stream().filter(u -> u.getLogin().equals(login)).findFirst();
-        return optional.orElseThrow(() -> new ItemNotFoundException(
-                "User with login " + login + " not found"
-        ));
+    // find users with matching login
+    @Override
+    public List<User> searchByUUID(String uuid) throws ItemNotFoundException {
+        List<User> list = users.stream().filter(u -> u.getUuid().toString().contains(uuid)).collect(Collectors.toList());
+
+        if (list.isEmpty()) {
+            throw new ItemNotFoundException(
+                    "Users with login " + uuid + " not found"
+            );
+        }
+        return new ArrayList<User>(list);
     }
 
-    public ArrayList<User> findUsers(String login) throws ItemNotFoundException {
-        Optional<User> optional = users.stream().parallel().filter(u -> u.getLogin().contains(login)).findAny();
-        if (optional.isEmpty()) {
-            throw new ItemNotFoundException("User with matching login " + login + " not found");
+    // find users with matching login
+    public ArrayList<User> findUsersByLogin(String login) throws ItemNotFoundException {
+        List<User> list = users.stream().filter(u -> u.getLogin().contains(login)).collect(Collectors.toList());
+
+        if (list.isEmpty()) {
+            throw new ItemNotFoundException(
+                    "Users with login " + login + " not found"
+            );
         }
-        // return (ArrayList<User>) optional.stream().toList();                    // Java 16
-        //return (ArrayList<User>) optional.stream().collect(Collectors.toList()); // Java 9
-        ArrayList<User> result = new ArrayList<>();
-        optional.ifPresent(result::add);
-        return result;
+        return new ArrayList<User>(list);
     }
 }
