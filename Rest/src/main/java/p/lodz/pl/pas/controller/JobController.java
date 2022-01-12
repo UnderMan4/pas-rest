@@ -67,7 +67,7 @@ public class JobController {
     @Produces(MediaType.APPLICATION_JSON)
     public Response getList() {
         Gson gson = new Gson();
-        return Response.status(Response.Status.FOUND).entity(gson.toJson(jobManager.getJobs())).build();
+        return Response.status(Response.Status.ACCEPTED).entity(gson.toJson(jobManager.getJobs())).build();
     }
 
     @GET
@@ -75,7 +75,7 @@ public class JobController {
     public Response findJob(@QueryParam("UUID") UUID uuid) {
         try {
             Gson gson = new Gson();
-            return Response.status(Response.Status.FOUND).entity(gson.toJson(jobManager.findJob(uuid))).build();
+            return Response.status(Response.Status.ACCEPTED).entity(gson.toJson(jobManager.findJob(uuid))).build();
         } catch (ItemNotFoundException e) {
             return Response.status(Response.Status.NOT_FOUND).entity(e.getMessage()).build();
         }

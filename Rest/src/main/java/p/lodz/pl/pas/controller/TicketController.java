@@ -85,7 +85,7 @@ public class TicketController {
     @Path("list")
     @Produces(MediaType.APPLICATION_JSON)
     public Response getTicketList() {
-        return Response.status(FOUND).entity(
+        return Response.status(ACCEPTED).entity(
                 getGsonSerializer().toJson(ticketManager.getTicketList())
         ).build();
     }
@@ -94,7 +94,7 @@ public class TicketController {
     @Produces(MediaType.APPLICATION_JSON)
     public Response findTicket(@QueryParam("UUID") UUID uuid) {
         try {
-            return Response.status(FOUND).entity(ticketManager.findByUUID(uuid)).build();
+            return Response.status(ACCEPTED).entity(ticketManager.findByUUID(uuid)).build();
         } catch (ItemNotFoundException e) {
             return Response.status(Response.Status.NOT_FOUND).entity(e.getMessage()).build();
         }
@@ -117,7 +117,7 @@ public class TicketController {
     @Produces(MediaType.APPLICATION_JSON)
     public Response getUserTickets(@QueryParam("UUID") String uuid) {
         try {
-            return Response.status(FOUND).entity(ticketManager.searchByUserUUID(uuid)).build();
+            return Response.status(ACCEPTED).entity(ticketManager.searchByUserUUID(uuid)).build();
         } catch (ItemNotFoundException e) {
             return Response.status(Response.Status.NOT_FOUND).entity(e.getMessage()).build();
         }
@@ -128,7 +128,7 @@ public class TicketController {
     @Produces(MediaType.APPLICATION_JSON)
     public Response getJobTickets(@QueryParam("UUID") String uuid) {
         try {
-            return Response.status(FOUND).entity(ticketManager.searchByJobUUID(uuid)).build();
+            return Response.status(ACCEPTED).entity(ticketManager.searchByJobUUID(uuid)).build();
         } catch (ItemNotFoundException e) {
             return Response.status(Response.Status.NOT_FOUND).entity(e.getMessage()).build();
         }
