@@ -30,7 +30,7 @@ public class JobCreateBean implements Serializable {
     }
 
 
-    public void createNewJob() {
+    public String createNewJob() {
         if (newJob.getName() != null) {
             LOGGER.log(Level.INFO, newJob.toString());
             Response response = jobService.createJob(newJob);
@@ -38,5 +38,6 @@ public class JobCreateBean implements Serializable {
         } else {
             throw new IllegalArgumentException("Name is null");
         }
+        return "job";
     }
 }

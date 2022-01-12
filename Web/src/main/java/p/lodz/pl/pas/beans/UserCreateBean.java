@@ -30,7 +30,7 @@ public class UserCreateBean implements Serializable {
         return newUser;
     }
 
-    public void createNewUser() {
+    public String createNewUser() {
         if (newUser.getLogin() != null) {
             LOGGER.log(Level.INFO, newUser.toString());
             Response response = userService.createUser(newUser);
@@ -38,5 +38,6 @@ public class UserCreateBean implements Serializable {
         } else {
             throw new IllegalArgumentException("Name is null");
         }
+        return "user";
     }
 }

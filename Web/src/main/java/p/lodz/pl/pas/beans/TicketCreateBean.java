@@ -1,8 +1,6 @@
 package p.lodz.pl.pas.beans;
 
-import p.lodz.pl.pas.model_web.JobDTO;
 import p.lodz.pl.pas.model_web.TicketDTO;
-import p.lodz.pl.pas.services.JobService;
 import p.lodz.pl.pas.services.TicketService;
 
 import javax.enterprise.context.SessionScoped;
@@ -24,9 +22,6 @@ public class TicketCreateBean implements Serializable {
 
     private final TicketDTO newTicket = new TicketDTO();
 
-    /**
-     * Creates a new instance of JobBean
-     */
     public TicketCreateBean() {
     }
 
@@ -34,7 +29,7 @@ public class TicketCreateBean implements Serializable {
         return newTicket;
     }
 
-    public void createNewTicket() {
+    public String createNewTicket() {
         if (newTicket.getUser() != null && newTicket.getJob() != null) {
             LOGGER.log(Level.INFO, newTicket.toString());
             Response response = ticketService.createTicket(newTicket);
@@ -42,5 +37,6 @@ public class TicketCreateBean implements Serializable {
         } else {
             throw new IllegalArgumentException("User or Job uuid is null");
         }
+        return "ticket";
     }
 }
