@@ -30,18 +30,20 @@ public class UserManager {
         return userDAO.readAll();
     }
 
-    public User findUser(String login) throws ItemNotFoundException {
-        return userDAO.findUser(login);
+    public ArrayList<User> findUsersByUUID(String uuid) throws ItemNotFoundException {
+        // name is different to findUsersByLogin because of DAO interface inheritance
+        return userDAO.searchByUUID(uuid);
     }
 
-    public ArrayList<User> findUsers(String login) throws ItemNotFoundException {
-        return userDAO.findUsers(login);
+    public ArrayList<User> findUsersByLogin(String login) throws ItemNotFoundException {
+        return userDAO.findUsersByLogin(login);
     }
 
     public User findUser(UUID uuid) throws ItemNotFoundException {
         return userDAO.readOne(uuid);
     }
 
+    // returns true if login is Unique
     public boolean checkLoginUnique(String login) {
         return userDAO.checkLoginUnique(login);
     }
@@ -53,6 +55,11 @@ public class UserManager {
 
     public synchronized boolean setUserActive(UUID uuid, boolean active) throws ItemNotFoundException {
         return userDAO.setUserActive(uuid, active);
+    }
+
+    // search by UUID and return all matching results
+    public ArrayList<User> searchByUUID(String uuid) throws ItemNotFoundException {
+        return userDAO.searchByUUID(uuid);
     }
 
 }
