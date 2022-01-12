@@ -134,4 +134,15 @@ public class TicketController {
         }
     }
 
+    @GET
+    @Path("searchByUUID")
+    @Produces(MediaType.APPLICATION_JSON)
+    public Response searchByUUID(@QueryParam("UUID") String uuid) {
+        try {
+            return Response.status(ACCEPTED).entity(ticketManager.searchByUUID(uuid)).build();
+        } catch (ItemNotFoundException e) {
+            return Response.status(Response.Status.NOT_FOUND).entity(e.getMessage()).build();
+        }
+    }
+
 }

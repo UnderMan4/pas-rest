@@ -5,7 +5,7 @@
                 xmlns="http://www.w3.org/1999/xhtml"
                 xmlns:h="http://java.sun.com/jsf/html"
                 template="templates/MainTemplate.xhtml"
-                xmlns:a="http://java.sun.com/jsf/core">
+                xmlns:f="http://java.sun.com/jsf/core">
 
     <ui:define name="top">
         <p>${msg["main.page"]}</p>
@@ -20,41 +20,47 @@
             <h2>Search ticket</h2>
 
             <a name="header">${msg["column.uuid"]}</a>
-            <h:inputText value="#{ticketSearchBean.uuid}" requiredMessage="uuid is required">
-                <a:converter converterId="p.lodz.pl.pas.UUIDConverter"/>
-            </h:inputText>
+            <h:inputText value="#{ticketSearchBean.uuid}" requiredMessage="uuid is required"/>
             <br/>
 
             <h:commandButton action="#{ticketSearchBean.searchTicket}" value="Search"/>
             <br/>
-
-            <a name="header">${msg["column.userUUID"]}</a>
-            <h:outputText value="#{ticketSearchBean.ticket.user}"/>
-
-            <br/>
-            <a name="header">${msg["column.jobUUID"]}</a>
-            <h:outputText value="#{ticketSearchBean.ticket.job}"/>
-
-            <br/>
-            <a name="header">${msg["column.jobStart"]}</a>
-            <h:outputText value="#{ticketSearchBean.ticket.jobStart}"/>
-
-            <br/>
-            <a name="header">${msg["column.jobEnd"]}</a>
-            <h:outputText value="#{ticketSearchBean.ticket.jobEnd}"/>
-
-            <br/>
-            <a name="header">${msg["column.description"]}</a>
-            <h:outputText value="#{ticketSearchBean.ticket.description}"/>
-
-            <br/>
-            <a name="header">${msg["column.ticketStatus"]}</a>
-            <h:outputText value="#{ticketSearchBean.ticket.status}"/>
-
-            <br/>
             <input type="button" onclick="history.go(-1)" value="Go back"/>
         </h:form>
+
+        <h:form>
+            <h2>Ticket list</h2>
+            <h:dataTable value="#{ticketSearchBean.ticketList}" var="ticket">
+                <h:column>
+                    <f:facet name="header">${msg["column.uuid"]}</f:facet>
+                    <h:outputText value="#{ticket.uuid}"/>
+                </h:column>
+                <h:column>
+                    <f:facet name="header">${msg["column.user"]}</f:facet>
+                    <h:outputText value="#{ticket.user.uuid}"/>
+                </h:column>
+                <h:column>
+                    <f:facet name="header">${msg["column.job"]}</f:facet>
+                    <h:outputText value="#{ticket.job.uuid}"/>
+                </h:column>
+                <h:column>
+                    <f:facet name="header">${msg["column.jobStart"]}</f:facet>
+                    <h:outputText value="#{ticket.jobStart}"/>
+                </h:column>
+                <h:column>
+                    <f:facet name="header">${msg["column.jobEnd"]}</f:facet>
+                    <h:outputText value="#{ticket.jobEnd}"/>
+                </h:column>
+                <h:column>
+                    <f:facet name="header">${msg["column.description"]}</f:facet>
+                    <h:outputText value="#{ticket.description}"/>
+                </h:column>
+                <h:column>
+                    <f:facet name="header">${msg["column.ticketStatus"]}</f:facet>
+                    <h:outputText value="#{ticket.status}"/>
+                </h:column>
+            </h:dataTable>
+        </h:form>
+        <h:messages />
     </ui:define>
-
-
 </ui:composition>

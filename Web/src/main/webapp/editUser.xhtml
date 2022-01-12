@@ -37,8 +37,6 @@
             <br/>
             <a name="header">${msg["column.active"]}</a>
             <br/>
-            <h:selectBooleanCheckbox value="#{userEditBean.editedUser.active}"/>
-            <br/>
             <h:selectOneMenu value="#{userEditBean.editedUser.accessLevel}">
                 <f:selectItems value="#{accessLevelBean.accessLevelsList}" var="level"
                                itemValue="#{level}" itemLabel="#{msg['accessLevel.' += level]}"/>
@@ -46,7 +44,6 @@
             <br/>
             <h:commandButton action="#{userEditBean.saveEditedUser}" value="Save"/>
         </h:form>
+        <h:messages />
     </ui:define>
-
-
 </ui:composition>

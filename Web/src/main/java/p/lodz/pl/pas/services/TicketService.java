@@ -1,6 +1,5 @@
 package p.lodz.pl.pas.services;
 
-import com.google.gson.Gson;
 import p.lodz.pl.pas.conversion.GsonLocalDateTime;
 import p.lodz.pl.pas.model_web.Ticket;
 import p.lodz.pl.pas.model_web.TicketDTO;
@@ -13,8 +12,8 @@ import javax.ws.rs.core.GenericType;
 import javax.ws.rs.core.MediaType;
 import javax.ws.rs.core.Response;
 import java.io.Serializable;
+import java.util.ArrayList;
 import java.util.List;
-import java.util.UUID;
 
 public class TicketService implements Serializable {
     private final Ticket newTicket = new Ticket();
@@ -45,7 +44,8 @@ public class TicketService implements Serializable {
                 .post(Entity.json(gsonLocalDateTime.getGsonSerializer().toJson(editTicket)));
     }
 
-    public Ticket searchTicket(UUID uuid) {
-        return getTicketWebTarget().queryParam("UUID", uuid).request().get(Ticket.class);
+    public List<Ticket> searchTicket(String uuid) {
+        return getTicketWebTarget().path("searchByUUID").queryParam("UUID", uuid).request().get(new GenericType<List<Ticket>>() {
+        });
     }
 }

@@ -32,6 +32,7 @@
             <br/>
             <h:inputText value="#{userCreateBean.newUser.surname}"/>
             <br/>
+            <h:selectBooleanCheckbox value="#{userCreateBean.newUser.active}"/>
             <br/>
             <h:selectOneMenu value="#{userCreateBean.newUser.accessLevel}">
                 <f:selectItems value="#{accessLevelBean.accessLevelsList}" var="level"
@@ -40,7 +41,6 @@
             <br/>
             <h:commandButton action="#{userCreateBean.createNewUser}" value="Save"/>
         </h:form>
+        <h:messages />
     </ui:define>
-
-
 </ui:composition>

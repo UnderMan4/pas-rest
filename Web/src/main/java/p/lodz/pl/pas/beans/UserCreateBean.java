@@ -24,6 +24,7 @@ public class UserCreateBean implements Serializable {
     public UserCreateBean() {
         // default access level
         newUser.setAccessLevel(AccessLevel.User);
+        newUser.setActive(true);
     }
 
     public UserDTO getNewUser() {
