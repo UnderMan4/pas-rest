@@ -50,6 +50,9 @@
                 <h:column>
                     <h:commandButton action="#{userListBean.editUser(user)}" value="Edit User"/>
                 </h:column>
+                <h:column>
+                    <h:commandButton action="#{userListBean.detailsUser(user)}" value="Details"/>
+                </h:column>
             </h:dataTable>
         </h:form>
         <h:form id="navigate-to-create-user">

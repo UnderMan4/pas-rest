@@ -20,7 +20,7 @@ import java.util.logging.Logger;
 @SessionScoped
 public class JobListBean implements Serializable {
 
-    private static final Logger LOGGER = Logger.getLogger(JobCreateBean.class.getName());
+    private final Logger LOGGER = Logger.getLogger(getClass().getName());
 
     @Inject
     JobService jobService;

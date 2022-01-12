@@ -21,6 +21,9 @@ public class UserListBean implements Serializable {
     private final Logger LOGGER = Logger.getLogger(getClass().getName());
 
     @Inject
+    UserDetailsBean userDetailsBean;
+
+    @Inject
     UserService userService;
 
     @Inject
@@ -60,5 +63,11 @@ public class UserListBean implements Serializable {
             FacesContext context = FacesContext.getCurrentInstance();
             context.addMessage(null, message);
         }
+    }
+
+    public String detailsUser(User user) {
+        userDetailsBean.setUser(user);
+        userDetailsBean.userDetails();
+        return "detailsUser";
     }
 }

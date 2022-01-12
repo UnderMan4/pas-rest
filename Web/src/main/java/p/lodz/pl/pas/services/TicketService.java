@@ -12,7 +12,6 @@ import javax.ws.rs.core.GenericType;
 import javax.ws.rs.core.MediaType;
 import javax.ws.rs.core.Response;
 import java.io.Serializable;
-import java.util.ArrayList;
 import java.util.List;
 
 public class TicketService implements Serializable {
@@ -47,5 +46,15 @@ public class TicketService implements Serializable {
     public List<Ticket> searchTicket(String uuid) {
         return getTicketWebTarget().path("searchByUUID").queryParam("UUID", uuid).request().get(new GenericType<List<Ticket>>() {
         });
+    }
+
+    public List<Ticket> getUserTicketList(String uuid) {
+        List<Ticket> res = getTicketWebTarget().path("getUserTickets").queryParam("UUID", uuid).request().get(new GenericType<List<Ticket>>() {
+        });
+        if (res == null) {
+            return null;
+        } else {
+            return res;
+        }
     }
 }
