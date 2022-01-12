@@ -55,7 +55,7 @@ public class JobDAO implements DAO<Job> {
     }
 
     @Override
-    public List<Job> searchByUUID(String uuid) throws ItemNotFoundException {
+    public ArrayList<Job> searchByUUID(String uuid) throws ItemNotFoundException {
         List<Job> list = jobs.stream().filter(j -> j.getUuid().toString().contains(uuid)).collect(Collectors.toList());
 
         if (list.isEmpty()) {

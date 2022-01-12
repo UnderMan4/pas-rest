@@ -69,7 +69,7 @@ public class UserDAO implements DAO<User> {
 
     // find users with matching login
     @Override
-    public List<User> searchByUUID(String uuid) throws ItemNotFoundException {
+    public ArrayList<User> searchByUUID(String uuid) throws ItemNotFoundException {
         List<User> list = users.stream().filter(u -> u.getUuid().toString().contains(uuid)).collect(Collectors.toList());
 
         if (list.isEmpty()) {

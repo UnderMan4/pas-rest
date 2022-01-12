@@ -101,7 +101,7 @@ public class TicketDAO implements DAO<Ticket> {
     }
 
     @Override
-    public List<Ticket> searchByUUID(String uuid) throws ItemNotFoundException {
+    public ArrayList<Ticket> searchByUUID(String uuid) throws ItemNotFoundException {
         List<Ticket> list = tickets.stream().filter(t -> t.getUuid().toString().contains(uuid)).collect(Collectors.toList());
 
         if (list.isEmpty()) {
