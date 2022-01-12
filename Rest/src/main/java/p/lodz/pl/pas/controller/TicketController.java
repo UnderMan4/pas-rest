@@ -7,7 +7,6 @@ import p.lodz.pl.pas.exceptions.DateException;
 import p.lodz.pl.pas.exceptions.ItemNotFoundException;
 import p.lodz.pl.pas.exceptions.cantDeleteException;
 import p.lodz.pl.pas.manager.TicketManager;
-import p.lodz.pl.pas.model.Ticket;
 
 import javax.inject.Inject;
 import javax.ws.rs.*;
@@ -72,50 +71,67 @@ public class TicketController {
          }
 
         try {
-            if (ticketManager.createTicket(
-                    user, 
-                    job, 
-                    jobStart, 
-                    jobEnd, 
-                    description
-            )) {
-                return Response.status(CREATED).build();
-            } else {
-                return Response.status(BAD_REQUEST).build();
-            }
-        } catch (DateException | ItemNotFoundException e) {
-            return Response.status(BAD_REQUEST).build();
+            ticketManager.createTicket(user, job, jobStart, jobEnd, description);
+            return Response.status(CREATED).entity("Ticket created").build();
+        } catch (DateException e) {
+            // if user inputs wrong date in correct format, ex. day that does not exists
+            return Response.status(BAD_REQUEST).entity(e.getMessage()).build();
+        } catch (ItemNotFoundException e) {
+            return Response.status(NOT_FOUND).entity(e.getMessage()).build();
         }
     }
 
     @GET
     @Path("list")
+    @Produces(MediaType.APPLICATION_JSON)
     public Response getTicketList() {
-        return Response.status(ACCEPTED).entity(
+        return Response.status(FOUND).entity(
                 getGsonSerializer().toJson(ticketManager.getTicketList())
         ).build();
     }
 
     @GET
-    @Consumes(MediaType.APPLICATION_JSON)
-    public Ticket findTicket(@QueryParam("UUID") UUID uuid) {
+    @Produces(MediaType.APPLICATION_JSON)
+    public Response findTicket(@QueryParam("UUID") UUID uuid) {
         try {
-            return ticketManager.findByUUID(uuid);
+            return Response.status(FOUND).entity(ticketManager.findByUUID(uuid)).build();
         } catch (ItemNotFoundException e) {
-            return null;
+            return Response.status(Response.Status.NOT_FOUND).entity(e.getMessage()).build();
         }
     }
 
     @GET
     @Path("remove")
-    public  Response deleteUser(@QueryParam("UUID") UUID uuid) {
+    public Response deleteTicket(@QueryParam("UUID") UUID uuid) {
         try {
             return Response.status(ACCEPTED).entity(ticketManager.delete(uuid)).build();
-        } catch (cantDeleteException | ItemNotFoundException e) {
-            return Response.status(NOT_MODIFIED).entity(e.getMessage()).build();
+        } catch (cantDeleteException e) {
+            return Response.status(NOT_ACCEPTABLE).entity(e.getMessage()).build();
+        } catch (ItemNotFoundException e) {
+            return Response.status(NOT_FOUND).entity(e.getMessage()).build();
         }
     }
-    
 
+    @GET
+    @Path("getUserTickets")
+    @Produces(MediaType.APPLICATION_JSON)
+    public Response getUserTickets(@QueryParam("UUID") String uuid) {
+        try {
+            return Response.status(FOUND).entity(ticketManager.searchByUserUUID(uuid)).build();
+        } catch (ItemNotFoundException e) {
+            return Response.status(Response.Status.NOT_FOUND).entity(e.getMessage()).build();
+        }
+    }
+
+    @GET
+    @Path("getJobTickets")
+    @Produces(MediaType.APPLICATION_JSON)
+    public Response getJobTickets(@QueryParam("UUID") String uuid) {
+        try {
+            return Response.status(FOUND).entity(ticketManager.searchByJobUUID(uuid)).build();
+        } catch (ItemNotFoundException e) {
+            return Response.status(Response.Status.NOT_FOUND).entity(e.getMessage()).build();
+        }
+    }
 
 }

@@ -6,9 +6,9 @@ import com.google.gson.JsonParser;
 import p.lodz.pl.pas.RegexList;
 import p.lodz.pl.pas.exceptions.ItemNotFoundException;
 import p.lodz.pl.pas.exceptions.LoginNotUnique;
+import p.lodz.pl.pas.manager.TicketManager;
 import p.lodz.pl.pas.manager.UserManager;
 import p.lodz.pl.pas.model.AccessLevel;
-import p.lodz.pl.pas.model.User;
 
 import javax.inject.Inject;
 import javax.ws.rs.*;
@@ -21,6 +21,9 @@ public class UserController {
     @Inject
     UserManager userManager;
 
+    @Inject
+    TicketManager ticketManager;
+
 
     @POST
     @Path("create")
@@ -30,7 +33,7 @@ public class UserController {
         String login = jsonObject.get("login").getAsString();
         String name = jsonObject.get("name").getAsString();
         String surname = jsonObject.get("surname").getAsString();
-        Boolean active  = jsonObject.get("active").getAsBoolean();
+        Boolean active = jsonObject.get("active").getAsBoolean();
         AccessLevel accessLevel = AccessLevel.valueOf(jsonObject.get("accessLevel").getAsString());
         if (!verifyLogin(login)) {
             return Response.status(Response.Status.BAD_REQUEST).entity("Invalid login").build();
@@ -40,16 +43,11 @@ public class UserController {
             return Response.status(Response.Status.BAD_REQUEST).entity("Invalid surname").build();
         }
 
-        if (userManager.createUser(
-                login,
-                name,
-                surname,
-                active,
-                accessLevel)
-        ){
+        try {
+            userManager.createUser(login, name, surname, active, accessLevel);
             return Response.status(Response.Status.CREATED).build();
-        } else {
-            return Response.status(Response.Status.BAD_REQUEST).build();
+        } catch (LoginNotUnique e) {
+            return Response.status(Response.Status.BAD_REQUEST).entity(e.getMessage()).build();
         }
     }
 
@@ -59,40 +57,18 @@ public class UserController {
     private boolean verifyName(String name) {
         return RegexList.Surname.matcher(name).matches();
     }
-
     private boolean verifySurname(String surname) {
         return RegexList.Surname.matcher(surname).matches();
     }
 
     @GET
     @Path("list")
+    @Produces(MediaType.APPLICATION_JSON)
     public Response getUserList() {
         Gson gson = new Gson();
         return Response.status(Response.Status.ACCEPTED).entity(gson.toJson(userManager.getUserList())).build();
     }
 
-    @GET
-    public Response findUser(@QueryParam("UUID") UUID uuid) {
-        Gson gson = new Gson();
-        try {
-            return Response.status(Response.Status.ACCEPTED).entity(
-                    gson.toJson(userManager.findUser(uuid))
-            ).build();
-        } catch (ItemNotFoundException e) {
-            return Response.status(Response.Status.NOT_FOUND).build();
-        }
-    }
-
-    @GET
-    @Path("login")
-    public Response findUser(@QueryParam("login") String login) {
-        Gson gson = new Gson();
-        try {
-            return Response.status(Response.Status.ACCEPTED).entity(gson.toJson(userManager.findUser(login))).build();
-        } catch (ItemNotFoundException e) {
-            return Response.status(Response.Status.NOT_FOUND).build();
-        }
-    }
 
     @POST
     @Path("editUserWithUUID")
@@ -118,20 +94,57 @@ public class UserController {
             userManager.editUserWithUUID(uuid, login, name, surname, active, accessLevel);
             return Response.status(Response.Status.ACCEPTED).entity("User edited").build();
         } catch (ItemNotFoundException e) {
-            return Response.status(Response.Status.BAD_REQUEST).entity("User not found").build();
+            return Response.status(Response.Status.BAD_REQUEST).entity(e.getMessage()).build();
         }
     }
 
     @GET
     @Path("setUserActive")
-    public Response setUserActive(@QueryParam("UUID")UUID uuid, @QueryParam("status") boolean status) {
-
+    public Response setUserActive(@QueryParam("UUID") UUID uuid, @QueryParam("status") boolean status) {
         try {
             userManager.setUserActive(uuid, status);
-            return Response.status(Response.Status.ACCEPTED).entity("User active").build();
+            return Response.status(Response.Status.ACCEPTED).entity("User activated").build();
         } catch (ItemNotFoundException e) {
-            return Response.status(Response.Status.NOT_FOUND).entity("User not found").build();
+            return Response.status(Response.Status.NOT_FOUND).entity(e.getMessage()).build();
         }
     }
+
+    @GET
+    @Produces(MediaType.APPLICATION_JSON)
+    public Response findUser(@QueryParam("UUID") UUID uuid) {
+        Gson gson = new Gson();
+        try {
+            return Response.status(Response.Status.ACCEPTED).entity(
+                    gson.toJson(userManager.findUser(uuid))
+            ).build();
+        } catch (ItemNotFoundException e) {
+            return Response.status(Response.Status.NOT_FOUND).entity(e.getMessage()).build();
+        }
+    }
+
+    @GET
+    @Path("searchByLogin")
+    @Produces(MediaType.APPLICATION_JSON)
+    public Response findUserByLogin(@QueryParam("login") String login) {
+        Gson gson = new Gson();
+        try {
+            return Response.status(Response.Status.ACCEPTED).entity(gson.toJson(userManager.findUsersByLogin(login))).build();
+        } catch (ItemNotFoundException e) {
+            return Response.status(Response.Status.NOT_FOUND).entity(e.getMessage()).build();
+        }
+    }
+
+    @GET
+    @Path("searchByUUID")
+    @Produces(MediaType.APPLICATION_JSON)
+    public Response findUserByUUID(@QueryParam("UUID") String uuid) {
+        Gson gson = new Gson();
+        try {
+            return Response.status(Response.Status.ACCEPTED).entity(gson.toJson(userManager.searchByUUID(uuid))).build();
+        } catch (ItemNotFoundException e) {
+            return Response.status(Response.Status.NOT_FOUND).entity(e.getMessage()).build();
+        }
+    }
+
 
 }

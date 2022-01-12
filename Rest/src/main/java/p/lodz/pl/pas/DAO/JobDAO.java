@@ -2,11 +2,14 @@ package p.lodz.pl.pas.DAO;
 
 import p.lodz.pl.pas.exceptions.ItemNotFoundException;
 import p.lodz.pl.pas.model.Job;
+import p.lodz.pl.pas.model.Ticket;
 
 import javax.enterprise.context.ApplicationScoped;
 import java.util.ArrayList;
+import java.util.List;
 import java.util.Optional;
 import java.util.UUID;
+import java.util.stream.Collectors;
 
 @ApplicationScoped
 public class JobDAO implements DAO<Job> {
@@ -27,7 +30,7 @@ public class JobDAO implements DAO<Job> {
 
     @Override
     public Job readOne(UUID uuid) throws ItemNotFoundException {
-        Optional<Job> optional = jobs.stream().parallel().filter(j -> j.getUuid().equals(uuid)).findFirst();
+        Optional<Job> optional = jobs.stream().filter(j -> j.getUuid().equals(uuid)).findFirst();
         return optional.orElseThrow(() -> new ItemNotFoundException(
                 "Job with UUID " + uuid + " not found"
         ));
@@ -49,5 +52,17 @@ public class JobDAO implements DAO<Job> {
         j.setName(object.getName());
         j.setDescription(object.getDescription());
         return true;
+    }
+
+    @Override
+    public ArrayList<Job> searchByUUID(String uuid) throws ItemNotFoundException {
+        List<Job> list = jobs.stream().filter(j -> j.getUuid().toString().contains(uuid)).collect(Collectors.toList());
+
+        if (list.isEmpty()) {
+            throw new ItemNotFoundException(
+                    "Job with " + uuid + " not found"
+            );
+        }
+        return new ArrayList<Job>(list);
     }
 }

@@ -50,7 +50,16 @@ public class TicketManager {
         return ticketDAO.delete(uuid);
     }
 
-    public Ticket searchByJobUUID(UUID jobUUID) throws ItemNotFoundException {
+    public ArrayList<Ticket> searchByJobUUID(String jobUUID) throws ItemNotFoundException {
         return ticketDAO.searchByJobUUID(jobUUID);
+    }
+
+    public ArrayList<Ticket> searchByUserUUID(String userUUID) throws ItemNotFoundException {
+        return ticketDAO.searchByUserUUID(userUUID);
+    }
+
+    // search by UUID and return all matching results
+    public ArrayList<Ticket> searchByUUID(String userUUID) throws ItemNotFoundException {
+        return ticketDAO.searchByUUID(userUUID);
     }
 }

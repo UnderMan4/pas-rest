@@ -3,6 +3,7 @@ package p.lodz.pl.pas.manager;
 import p.lodz.pl.pas.DAO.JobDAO;
 import p.lodz.pl.pas.exceptions.ItemNotFoundException;
 import p.lodz.pl.pas.model.Job;
+import p.lodz.pl.pas.model.Ticket;
 
 import javax.inject.Inject;
 import java.util.ArrayList;
@@ -35,7 +36,6 @@ public class JobManager {
         return jobDAO.readOne(uuid);
     }
 
-
     public synchronized boolean updateJob(UUID uuid, String name, String description) throws ItemNotFoundException {
         return jobDAO.update(new Job(uuid, name, description));
     }
@@ -44,5 +44,8 @@ public class JobManager {
         return jobDAO.delete(uuid);
     }
 
-
+    // search by UUID and return all matching results
+    public ArrayList<Job> searchByUUID(String uuid) throws ItemNotFoundException {
+        return jobDAO.searchByUUID(uuid);
+    }
 }

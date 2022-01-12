@@ -11,8 +11,10 @@ import javax.enterprise.context.ApplicationScoped;
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
+import java.util.List;
 import java.util.Optional;
 import java.util.UUID;
+import java.util.stream.Collectors;
 
 @ApplicationScoped
 public class TicketDAO implements DAO<Ticket> {
@@ -28,7 +30,7 @@ public class TicketDAO implements DAO<Ticket> {
                 LocalDateTime.parse("2021-12-09T08:00:00", dtf),
                 LocalDateTime.parse("2021-12-13T16:00:00", dtf),
                 "Cleanup code ticket description"
-                ));
+        ));
 
         this.create(new Ticket(UUID.fromString("229ef12a-13a9-4d0f-9ae7-239dfd4c17b9"),
                 new User(UUID.fromString("84d267cf-6dc4-40cd-b1d3-000733a85458"), "ttttt", "Tomasz", "Kowalski", true, AccessLevel.User),
@@ -77,11 +79,36 @@ public class TicketDAO implements DAO<Ticket> {
         return true;
     }
 
-    public Ticket searchByJobUUID(UUID uuid) throws ItemNotFoundException {
-        Optional<Ticket> optional = tickets.stream().parallel().filter(j -> j.getJob().getUuid().equals(uuid)).findFirst();
-        return optional.orElseThrow(() -> new ItemNotFoundException(
-                "Ticket with job UUID " + uuid + " not found"
-        ));
+    public ArrayList<Ticket> searchByJobUUID(String uuid) throws ItemNotFoundException {
+        List<Ticket> list = tickets.stream().filter(t -> t.getJob().getUuid().toString().contains(uuid)).collect(Collectors.toList());
+        if (list.isEmpty()) {
+            throw new ItemNotFoundException(
+                    "Tickets for job with UUID " + uuid + " not found"
+            );
+        }
+        return new ArrayList<Ticket>(list);
     }
 
+    public ArrayList<Ticket> searchByUserUUID(String uuid) throws ItemNotFoundException {
+        List<Ticket> list = tickets.stream().filter(t -> t.getUser().getUuid().toString().contains(uuid)).collect(Collectors.toList());
+
+        if (list.isEmpty()) {
+            throw new ItemNotFoundException(
+                    "Tickets for user with UUID " + uuid + " not found"
+            );
+        }
+        return new ArrayList<Ticket>(list);
+    }
+
+    @Override
+    public ArrayList<Ticket> searchByUUID(String uuid) throws ItemNotFoundException {
+        List<Ticket> list = tickets.stream().filter(t -> t.getUuid().toString().contains(uuid)).collect(Collectors.toList());
+
+        if (list.isEmpty()) {
+            throw new ItemNotFoundException(
+                    "Tickets for user with UUID " + uuid + " not found"
+            );
+        }
+        return new ArrayList<Ticket>(list);
+    }
 }

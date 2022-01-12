@@ -16,4 +16,7 @@ public interface DAO<T> {
     boolean delete(UUID uuid) throws ItemNotFoundException, cantDeleteException;
 
     boolean update(T object) throws ItemNotFoundException;
+
+    // return if T.uuid contains String UUID
+    List<T> searchByUUID(String uuid) throws ItemNotFoundException;
 }
