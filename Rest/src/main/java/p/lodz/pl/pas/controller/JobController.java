@@ -7,13 +7,13 @@ import p.lodz.pl.pas.RegexList;
 import p.lodz.pl.pas.exceptions.ItemNotFoundException;
 import p.lodz.pl.pas.manager.JobManager;
 import p.lodz.pl.pas.manager.TicketManager;
-import p.lodz.pl.pas.model.Job;
 import p.lodz.pl.pas.model.Ticket;
 
 import javax.inject.Inject;
 import javax.ws.rs.*;
 import javax.ws.rs.core.MediaType;
 import javax.ws.rs.core.Response;
+import java.util.ArrayList;
 import java.util.UUID;
 
 
@@ -64,18 +64,20 @@ public class JobController {
 
     @GET
     @Path("list")
+    @Produces(MediaType.APPLICATION_JSON)
     public Response getList() {
         Gson gson = new Gson();
-        return Response.status(Response.Status.ACCEPTED).entity(gson.toJson(jobManager.getJobs())).build();
+        return Response.status(Response.Status.FOUND).entity(gson.toJson(jobManager.getJobs())).build();
     }
 
     @GET
     @Produces(MediaType.APPLICATION_JSON)
-    public Job findJob(@QueryParam("UUID") UUID uuid) {
+    public Response findJob(@QueryParam("UUID") UUID uuid) {
         try {
-            return jobManager.findJob(uuid);
+            Gson gson = new Gson();
+            return Response.status(Response.Status.FOUND).entity(gson.toJson(jobManager.findJob(uuid))).build();
         } catch (ItemNotFoundException e) {
-            return null;
+            return Response.status(Response.Status.NOT_FOUND).entity(e.getMessage()).build();
         }
     }
 
@@ -95,9 +97,9 @@ public class JobController {
 
         try {
             jobManager.updateJob(uuid, jsonObject.get("name").getAsString(), jsonObject.get("description").getAsString());
-            return Response.status(Response.Status.CREATED).entity("Job updated").build();
+            return Response.status(Response.Status.ACCEPTED).entity("Job updated").build();
         } catch (ItemNotFoundException e) {
-            return Response.status(Response.Status.BAD_REQUEST).entity("Job not found").build();
+            return Response.status(Response.Status.NOT_FOUND).entity(e.getMessage()).build();
         }
     }
 
@@ -108,21 +110,32 @@ public class JobController {
         try {
             jobManager.findJob(uuid);
         } catch (ItemNotFoundException e) {
-            return Response.status(Response.Status.NOT_FOUND).entity("Job not found").build();
+            return Response.status(Response.Status.NOT_FOUND).entity(e.getMessage()).build();
         }
 
         try {
-            Ticket t = ticketManager.searchByJobUUID(uuid);
-            // return Response.serverError().status(Response.Status.NOT_ACCEPTABLE).type(MediaType.TEXT_PLAIN_TYPE).entity("Job is used in a ticket " + t.getUuid()).build();
-            return Response.status(Response.Status.NOT_ACCEPTABLE).entity("Job is used in a ticket " + t.getUuid()).build();
+            ArrayList<Ticket> t = ticketManager.searchByJobUUID(uuid.toString());
+            return Response.status(Response.Status.NOT_ACCEPTABLE).entity("Job is used in a ticket " + t.get(0).getUuid()).build();
         } catch (ItemNotFoundException e) {
             try {
                 jobManager.removeJob(uuid);
                 return Response.status(Response.Status.ACCEPTED).entity("Job removed successfully").build();
             } catch (ItemNotFoundException unexpectedException) {
-                // if job is not found in the first search it should
-                return Response.status(Response.Status.NOT_FOUND).entity("Job not found").build();
+                // JUST IN CASE
+                return Response.status(Response.Status.INTERNAL_SERVER_ERROR).entity(unexpectedException.getMessage()).build();
             }
+        }
+    }
+
+    @GET
+    @Path("searchByUUID")
+    @Produces(MediaType.APPLICATION_JSON)
+    public Response searchByUUID(@QueryParam("UUID") String uuid) {
+        try {
+            Gson gson = new Gson();
+            return Response.status(Response.Status.ACCEPTED).entity(gson.toJson(jobManager.searchByUUID(uuid))).build();
+        } catch (ItemNotFoundException e) {
+            return Response.status(Response.Status.NOT_FOUND).entity(e.getMessage()).build();
         }
     }
 }

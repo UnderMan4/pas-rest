@@ -30,15 +30,6 @@ public class UserManager {
         return userDAO.readAll();
     }
 
-    public ArrayList<User> findUsersByUUID(String uuid) throws ItemNotFoundException {
-        // name is different to findUsersByLogin because of DAO interface inheritance
-        return userDAO.searchByUUID(uuid);
-    }
-
-    public ArrayList<User> findUsersByLogin(String login) throws ItemNotFoundException {
-        return userDAO.findUsersByLogin(login);
-    }
-
     public User findUser(UUID uuid) throws ItemNotFoundException {
         return userDAO.readOne(uuid);
     }
@@ -62,4 +53,7 @@ public class UserManager {
         return userDAO.searchByUUID(uuid);
     }
 
+    public ArrayList<User> findUsersByLogin(String login) throws ItemNotFoundException {
+        return userDAO.findUsersByLogin(login);
+    }
 }

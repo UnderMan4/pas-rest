@@ -45,7 +45,7 @@ public class JobManager {
     }
 
     // search by UUID and return all matching results
-    public ArrayList<Job> searchByJobUUID(String uuid) throws ItemNotFoundException {
+    public ArrayList<Job> searchByUUID(String uuid) throws ItemNotFoundException {
         return jobDAO.searchByUUID(uuid);
     }
 }
