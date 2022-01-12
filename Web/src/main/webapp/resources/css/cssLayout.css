@@ -1,25 +1,29 @@
 
 #top {
     position: relative;
-    background-color: #036fab;
-    color: white;
+    background-color: #56FF00;
+    color: black;
     padding: 5px;
     margin: 0px 0px 10px 0px;
+    border-radius: 300px;
 }
+
 
 #bottom {
     position: relative;
-    background-color: #c2dfef;
+    background-color: #FF00EF;
     padding: 5px;
     margin: 10px 0px 0px 0px;
+    border-radius: 20px;
 }
 
 #left {
     float: left;
-    background-color: #ece3a5;
+    background-color: #6A7E25;
     padding: 5px;
     width: 150px;
     min-height: 480px;
+    border-radius: 20px;
 }
 
 #right {
@@ -31,7 +35,7 @@
 
 .center_content {
     position: relative;
-    background-color: #dddddd;
+    background-color: #FF00EF;
     padding: 5px;
     min-height: 480px;
 }
@@ -44,26 +48,27 @@
 }
 
 .right_content {
-    background-color: #dddddd;
+    background-color: #0010FF;
     padding: 5px;
-    margin: 0px 0px 0px 170px;
+    margin: 20px 20px 20px 170px;
     min-height: 480px;
+    border-radius: 10px;
 }
 
 #top a:link, #top a:visited {
-  color: white;
-  font-weight : bold;
-  text-decoration: none;
+    color: white;
+    font-weight: bold;
+    text-decoration: none;
 }
 
-#top a:link:hover, #top a:visited:hover  {
-  color: black;
-  font-weight : bold;
-  text-decoration : underline;
+#top a:link:hover, #top a:visited:hover {
+    color: black;
+    font-weight: bold;
+    text-decoration: underline;
 }
 
 #top p {
-    color: white;
-  font-weight : bold;
-  text-decoration : underline;    
+    color: black;
+    font-weight: bold;
+    text-decoration: underline;
 }
