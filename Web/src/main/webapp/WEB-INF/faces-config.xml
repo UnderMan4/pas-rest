@@ -26,6 +26,11 @@
             <to-view-id>/createJob.xhtml</to-view-id>
             <redirect />
         </navigation-case>
+        <navigation-case>
+            <from-outcome>redirectToSearchJob</from-outcome>
+            <to-view-id>/searchJob.xhtml</to-view-id>
+            <redirect />
+        </navigation-case>
     </navigation-rule>
 
     <navigation-rule>
@@ -33,6 +38,11 @@
         <navigation-case>
             <from-outcome>redirectToCreateUser</from-outcome>
             <to-view-id>/createUser.xhtml</to-view-id>
+            <redirect />
+        </navigation-case>
+        <navigation-case>
+            <from-outcome>redirectToSearchUser</from-outcome>
+            <to-view-id>/searchUser.xhtml</to-view-id>
             <redirect />
         </navigation-case>
     </navigation-rule>

@@ -1,5 +1,6 @@
 <?xml version='1.0' encoding='UTF-8' ?>
-<!DOCTYPE composition PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<!DOCTYPE composition PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+        "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
 <ui:composition xmlns:ui="http://java.sun.com/jsf/facelets"
                 xmlns="http://www.w3.org/1999/xhtml"
                 xmlns:h="http://java.sun.com/jsf/html"
@@ -15,14 +16,26 @@
     </ui:define>
 
     <ui:define name="content">
-        <h:form id="job-form">
+        <h:form id="search-job-form">
+            <h2>Search job</h2>
+
+            <a name="header">${msg["column.uuid"]}</a>
+            <h:inputText value="#{jobSearchBean.uuid}" requiredMessage="uuid is required"/>
+            <br/>
+
+            <h:commandButton action="#{jobSearchBean.searchJob}" value="Search"/>
+            <br/>
+            <input type="button" onclick="history.go(-1)" value="Go back"/>
+        </h:form>
+
+        <h:form>
             <h2>Job list</h2>
-            <h:dataTable value="#{jobListBean.jobList}" var="job">
+            <h:dataTable value="#{jobSearchBean.jobList}" var="job">
                 <h:column>
                     <f:facet name="header">${msg["column.name"]}</f:facet>
                     <h:outputText value="#{job.name}"/>
                 </h:column>
-                    <f:facet name="header">${msg["column.description"]}</f:facet>
+                <f:facet name="header">${msg["column.description"]}</f:facet>
                 <h:column>
                     <h:outputText value="#{job.description}"/>
                 </h:column>
@@ -31,21 +44,15 @@
                     <h:outputText value="#{job.uuid}"/>
                 </h:column>
                 <h:column>
-                    <h:commandButton id="deleteJobButton" action="#{jobListBean.deleteJob(job)}" value="Delete job" binding="#{jobListBean.deleteJobButton}"/>
+                    <h:commandButton id="deleteJobButton" action="#{jobListBean.deleteJob(job)}" value="Delete job"
+                                     binding="#{jobListBean.deleteJobButton}"/>
                 </h:column>
-                <h:message for="deleteJobButton" />
+                <h:message for="deleteJobButton"/>
                 <h:column>
                     <h:commandButton action="#{jobListBean.editJob(job)}" value="Edit job"/>
                 </h:column>
             </h:dataTable>
         </h:form>
-        <h:form id="navigate-to-create-job">
-        <h:commandButton action="redirectToCreateJob" value="Create job page" />
-        </h:form>
-        <br/>
-        <h:form id="navigate-to-search-job">
-            <h:commandButton action="redirectToSearchJob" value="Search job page" />
-        </h:form>
-        <h:messages />
+        <h:messages/>
     </ui:define>
 </ui:composition>

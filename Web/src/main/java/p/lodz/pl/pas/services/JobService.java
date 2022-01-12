@@ -47,8 +47,12 @@ public class JobService implements Serializable {
                 .post(Entity.json(new Gson().toJson(editedJob)));
     }
 
-
     public Response deleteJob(Job job) {
         return getClientWebTarget().path("remove").queryParam("UUID", job.getUuid()).request().get();
+    }
+
+    public List<Job> searchByUUID(String uuid) {
+        return getClientWebTarget().path("searchByUUID").queryParam("UUID", uuid).request(MediaType.APPLICATION_JSON).get(new GenericType<List<Job>>() {
+        });
     }
 }

@@ -51,4 +51,14 @@ public class UserService implements Serializable {
         return getUserWebTarget().path("setUserActive").queryParam("UUID", uuid)
                 .queryParam("status", status).request().get();
     }
+
+    public List<User> searchByLogin(String login) {
+        return getUserWebTarget().path("searchByLogin").queryParam("login", login).request(MediaType.APPLICATION_JSON).get(new GenericType<List<User>>() {
+        });
+    }
+
+    public List<User> searchByUUID(String uuid) {
+        return getUserWebTarget().path("searchByUUID").queryParam("UUID", uuid).request(MediaType.APPLICATION_JSON).get(new GenericType<List<User>>() {
+        });
+    }
 }

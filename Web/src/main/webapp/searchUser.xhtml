@@ -1,5 +1,6 @@
 <?xml version='1.0' encoding='UTF-8' ?>
-<!DOCTYPE composition PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<!DOCTYPE composition PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+        "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
 <ui:composition xmlns:ui="http://java.sun.com/jsf/facelets"
                 xmlns="http://www.w3.org/1999/xhtml"
                 xmlns:h="http://java.sun.com/jsf/html" xmlns:f="http://java.sun.com/jsf/core"
@@ -14,9 +15,31 @@
     </ui:define>
 
     <ui:define name="content">
-        <h:form id="user-form">
+        <h:form id="search-user-uuid-form">
+            <h2>Search job by uuid</h2>
+
+            <a name="header">${msg["column.uuid"]}</a>
+            <h:inputText value="#{userSearchBean.uuid}" requiredMessage="uuid is required"/>
+            <br/>
+
+            <h:commandButton action="#{userSearchBean.searchUserByUUID}" value="Search"/>
+            <br/>
+            <input type="button" onclick="history.go(-1)" value="Go back"/>
+        </h:form>
+        <h:form id="search-user-login-form">
+            <h2>Search job by login</h2>
+
+            <a name=" header">${msg["column.login"]}</a>
+            <h:inputText value="#{userSearchBean.login}" requiredMessage="login is required"/>
+            <br/>
+
+            <h:commandButton action="#{userSearchBean.searchUserByLogin}" value="Search"/>
+            <br/>
+            <input type="button" onclick="history.go(-1)" value="Go back"/>
+        </h:form>
+        <h:form>
             <h2>User list</h2>
-            <h:dataTable value="#{userListBean.userList}" var="user">
+            <h:dataTable value="#{userSearchBean.userList}" var="user">
                 <h:column>
                     <f:facet name="header">${msg["column.login"]}</f:facet>
                     <h:outputText value="#{user.login}"/>
@@ -41,24 +64,13 @@
                     <f:facet name="header">${msg["column.accessLevel"]}</f:facet>
                     <h:outputText value="#{user.accessLevel}"/>
                 </h:column>
-                <h:column>
-                    <h:commandButton action="#{userListBean.activateUser(user)}" value="activateUser" disabled="#{user.active}"/>
-                </h:column>
-                <h:column>
-                    <h:commandButton action="#{userListBean.deactivateUser(user)}" value="deactivateUser" disabled="#{!user.active}"/>
-                </h:column>
-                <h:column>
-                    <h:commandButton action="#{userListBean.editUser(user)}" value="Edit User"/>
-                </h:column>
             </h:dataTable>
         </h:form>
         <h:form id="navigate-to-create-user">
-            <h:commandButton action="redirectToCreateUser" value="Craete user page" />
+            <h:commandButton action="redirectToCreateUser" value="Craete user page"/>
         </h:form>
-        <br/>
-        <h:form id="navigate-to-search-user">
-            <h:commandButton action="redirectToSearchUser" value="Search user page" />
-        </h:form>
-        <h:messages />
+        <h:messages/>
+
     </ui:define>
+
 </ui:composition>
