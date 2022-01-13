@@ -17,13 +17,13 @@
 
     <ui:define name="content">
         <h:form id="search-job-form">
-            <h2>Search job</h2>
+            <h2>${msg["jobSearch"]}</h2>
 
             <a name="header">${msg["column.uuid"]}</a>
-            <h:inputText value="#{jobSearchBean.uuid}" requiredMessage="uuid is required"/>
+            <h:inputText value="#{jobSearchBean.uuid}" requiredMessage="#{msg['jobSearch.UUIDrequired']}"/>
             <br/>
 
-            <h:commandButton action="#{jobSearchBean.searchJob}" value="Search"/>
+            <h:commandButton action="#{jobSearchBean.searchJob}" value="#{msg['searchButton']}"/>
             <br/>
             <input type="button" onclick="history.go(-1)" value="Go back"/>
         </h:form>
@@ -44,12 +44,12 @@
                     <h:outputText value="#{job.uuid}"/>
                 </h:column>
                 <h:column>
-                    <h:commandButton id="deleteJobButton" action="#{jobListBean.deleteJob(job)}" value="Delete job"
+                    <h:commandButton id="deleteJobButton" action="#{jobListBean.deleteJob(job)}" value="#{msg['jobList.deleteJobButton']}"
                                      binding="#{jobListBean.deleteJobButton}"/>
                 </h:column>
                 <h:message for="deleteJobButton"/>
                 <h:column>
-                    <h:commandButton action="#{jobListBean.editJob(job)}" value="Edit job"/>
+                    <h:commandButton action="#{jobListBean.editJob(job)}" value="#{msg['jobList.editJobButton']}"/>
                 </h:column>
             </h:dataTable>
         </h:form>

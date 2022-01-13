@@ -17,13 +17,13 @@
 
     <ui:define name="content">
         <h:form id="search-ticket-form">
-            <h2>Search ticket</h2>
+            <h2>${msg["ticketSearch"]}</h2>
 
             <a name="header">${msg["column.uuid"]}</a>
             <h:inputText value="#{ticketSearchBean.uuid}" requiredMessage="uuid is required"/>
             <br/>
 
-            <h:commandButton action="#{ticketSearchBean.searchTicket}" value="Search"/>
+            <h:commandButton action="#{ticketSearchBean.searchTicket}" value="#{msg['searchButton']}"/>
             <br/>
             <input type="button" onclick="history.go(-1)" value="Go back"/>
         </h:form>

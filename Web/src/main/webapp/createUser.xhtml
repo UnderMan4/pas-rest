@@ -17,11 +17,11 @@
 
     <ui:define name="content">
         <h:form id="edit-user-form">
-            <h2>Create user</h2>
+            <h2>${msg["userCreate"]}</h2>
 
             <a name="header">${msg["column.login"]}</a>
             <br/>
-            <h:inputText value="#{userCreateBean.newUser.login}" requiredMessage="Login is required"/>
+            <h:inputText value="#{userCreateBean.newUser.login}" requiredMessage="#{msg['userCreate.loginrequired']}"/>
             <br/>
 
             <a name="header">${msg["column.name"]}</a>
@@ -39,7 +39,7 @@
                                itemValue="#{level}" itemLabel="#{msg['accessLevel.' += level]}"/>
             </h:selectOneMenu>
             <br/>
-            <h:commandButton action="#{userCreateBean.createNewUser}" value="Save"/>
+            <h:commandButton action="#{userCreateBean.createNewUser}" value="#{msg['saveButton']}"/>
         </h:form>
         <h:messages />
     </ui:define>

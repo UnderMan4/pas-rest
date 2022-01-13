@@ -16,8 +16,8 @@
     </ui:define>
 
     <ui:define name="content">
-        <h:form id="edit-ticket-form">
-            <h2>Create ticket</h2>
+        <h:form id="create-ticket-form">
+            <h2>${msg["ticketList"]}</h2>
 
             <a name="header">${msg["column.userUUID"]}</a>
             <h:inputText value="#{ticketCreateBean.newTicket.user}" requiredMessage="User uuid is required">
@@ -47,7 +47,7 @@
                                itemValue="#{status}" itemLabel="#{msg['ticketStatus.' += status]}"/>
             </h:selectOneMenu>
             <br/>
-            <h:commandButton action="#{ticketCreateBean.createNewTicket}" value="Create"/>
+            <h:commandButton action="#{ticketCreateBean.createNewTicket}" value="#{msg['saveButton']}"/>
         </h:form>
     </ui:define>
 </ui:composition>

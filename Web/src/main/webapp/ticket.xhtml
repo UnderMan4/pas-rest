@@ -16,7 +16,7 @@
 
     <ui:define name="content">
         <h:form id="ticket-form">
-            <h2>Ticket list</h2>
+            <h2>${msg["ticketList"]}</h2>
             <h:dataTable value="#{ticketListBean.ticketList}" var="ticket">
                 <h:column>
                     <f:facet name="header">${msg["column.uuid"]}</f:facet>

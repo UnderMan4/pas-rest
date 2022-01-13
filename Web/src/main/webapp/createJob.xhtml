@@ -17,15 +17,15 @@
 
     <ui:define name="content">
         <h:form id="create-job-form">
-            <h2>Create job</h2>
-            <f:facet name="header">${msg["column.name"]}</f:facet>
-            Name<h:inputText value="#{jobCreateBean.newJob.name}"  requiredMessage="Name is required"/>
-            <f:facet name="header">${msg["column.description"]}</f:facet>
+            <h2>${msg["jobCreate"]}</h2>
+            <a>${msg["column.name"]}</a>
+            <h:inputText value="#{jobCreateBean.newJob.name}"  requiredMessage="#{msg['jobCreate.requiredMessage']}"/>
             <br/>
-            Description<h:inputText value="#{jobCreateBean.newJob.description}"/>
-            <p>UUID will be generated automatically</p>
+            <a>${msg["column.description"]}</a>
+            <h:inputText value="#{jobCreateBean.newJob.description}"/>
+            <p>${msg['jobCreate.UUIDmessage']}</p>
             <br/>
-            <h:commandButton action="#{jobCreateBean.createNewJob}" value="Create"/>
+            <h:commandButton action="#{jobCreateBean.createNewJob}" value="#{msg['jobCreate']}"/>
         </h:form>
     </ui:define>
 </ui:composition>

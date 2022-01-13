@@ -16,7 +16,7 @@
 
     <ui:define name="content">
         <h:form id="job-form">
-            <h2>Job list</h2>
+            <h2>${msg["jobList"]}</h2>
             <h:dataTable value="#{jobListBean.jobList}" var="job">
                 <h:column>
                     <f:facet name="header">${msg["column.name"]}</f:facet>
@@ -31,23 +31,23 @@
                     <h:outputText value="#{job.uuid}"/>
                 </h:column>
                 <h:column>
-                    <h:commandButton id="deleteJobButton" action="#{jobListBean.deleteJob(job)}" value="Delete job" binding="#{jobListBean.deleteJobButton}"/>
+                    <h:commandButton id="deleteJobButton" action="#{jobListBean.deleteJob(job)}" value="#{msg['jobList.deleteJobButton']}" binding="#{jobListBean.deleteJobButton}"/>
                 </h:column>
                 <h:message for="deleteJobButton" />
                 <h:column>
-                    <h:commandButton action="#{jobListBean.editJob(job)}" value="Edit job"/>
+                    <h:commandButton action="#{jobListBean.editJob(job)}" value="#{msg['jobList.editJobButton']}"/>
                 </h:column>
                 <h:column>
-                    <h:commandButton action="#{jobListBean.detailsUser(job)}" value="Details"/>
+                    <h:commandButton action="#{jobListBean.detailsUser(job)}" value="#{msg['detailsButton']}"/>
                 </h:column>
             </h:dataTable>
         </h:form>
         <h:form id="navigate-to-create-job">
-        <h:commandButton action="redirectToCreateJob" value="Create job page" />
+        <h:commandButton action="redirectToCreateJob" value="#{msg['jobList.createJobButton']}" />
         </h:form>
         <br/>
         <h:form id="navigate-to-search-job">
-            <h:commandButton action="redirectToSearchJob" value="Search job page" />
+            <h:commandButton action="redirectToSearchJob" value="#{msg['jobList.searchJobButton']}" />
         </h:form>
         <h:messages />
     </ui:define>

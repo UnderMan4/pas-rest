@@ -15,7 +15,7 @@
 
     <ui:define name="content">
         <h:form id="user-form">
-            <h2>User list</h2>
+            <h2>${msg["userList"]}</h2>
             <h:dataTable value="#{userListBean.userList}" var="user">
                 <h:column>
                     <f:facet name="header">${msg["column.login"]}</f:facet>
@@ -42,25 +42,25 @@
                     <h:outputText value="#{user.accessLevel}"/>
                 </h:column>
                 <h:column>
-                    <h:commandButton action="#{userListBean.activateUser(user)}" value="activateUser" disabled="#{user.active}"/>
+                    <h:commandButton action="#{userListBean.activateUser(user)}" value="#{msg['userList.activateUserButton']}" disabled="#{user.active}"/>
                 </h:column>
                 <h:column>
-                    <h:commandButton action="#{userListBean.deactivateUser(user)}" value="deactivateUser" disabled="#{!user.active}"/>
+                    <h:commandButton action="#{userListBean.deactivateUser(user)}" value="#{msg['userList.deactivateUserButton']}" disabled="#{!user.active}"/>
                 </h:column>
                 <h:column>
-                    <h:commandButton action="#{userListBean.editUser(user)}" value="Edit User"/>
+                    <h:commandButton action="#{userListBean.editUser(user)}" value="#{msg['editButton']}"/>
                 </h:column>
                 <h:column>
-                    <h:commandButton action="#{userListBean.detailsUser(user)}" value="Details"/>
+                    <h:commandButton action="#{userListBean.detailsUser(user)}" value="#{msg['detailsButton']}"/>
                 </h:column>
             </h:dataTable>
         </h:form>
         <h:form id="navigate-to-create-user">
-            <h:commandButton action="redirectToCreateUser" value="Craete user page" />
+            <h:commandButton action="redirectToCreateUser" value="#{msg['userList.createUserButton']}" />
         </h:form>
         <br/>
         <h:form id="navigate-to-search-user">
-            <h:commandButton action="redirectToSearchUser" value="Search user page" />
+            <h:commandButton action="redirectToSearchUser" value="#{msg['userList.searchUserButton']}" />
         </h:form>
         <h:messages />
     </ui:define>

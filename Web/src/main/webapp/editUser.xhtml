@@ -17,7 +17,7 @@
 
     <ui:define name="content">
         <h:form id="edit-user-form">
-            <h2>Edit user</h2>
+            <h2>${msg["userEdit"]}</h2>
 
             <a name="header">${msg["column.login"]}</a>
             <br/>
@@ -42,7 +42,7 @@
                                itemValue="#{level}" itemLabel="#{msg['accessLevel.' += level]}"/>
             </h:selectOneMenu>
             <br/>
-            <h:commandButton action="#{userEditBean.saveEditedUser}" value="Save"/>
+            <h:commandButton action="#{userEditBean.saveEditedUser}" value="#{msg['saveButton']}"/>
         </h:form>
         <h:messages />
     </ui:define>

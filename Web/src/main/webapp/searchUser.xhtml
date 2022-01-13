@@ -16,10 +16,10 @@
 
     <ui:define name="content">
         <h:form id="search-user-uuid-form">
-            <h2>Search job by uuid</h2>
+            <h2>${msg["userSearchByUUID"]}</h2>
 
             <a name="header">${msg["column.uuid"]}</a>
-            <h:inputText value="#{userSearchBean.uuid}" requiredMessage="uuid is required"/>
+            <h:inputText value="#{userSearchBean.uuid}" requiredMessage="#{msg['jobSearch.UUIDrequired']}"/>
             <br/>
 
             <h:commandButton action="#{userSearchBean.searchUserByUUID}" value="Search"/>
@@ -27,18 +27,18 @@
             <input type="button" onclick="history.go(-1)" value="Go back"/>
         </h:form>
         <h:form id="search-user-login-form">
-            <h2>Search job by login</h2>
+            <h2>${msg["userSearchByLogin"]}</h2>
 
             <a name=" header">${msg["column.login"]}</a>
-            <h:inputText value="#{userSearchBean.login}" requiredMessage="login is required"/>
+            <h:inputText value="#{userSearchBean.login}" requiredMessage="#{msg['userCreate.loginrequired']}"/>
             <br/>
 
-            <h:commandButton action="#{userSearchBean.searchUserByLogin}" value="Search"/>
+            <h:commandButton action="#{userSearchBean.searchUserByLogin}" value="#{msg['searchButton']}"/>
             <br/>
-            <input type="button" onclick="history.go(-1)" value="Go back"/>
+            <input type="button" onclick="history.go(-1)" value="#{msg['goBackButton']}"/>
         </h:form>
         <h:form>
-            <h2>User list</h2>
+            <h2>${msg["userList"]}</h2>
             <h:dataTable value="#{userSearchBean.userList}" var="user">
                 <h:column>
                     <f:facet name="header">${msg["column.login"]}</f:facet>
@@ -65,9 +65,6 @@
                     <h:outputText value="#{user.accessLevel}"/>
                 </h:column>
             </h:dataTable>
-        </h:form>
-        <h:form id="navigate-to-create-user">
-            <h:commandButton action="redirectToCreateUser" value="Craete user page"/>
         </h:form>
         <h:messages/>
 
