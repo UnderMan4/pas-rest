@@ -5,6 +5,8 @@ import p.lodz.pl.pas.model_web.Ticket;
 import p.lodz.pl.pas.services.JobService;
 
 import javax.enterprise.context.SessionScoped;
+import javax.faces.application.FacesMessage;
+import javax.faces.context.FacesContext;
 import javax.inject.Inject;
 import javax.inject.Named;
 import java.io.Serializable;
@@ -47,7 +49,14 @@ public class JobSearchBean implements Serializable {
     public void searchJob() {
         if (uuid != null) {
             LOGGER.log(Level.INFO, "Searching for job with uuid " + uuid.toString());
-            setJobList(jobService.searchByUUID(uuid));
+            try {
+                setJobList(jobService.searchByUUID(uuid));
+                LOGGER.log(Level.INFO, jobList.toString());
+            } catch (javax.ws.rs.NotFoundException e) {
+                LOGGER.log(Level.INFO, e.getMessage());
+                FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(e.getMessage()));
+                setJobList(null);
+            }
             LOGGER.log(Level.INFO, jobList.toString());
         } else {
             throw new IllegalArgumentException("Job uuid is empty");

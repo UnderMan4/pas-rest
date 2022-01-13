@@ -4,6 +4,8 @@ import p.lodz.pl.pas.model_web.TicketDTO;
 import p.lodz.pl.pas.services.TicketService;
 
 import javax.enterprise.context.SessionScoped;
+import javax.faces.application.FacesMessage;
+import javax.faces.context.FacesContext;
 import javax.inject.Inject;
 import javax.inject.Named;
 import javax.ws.rs.core.Response;
@@ -34,6 +36,9 @@ public class TicketCreateBean implements Serializable {
         if (newTicket.getUser() != null && newTicket.getJob() != null) {
             LOGGER.log(Level.INFO, newTicket.toString());
             Response response = ticketService.createTicket(newTicket);
+            if (response.getStatus() != 202) {
+                FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(response.readEntity(String.class)));
+            }
             LOGGER.log(Level.INFO, response.toString());
         } else {
             throw new IllegalArgumentException("User or Job uuid is null");

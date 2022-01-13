@@ -5,7 +5,9 @@ import p.lodz.pl.pas.model_web.Ticket;
 import p.lodz.pl.pas.services.TicketService;
 
 import javax.enterprise.context.SessionScoped;
+import javax.faces.application.FacesMessage;
 import javax.faces.component.UIComponent;
+import javax.faces.context.FacesContext;
 import javax.inject.Inject;
 import javax.inject.Named;
 import java.io.Serializable;
@@ -51,7 +53,8 @@ public class JobDetailsBean implements Serializable {
                 setTicketList(ticketService.getJobTicketList(job.getUuid().toString()));
                 LOGGER.log(Level.INFO, ticketList.toString());
             } catch (javax.ws.rs.NotFoundException e) {
-                LOGGER.log(Level.INFO, "No tickets found for the user");
+                LOGGER.log(Level.INFO, e.getMessage());
+                FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(e.toString()));
                 setTicketList(null);
             }
         } else {
