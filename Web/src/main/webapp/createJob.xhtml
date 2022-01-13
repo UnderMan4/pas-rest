@@ -19,7 +19,7 @@
         <h:form id="create-job-form">
             <h2>${msg["jobCreate"]}</h2>
             <a>${msg["column.name"]}</a>
-            <h:inputText value="#{jobCreateBean.newJob.name}"  requiredMessage="#{msg['jobCreate.requiredMessage']}"/>
+            <h:inputText value="#{jobCreateBean.newJob.name}" required="true" requiredMessage="#{msg['jobCreate.requiredMessage']}"/>
             <br/>
             <a>${msg["column.description"]}</a>
             <h:inputText value="#{jobCreateBean.newJob.description}"/>

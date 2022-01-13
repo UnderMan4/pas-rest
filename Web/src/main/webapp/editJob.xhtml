@@ -20,7 +20,7 @@
             <h2>#{msg['jobEdit']}</h2>
             <a name="header">${msg["column.name"]}</a>
             <br/>
-            <h:inputText value="#{jobEditBean.editedJob.name}"  requiredMessage="#{msg['jobCreate.requiredMessage']}"/>
+            <h:inputText value="#{jobEditBean.editedJob.name}" required="true" requiredMessage="#{msg['jobCreate.requiredMessage']}"/>
             <br/>
             <a name="header">${msg["column.description"]}</a>
             <br/>
