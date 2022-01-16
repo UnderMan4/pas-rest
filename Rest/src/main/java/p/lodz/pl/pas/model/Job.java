@@ -13,6 +13,11 @@ public class Job {
         this.description = description;
     }
 
+    public Job(String name, String description) {
+        this.name = name;
+        this.description = description;
+    }
+
     public UUID getUuid() {
         return uuid;
     }

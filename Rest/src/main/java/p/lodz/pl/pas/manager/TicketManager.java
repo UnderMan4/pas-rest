@@ -43,7 +43,7 @@ public class TicketManager {
         }
         User user = userDAO.readOne(userUUID);
         Job job = jobDAO.readOne(jobUUID);
-        return ticketDAO.create(new Ticket(UUID.randomUUID(), user, job, jobStart, jobEnd, description));
+        return ticketDAO.create(new Ticket(user, job, jobStart, jobEnd, description));
     }
 
     public Ticket findByUUID(UUID uuid) throws ItemNotFoundException {

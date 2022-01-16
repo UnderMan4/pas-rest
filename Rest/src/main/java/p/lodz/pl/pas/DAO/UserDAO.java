@@ -1,8 +1,7 @@
 package p.lodz.pl.pas.DAO;
 
 import p.lodz.pl.pas.exceptions.ItemNotFoundException;
-import p.lodz.pl.pas.model.AccessLevel;
-import p.lodz.pl.pas.model.User;
+import p.lodz.pl.pas.model.*;
 
 import javax.enterprise.context.ApplicationScoped;
 import java.util.ArrayList;
@@ -17,10 +16,10 @@ public class UserDAO implements DAO<User> {
 
     public UserDAO() {
         users = new ArrayList<>();
-        this.create(new User(UUID.fromString("54ceb043-5f89-41bb-a29b-f2c0e9909dad"), "jkowalski", "Jan", "Kowalski", true, AccessLevel.User));
-        this.create(new User(UUID.fromString("40d68ba5-39ba-4f2e-9e61-a55daf7b3e8e"), "jjjkowal", "Jaroslaw", "Kowalski", true, AccessLevel.ResourceAdministrator));
-        this.create(new User(UUID.fromString("84d267cf-6dc4-40cd-b1d3-000733a85458"), "ttttt", "Tomasz", "Kowalski", true, AccessLevel.User));
-        this.create(new User(UUID.fromString("295eea09-5541-42e4-ac24-126a0d87607e"), "Restitutor", "Lucius", "Aurelianus", true, AccessLevel.UserAdministrator));
+        this.create(new NormalUser(UUID.fromString("54ceb043-5f89-41bb-a29b-f2c0e9909dad"), "jkowalski", "Jan", "Kowalski", true));
+        this.create(new ResourceAdministrator(UUID.fromString("40d68ba5-39ba-4f2e-9e61-a55daf7b3e8e"), "jjjkowal", "Jaroslaw", "Kowalski", true));
+        this.create(new UserAdministrator(UUID.fromString("84d267cf-6dc4-40cd-b1d3-000733a85458"), "ttttt", "Tomasz", "Kowalski", true));
+        this.create(new Admin(UUID.fromString("295eea09-5541-42e4-ac24-126a0d87607e"), "Restitutor", "Lucius", "Aurelianus", true));
     }
 
     @Override
@@ -38,6 +37,9 @@ public class UserDAO implements DAO<User> {
 
     @Override
     public boolean create(User object) {
+        if (object.getUuid() == null) {
+            object.setUuid(UUID.randomUUID());
+        }
         return users.add(object);
     }
 
@@ -53,7 +55,6 @@ public class UserDAO implements DAO<User> {
         u.setLogin(object.getLogin());
         u.setSurname(object.getSurname());
         u.setActive(object.getActive());
-        u.setAccessLevel(object.getAccessLevel());
         return true;
     }
 

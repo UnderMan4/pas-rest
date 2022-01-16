@@ -2,21 +2,26 @@ package p.lodz.pl.pas.model;
 
 import java.util.UUID;
 
-public class User {
+public abstract class User {
     private String login;
     private String name;
     private String surname;
     private UUID uuid;
     private Boolean active;
-    private AccessLevel accessLevel;
 
-    public User(UUID uuid, String login, String name, String surname, Boolean active, AccessLevel accessLevel) {
+    public User(UUID uuid, String login, String name, String surname, Boolean active) {
         this.uuid = uuid;
         this.login = login;
         this.name = name;
         this.surname = surname;
         this.active = active;
-        this.accessLevel = accessLevel;
+    }
+
+    public User(String login, String name, String surname, Boolean active) {
+        this.login = login;
+        this.name = name;
+        this.surname = surname;
+        this.active = active;
     }
 
     public String getLogin() {
@@ -59,13 +64,7 @@ public class User {
         this.active = active;
     }
 
-    public AccessLevel getAccessLevel() {
-        return accessLevel;
-    }
-
-    public void setAccessLevel(AccessLevel accessLevel) {
-        this.accessLevel = accessLevel;
-    }
+    public abstract AccessLevel getUserAccessLevel();
 
     // ------------------------------------------------------------------------------------------------
 

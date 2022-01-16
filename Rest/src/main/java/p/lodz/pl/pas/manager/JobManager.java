@@ -20,7 +20,7 @@ public class JobManager {
 
     public synchronized UUID createJob(String name, String description) {
         UUID uuid = UUID.randomUUID();
-        if (jobDAO.create(new Job(uuid, name, description))){
+        if (jobDAO.create(new Job(name, description))){
             return uuid;
         } else {
             return null;

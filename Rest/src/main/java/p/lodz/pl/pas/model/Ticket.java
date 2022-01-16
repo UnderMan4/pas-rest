@@ -33,6 +33,14 @@ public class Ticket {
         this.jobEnd = jobEnd;
     }
 
+    public Ticket(User user, Job job, LocalDateTime jobStart, LocalDateTime jobEnd, String description) {
+        this.user = user;
+        this.job = job;
+        this.jobStart = jobStart;
+        this.jobEnd = jobEnd;
+        this.description = description;
+    }
+
     public UUID getUuid() {
         return uuid;
     }

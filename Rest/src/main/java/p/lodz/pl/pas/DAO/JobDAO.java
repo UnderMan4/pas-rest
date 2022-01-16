@@ -38,6 +38,9 @@ public class JobDAO implements DAO<Job> {
 
     @Override
     public boolean create(Job object) {
+        if (object.getUuid() == null) {
+            object.setUuid(UUID.randomUUID());
+        }
         return jobs.add(object);
     }
 
