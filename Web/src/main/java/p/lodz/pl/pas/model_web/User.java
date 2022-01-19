@@ -10,7 +10,23 @@ public class User {
     private Boolean active;
     private AccessLevel accessLevel;
 
+    public User(UUID uuid, String login, String name, String surname, Boolean active) {
+        this.uuid = uuid;
+        this.login = login;
+        this.name = name;
+        this.surname = surname;
+        this.active = active;
+    }
+
+    public User(String login, String name, String surname, Boolean active) {
+        this.login = login;
+        this.name = name;
+        this.surname = surname;
+        this.active = active;
+    }
+
     public User() {
+
     }
 
     public String getLogin() {

@@ -51,12 +51,13 @@ public class UserDAO implements DAO<User> {
     @Override
     public boolean update(User object) throws ItemNotFoundException {
         User u = readOne(object.getUuid());
-        u.setName(object.getName());
-        u.setLogin(object.getLogin());
-        u.setSurname(object.getSurname());
-        u.setActive(object.getActive());
+        users.set(users.indexOf(u), object);
         return true;
     }
+
+//    public boolean updateRole(User object) throws ItemNotFoundException {
+//        User u = readOne()
+//    }
 
     public boolean checkLoginUnique(String login) {
         return users.stream().parallel().noneMatch(u -> u.getLogin().equals(login));

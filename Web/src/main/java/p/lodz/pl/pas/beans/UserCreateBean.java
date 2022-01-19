@@ -1,6 +1,7 @@
 package p.lodz.pl.pas.beans;
 
 import p.lodz.pl.pas.model_web.AccessLevel;
+import p.lodz.pl.pas.model_web.User;
 import p.lodz.pl.pas.model_web.UserDTO;
 import p.lodz.pl.pas.services.UserService;
 
@@ -25,7 +26,7 @@ public class UserCreateBean implements Serializable {
 
     public UserCreateBean() {
         // default access level
-        newUser.setAccessLevel(AccessLevel.User);
+        newUser.setAccessLevel(AccessLevel.NormalUser);
         newUser.setActive(true);
     }
 

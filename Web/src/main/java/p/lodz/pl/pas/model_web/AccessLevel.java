@@ -4,7 +4,8 @@ public enum AccessLevel {
 
     UserAdministrator("UserAdministrator"),
     ResourceAdministrator("ResourceAdministrator"),
-    User("User");
+    NormalUser("NormalUser"),
+    Admin("Admin");
 
     private final String label;
 
