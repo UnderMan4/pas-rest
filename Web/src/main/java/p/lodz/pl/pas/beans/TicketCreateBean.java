@@ -1,5 +1,6 @@
 package p.lodz.pl.pas.beans;
 
+import p.lodz.pl.pas.exceptions.RESTException;
 import p.lodz.pl.pas.model_web.TicketDTO;
 import p.lodz.pl.pas.services.TicketService;
 
@@ -8,10 +9,7 @@ import javax.faces.application.FacesMessage;
 import javax.faces.context.FacesContext;
 import javax.inject.Inject;
 import javax.inject.Named;
-import javax.ws.rs.core.Response;
 import java.io.Serializable;
-import java.util.logging.Level;
-import java.util.logging.Logger;
 
 @Named
 @SessionScoped
@@ -19,8 +17,6 @@ public class TicketCreateBean implements Serializable {
 
     @Inject
     TicketService ticketService;
-
-    private final Logger LOGGER = Logger.getLogger(getClass().getName());
 
     private final TicketDTO newTicket = new TicketDTO();
 
@@ -33,15 +29,11 @@ public class TicketCreateBean implements Serializable {
     }
 
     public String createNewTicket() {
-        if (newTicket.getUser() != null && newTicket.getJob() != null) {
-            LOGGER.log(Level.INFO, newTicket.toString());
-            Response response = ticketService.createTicket(newTicket);
-            if (response.getStatus() != 202) {
-                FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(response.readEntity(String.class)));
-            }
-            LOGGER.log(Level.INFO, response.toString());
-        } else {
-            throw new IllegalArgumentException("User or Job uuid is null");
+        try {
+            FacesMessage message = ticketService.createTicket(newTicket);
+            FacesContext.getCurrentInstance().addMessage(null, message);
+        } catch (RESTException e) {
+            FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(e.getMessage()));
         }
         return "ticket";
     }
