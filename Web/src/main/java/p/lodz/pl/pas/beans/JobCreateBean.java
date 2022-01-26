@@ -1,5 +1,6 @@
 package p.lodz.pl.pas.beans;
 
+import p.lodz.pl.pas.exceptions.RESTException;
 import p.lodz.pl.pas.model_web.JobDTO;
 import p.lodz.pl.pas.services.JobService;
 
@@ -8,9 +9,7 @@ import javax.faces.application.FacesMessage;
 import javax.faces.context.FacesContext;
 import javax.inject.Inject;
 import javax.inject.Named;
-import javax.ws.rs.core.Response;
 import java.io.Serializable;
-import java.util.logging.Level;
 import java.util.logging.Logger;
 
 @Named
@@ -36,15 +35,11 @@ public class JobCreateBean implements Serializable {
 
 
     public String createNewJob() {
-        if (newJob.getName() != null) {
-            LOGGER.log(Level.INFO, newJob.toString());
-            Response response = jobService.createJob(newJob);
-            if (response.getStatus() != 202) {
-                FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(response.readEntity(String.class)));
-            }
-            LOGGER.log(Level.INFO, response.toString());
-        } else {
-            throw new IllegalArgumentException("Name is null");
+        try {
+            FacesMessage message = jobService.createJob(newJob);
+            FacesContext.getCurrentInstance().addMessage(null, message);
+        } catch (RESTException e) {
+            FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(e.getMessage()));
         }
         return "job";
     }

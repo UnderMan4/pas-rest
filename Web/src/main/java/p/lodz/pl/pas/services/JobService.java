@@ -6,6 +6,7 @@ import p.lodz.pl.pas.exceptions.RESTException;
 import p.lodz.pl.pas.model_web.Job;
 import p.lodz.pl.pas.model_web.JobDTO;
 
+import javax.faces.application.FacesMessage;
 import javax.ws.rs.client.Client;
 import javax.ws.rs.client.ClientBuilder;
 import javax.ws.rs.client.Entity;
@@ -15,7 +16,6 @@ import javax.ws.rs.core.MediaType;
 import javax.ws.rs.core.Response;
 import java.io.Serializable;
 import java.util.List;
-import java.util.UUID;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
@@ -39,9 +39,16 @@ public class JobService implements Serializable {
 
     }
 
-    public Response createJob(JobDTO newJob) {
-        return getClientWebTarget().path("create").request()
+    public FacesMessage createJob(JobDTO newJob) throws RESTException {
+        LOGGER.log(Level.INFO, "Creating new job " + newJob.toString());
+        Response response = getClientWebTarget().path("create").request()
                 .post(Entity.json(new Gson().toJson(newJob)));
+        LOGGER.log(Level.INFO, response.toString());
+        if (response.getStatus() != 202) {
+            return new FacesMessage(response.readEntity(String.class));
+        } else {
+            throw new RESTException(response.readEntity(String.class));
+        }
     }
 
     public List<Job> getAllJobs() {
@@ -49,9 +56,16 @@ public class JobService implements Serializable {
         });
     }
 
-    public Response saveEditedJob(Job editedJob) {
-        return getClientWebTarget().path("update").request()
+    public FacesMessage saveEditedJob(Job editedJob) throws RESTException {
+        Response response = getClientWebTarget().path("update").request()
                 .post(Entity.json(new Gson().toJson(editedJob)));
+        LOGGER.log(Level.INFO, editedJob.toString());
+        LOGGER.log(Level.INFO, response.toString());
+        if (response.getStatus() != 202) {
+            return new FacesMessage(response.readEntity(String.class));
+        } else {
+            throw new RESTException(response.readEntity(String.class));
+        }
     }
 
     public void deleteJob(String uuid) throws RESTException {
