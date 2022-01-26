@@ -9,7 +9,7 @@ import java.util.Locale;
 
 @Named
 @SessionScoped
-public class languageBean implements Serializable {
+public class LanguageBean implements Serializable {
     private Locale locale;
 
     @PostConstruct

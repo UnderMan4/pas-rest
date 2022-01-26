@@ -1,10 +1,11 @@
 package p.lodz.pl.pas.services;
 
 import com.google.gson.Gson;
-import p.lodz.pl.pas.model_web.*;
+import p.lodz.pl.pas.exceptions.RESTException;
+import p.lodz.pl.pas.model_web.User;
+import p.lodz.pl.pas.model_web.UserDTO;
 
 import javax.faces.application.FacesMessage;
-import javax.faces.context.FacesContext;
 import javax.ws.rs.client.Client;
 import javax.ws.rs.client.ClientBuilder;
 import javax.ws.rs.client.Entity;
@@ -15,16 +16,18 @@ import javax.ws.rs.core.Response;
 import java.io.Serializable;
 import java.util.List;
 import java.util.UUID;
-
-import static p.lodz.pl.pas.model_web.AccessLevel.UserAdministrator;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 
 public class UserService implements Serializable {
+
+    private final Logger LOGGER = Logger.getLogger(getClass().getName());
 
     public UserService() {
 
     }
 
-    private WebTarget getUserWebTarget(){
+    private WebTarget getUserWebTarget() {
         Client client = ClientBuilder.newClient();
         WebTarget target = client.target(Const.MAIN_URL);
         return target.path("api").path("user");
@@ -35,29 +38,51 @@ public class UserService implements Serializable {
         });
     }
 
-    public Response saveEditedUser(User user) {
-        return getUserWebTarget().path("editUserWithUUID").request()
+    public FacesMessage saveEditedUser(User user) throws RESTException {
+        Response response = getUserWebTarget().path("editUserWithUUID").request()
                 .post(Entity.json(new Gson().toJson(user)));
+        LOGGER.log(Level.INFO, user.toString());
+        LOGGER.log(Level.INFO, response.toString());
+        if (response.getStatus() != 202) {
+            return new FacesMessage(response.readEntity(String.class));
+        } else {
+            throw new RESTException(response.readEntity(String.class));
+        }
     }
 
-    public Response createUser(UserDTO user) {
+    public FacesMessage createUser(UserDTO user) throws RESTException {
         String requestString;
         User u = new User(user.getLogin(), user.getName(), user.getSurname(), user.getActive());
-        switch (user.getAccessLevel())
-        {
+        LOGGER.log(Level.INFO, "Creating user " + user.toString());
+        switch (user.getAccessLevel()) {
             case Admin -> requestString = "createAdmin";
             case NormalUser -> requestString = "createNormalUser";
             case ResourceAdministrator -> requestString = "createResourceAdministrator";
             case UserAdministrator -> requestString = "createUserAdministrator";
             default -> throw new IllegalStateException("Unexpected value: " + user.getAccessLevel());
         }
-        return getUserWebTarget().path(requestString).request()
+        Response response = getUserWebTarget().path(requestString).request()
                 .post(Entity.json(new Gson().toJson(u)));
+        LOGGER.log(Level.INFO, user.toString());
+        LOGGER.log(Level.INFO, response.toString());
+        if (response.getStatus() != 202) {
+            return new FacesMessage(response.readEntity(String.class));
+        } else {
+            throw new RESTException(response.readEntity(String.class));
+        }
     }
 
-    public Response setUserActive(UUID uuid, boolean status) {
-        return getUserWebTarget().path("setUserActive").queryParam("UUID", uuid)
+    public boolean setUserActive(UUID uuid, boolean status) throws RESTException {
+        Response response = getUserWebTarget().path("setUserActive").queryParam("UUID", uuid)
                 .queryParam("status", status).request().get();
+        if (response.getStatus() == 202) {
+            LOGGER.log(Level.INFO, "Setting user " + uuid + " status active");
+        } else {
+            LOGGER.log(Level.WARNING, "Cannot set user " + uuid + " status active");
+
+            throw new RESTException("Cannot set user " + uuid + " status active");
+        }
+        return true;
     }
 
     public List<User> searchByLogin(String login) {

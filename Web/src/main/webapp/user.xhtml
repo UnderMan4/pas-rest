@@ -42,10 +42,12 @@
                     <h:outputText value="#{user.accessLevel}"/>
                 </h:column>
                 <h:column>
-                    <h:commandButton action="#{userListBean.activateUser(user)}" value="#{msg['userList.activateUserButton']}" disabled="#{user.active}"/>
+                    <h:commandButton action="#{userListBean.setUserActive(user, true)}"
+                                     value="#{msg['userList.activateUserButton']}" disabled="#{user.active}"/>
                 </h:column>
                 <h:column>
-                    <h:commandButton action="#{userListBean.deactivateUser(user)}" value="#{msg['userList.deactivateUserButton']}" disabled="#{!user.active}"/>
+                    <h:commandButton action="#{userListBean.setUserActive(user, false)}"
+                                     value="#{msg['userList.deactivateUserButton']}" disabled="#{!user.active}"/>
                 </h:column>
                 <h:column>
                     <h:commandButton action="#{userListBean.editUser(user)}" value="#{msg['editButton']}"/>
