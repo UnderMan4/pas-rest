@@ -2,6 +2,7 @@ package p.lodz.pl.pas.services;
 
 
 import com.google.gson.Gson;
+import p.lodz.pl.pas.exceptions.RESTException;
 import p.lodz.pl.pas.model_web.Job;
 import p.lodz.pl.pas.model_web.JobDTO;
 
@@ -14,14 +15,20 @@ import javax.ws.rs.core.MediaType;
 import javax.ws.rs.core.Response;
 import java.io.Serializable;
 import java.util.List;
+import java.util.UUID;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 
 public class JobService implements Serializable {
+
+    private final Logger LOGGER = Logger.getLogger(getClass().getName());
+
     private final Job newJob = new Job();
 
     public JobService() {
     }
 
-    public Job getNewJob(){
+    public Job getNewJob() {
         return newJob;
     }
 
@@ -47,8 +54,13 @@ public class JobService implements Serializable {
                 .post(Entity.json(new Gson().toJson(editedJob)));
     }
 
-    public Response deleteJob(Job job) {
-        return getClientWebTarget().path("remove").queryParam("UUID", job.getUuid()).request().get();
+    public void deleteJob(String uuid) throws RESTException {
+        LOGGER.log(Level.INFO, "Job to remove " + uuid.toString());
+        Response response = getClientWebTarget().path("remove").queryParam("UUID", uuid).request().get();
+        LOGGER.log(Level.INFO, response.toString());
+        if (response.getStatus() == 406) {
+            throw new RESTException(response.readEntity(String.class));
+        }
     }
 
     public List<Job> searchByUUID(String uuid) {

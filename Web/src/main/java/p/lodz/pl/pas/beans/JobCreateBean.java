@@ -20,6 +20,9 @@ public class JobCreateBean implements Serializable {
     @Inject
     JobService jobService;
 
+    @Inject
+    JobListBean jobListBean;
+
     private final Logger LOGGER = Logger.getLogger(getClass().getName());
 
     private final JobDTO newJob = new JobDTO();

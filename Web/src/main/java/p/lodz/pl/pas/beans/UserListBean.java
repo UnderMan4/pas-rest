@@ -6,6 +6,7 @@ import p.lodz.pl.pas.services.UserService;
 
 import javax.annotation.PostConstruct;
 import javax.enterprise.context.RequestScoped;
+import javax.enterprise.context.SessionScoped;
 import javax.faces.application.FacesMessage;
 import javax.faces.context.FacesContext;
 import javax.inject.Inject;
@@ -15,7 +16,7 @@ import java.util.List;
 import java.util.logging.Logger;
 
 @Named
-@RequestScoped
+@SessionScoped
 public class UserListBean implements Serializable {
 
     private final Logger LOGGER = Logger.getLogger(getClass().getName());
@@ -29,28 +30,23 @@ public class UserListBean implements Serializable {
     @Inject
     UserEditBean userEditBean;
 
-    List<User> userList;
+    private List<User> userList;
+
+    @PostConstruct
+    public void init() {
+        userList = userService.getAllUsers();
+    }
 
     public void setUserList(List<User> userList) {
         this.userList = userList;
-        updateUserList();
     }
 
     public List<User> getUserList() {
         return userList;
     }
 
-    @PostConstruct
-    public void init() {
-        updateUserList();
-    }
-
     public UserListBean() {
 
-    }
-
-    public void updateUserList() {
-        userList = userService.getAllUsers();
     }
 
     public String editUser(User user) {
@@ -66,7 +62,7 @@ public class UserListBean implements Serializable {
             FacesContext context = FacesContext.getCurrentInstance();
             context.addMessage(null, message);
         }
-        updateUserList();
+        init();
     }
 
     public String detailsUser(User user) {

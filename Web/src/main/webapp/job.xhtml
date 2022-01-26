@@ -31,7 +31,9 @@
                     <h:outputText value="#{job.uuid}"/>
                 </h:column>
                 <h:column>
-                    <h:commandButton id="deleteJobButton" action="#{jobListBean.deleteJob(job)}" value="#{msg['jobList.deleteJobButton']}" binding="#{jobListBean.deleteJobButton}"/>
+                    <h:commandButton id="deleteJobButton" action="#{jobListBean.deleteJob}" value="#{msg['jobList.deleteJobButton']}" binding="#{jobListBean.deleteJobButton}">
+                        <f:param name="jobUUID" value="#{job.uuid}"/>
+                    </h:commandButton>
                 </h:column>
                 <h:message for="deleteJobButton" />
                 <h:column>
@@ -48,6 +50,9 @@
         <br/>
         <h:form id="navigate-to-search-job">
             <h:commandButton action="redirectToSearchJob" value="#{msg['jobList.searchJobButton']}" />
+        </h:form>
+        <h:form>
+            <h:commandButton action="#{jobListBean.init()}" value="#{msg['refreshButton']}" />
         </h:form>
         <h:messages />
     </ui:define>

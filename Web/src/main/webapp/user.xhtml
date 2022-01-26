@@ -64,6 +64,9 @@
         <h:form id="navigate-to-search-user">
             <h:commandButton action="redirectToSearchUser" value="#{msg['userList.searchUserButton']}" />
         </h:form>
+        <h:form>
+            <h:commandButton action="#{userListBean.init()}" value="#{msg['refreshButton']}" />
+        </h:form>
         <h:messages />
     </ui:define>
 </ui:composition>
