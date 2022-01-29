@@ -10,15 +10,20 @@ import p.lodz.pl.pas.manager.TicketManager;
 import p.lodz.pl.pas.manager.UserManager;
 import p.lodz.pl.pas.model.AccessLevel;
 
+import javax.annotation.security.PermitAll;
+import javax.annotation.security.RolesAllowed;
 import javax.inject.Inject;
 import javax.ws.rs.*;
+import javax.ws.rs.core.Context;
 import javax.ws.rs.core.MediaType;
 import javax.ws.rs.core.Response;
+import javax.ws.rs.core.SecurityContext;
 import java.util.UUID;
 
 import static p.lodz.pl.pas.conversion.GsonLocalDateTime.getGsonSerializer;
 
 @Path("user")
+@RolesAllowed({"Admin", "UserAdministrator"})
 public class UserController {
     @Inject
     UserManager userManager;
@@ -29,6 +34,7 @@ public class UserController {
     private Response createUser(String json, AccessLevel userType) {
         JsonObject jsonObject = JsonParser.parseString(json).getAsJsonObject();
         String login = jsonObject.get("login").getAsString();
+        String password = jsonObject.get("password").getAsString();
         String name = jsonObject.get("name").getAsString();
         String surname = jsonObject.get("surname").getAsString();
         Boolean active = jsonObject.get("active").getAsBoolean();
@@ -41,13 +47,12 @@ public class UserController {
         }
 
         try {
-            userManager.createUser(login, name, surname, active, userType);
+            userManager.createUser(login, password, name, surname, active, userType);
             return Response.status(Response.Status.CREATED).build();
         } catch (LoginNotUnique e) {
             return Response.status(Response.Status.BAD_REQUEST).entity(e.getMessage()).build();
         }
     }
-
 
     @POST
     @Path("createNormalUser")
@@ -87,13 +92,13 @@ public class UserController {
     }
 
     @GET
+    @RolesAllowed({"Admin", "UserAdministrator"})
     @Path("list")
     @Produces(MediaType.APPLICATION_JSON)
     public Response getUserList() {
         Gson gson = getGsonSerializer();
         return Response.status(Response.Status.ACCEPTED).entity(gson.toJson(userManager.getUserList())).build();
     }
-
 
     @POST
     @Path("editUserWithUUID")
@@ -102,6 +107,7 @@ public class UserController {
         JsonObject jsonObject = JsonParser.parseString(json).getAsJsonObject();
         UUID uuid = UUID.fromString(jsonObject.get("uuid").getAsString());
         String login = jsonObject.get("login").getAsString();
+        String password = jsonObject.get("password").getAsString();
         String name = jsonObject.get("name").getAsString();
         String surname = jsonObject.get("surname").getAsString();
         Boolean active  = jsonObject.get("active").getAsBoolean();
@@ -116,7 +122,7 @@ public class UserController {
         }
 
         try {
-            userManager.editUserWithUUID(uuid, login, name, surname, active, accessLevel);
+            userManager.editUserWithUUID(uuid, login, password, name, surname, active, accessLevel);
             return Response.status(Response.Status.ACCEPTED).entity("User edited").build();
         } catch (ItemNotFoundException e) {
             return Response.status(Response.Status.BAD_REQUEST).entity(e.getMessage()).build();
@@ -163,6 +169,20 @@ public class UserController {
     public Response findUserByUUID(@QueryParam("UUID") String uuid) {
         try {
             return Response.status(Response.Status.ACCEPTED).entity(getGsonSerializer().toJson(userManager.searchByUUID(uuid))).build();
+        } catch (ItemNotFoundException e) {
+            return Response.status(Response.Status.NOT_FOUND).entity(e.getMessage()).build();
+        }
+    }
+
+    @GET
+    @Path("_self")
+    @PermitAll
+    @Produces(MediaType.APPLICATION_JSON)
+    public Response findSelf(@Context SecurityContext securityContext) {
+        try {
+            return Response.status(Response.Status.ACCEPTED).entity(
+                    getGsonSerializer().toJson(userManager.findUsersByLogin(securityContext.getUserPrincipal().getName()))
+            ).build();
         } catch (ItemNotFoundException e) {
             return Response.status(Response.Status.NOT_FOUND).entity(e.getMessage()).build();
         }

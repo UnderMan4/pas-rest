@@ -9,6 +9,7 @@ import p.lodz.pl.pas.exceptions.JobAlreadyTaken;
 import p.lodz.pl.pas.exceptions.cantDeleteException;
 import p.lodz.pl.pas.manager.TicketManager;
 
+import javax.annotation.security.RolesAllowed;
 import javax.inject.Inject;
 import javax.ws.rs.*;
 import javax.ws.rs.core.MediaType;
@@ -22,6 +23,7 @@ import static p.lodz.pl.pas.conversion.GsonLocalDateTime.getGsonSerializer;
 
 
 @Path("ticket")
+@RolesAllowed({"Admin", "ResourceAdministrator"})
 public class TicketController {
     @Inject
     TicketManager ticketManager;

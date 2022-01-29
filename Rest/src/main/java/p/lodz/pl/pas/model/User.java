@@ -8,13 +8,15 @@ public abstract class User {
     private String surname;
     private UUID uuid;
     private Boolean active;
+    private String password;
 
-    public User(UUID uuid, String login, String name, String surname, Boolean active) {
+    public User(UUID uuid, String login, String password, String name, String surname, Boolean active) {
         this.uuid = uuid;
         this.login = login;
         this.name = name;
         this.surname = surname;
         this.active = active;
+        this.password = password;
     }
 
     public User(String login, String name, String surname, Boolean active) {
@@ -65,6 +67,14 @@ public abstract class User {
     }
 
     public abstract AccessLevel getUserAccessLevel();
+
+    public String getPassword() {
+        return password;
+    }
+
+    public void setPassword(String password) {
+        this.password = password;
+    }
 
     // ------------------------------------------------------------------------------------------------
 

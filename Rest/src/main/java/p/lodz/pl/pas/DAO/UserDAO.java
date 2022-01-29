@@ -16,10 +16,10 @@ public class UserDAO implements DAO<User> {
 
     public UserDAO() {
         users = new ArrayList<>();
-        this.create(new NormalUser(UUID.fromString("54ceb043-5f89-41bb-a29b-f2c0e9909dad"), "jkowalski", "Jan", "Kowalski", true));
-        this.create(new ResourceAdministrator(UUID.fromString("40d68ba5-39ba-4f2e-9e61-a55daf7b3e8e"), "jjjkowal", "Jaroslaw", "Kowalski", true));
-        this.create(new UserAdministrator(UUID.fromString("84d267cf-6dc4-40cd-b1d3-000733a85458"), "ttttt", "Tomasz", "Kowalski", true));
-        this.create(new Admin(UUID.fromString("295eea09-5541-42e4-ac24-126a0d87607e"), "Restitutor", "Lucius", "Aurelianus", true));
+        this.create(new NormalUser(UUID.fromString("54ceb043-5f89-41bb-a29b-f2c0e9909dad"), "jkowalski", "P@ssw0rd", "Jan", "Kowalski", true));
+        this.create(new ResourceAdministrator(UUID.fromString("40d68ba5-39ba-4f2e-9e61-a55daf7b3e8e"), "jjjkowal", "P@ssw0rd", "Jaroslaw", "Kowalski", true));
+        this.create(new UserAdministrator(UUID.fromString("84d267cf-6dc4-40cd-b1d3-000733a85458"), "ttttt", "P@ssw0rd", "Tomasz", "Kowalski", true));
+        this.create(new Admin(UUID.fromString("295eea09-5541-42e4-ac24-126a0d87607e"), "Restitutor", "P@ssw0rd","Lucius",  "Aurelianus", true));
     }
 
     @Override
@@ -55,10 +55,6 @@ public class UserDAO implements DAO<User> {
         return true;
     }
 
-//    public boolean updateRole(User object) throws ItemNotFoundException {
-//        User u = readOne()
-//    }
-
     public boolean checkLoginUnique(String login) {
         return users.stream().parallel().noneMatch(u -> u.getLogin().equals(login));
     }
@@ -67,6 +63,16 @@ public class UserDAO implements DAO<User> {
         User u = readOne(uuid);
         u.setActive(active);
         return true;
+    }
+
+    public User findUserByLoginPasswordActive(String login, String password) throws ItemNotFoundException {
+        Optional<User> optional = users.stream()
+                .filter(u -> u.getLogin().equals(login))
+                .filter(u -> u.getPassword().equals(password))
+                .filter(u -> u.getActive().equals(true)).findFirst();
+        return optional.orElseThrow(() -> new ItemNotFoundException(
+                "Active user with login " + login + " not found"
+        ));
     }
 
     // find users with matching login

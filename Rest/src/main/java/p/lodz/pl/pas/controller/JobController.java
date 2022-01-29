@@ -9,6 +9,7 @@ import p.lodz.pl.pas.manager.JobManager;
 import p.lodz.pl.pas.manager.TicketManager;
 import p.lodz.pl.pas.model.Ticket;
 
+import javax.annotation.security.RolesAllowed;
 import javax.inject.Inject;
 import javax.ws.rs.*;
 import javax.ws.rs.core.MediaType;
@@ -18,6 +19,7 @@ import java.util.UUID;
 
 
 @Path("job")
+@RolesAllowed({"Admin", "ResourceAdministrator"})
 public class JobController {
     @Inject
     JobManager jobManager;
