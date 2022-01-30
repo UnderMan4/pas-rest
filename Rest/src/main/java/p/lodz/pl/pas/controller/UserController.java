@@ -6,6 +6,7 @@ import com.google.gson.JsonParser;
 import com.google.gson.JsonSyntaxException;
 import p.lodz.pl.pas.exceptions.ItemNotFoundException;
 import p.lodz.pl.pas.exceptions.LoginNotUnique;
+import p.lodz.pl.pas.filter.EditUserRequestFilter;
 import p.lodz.pl.pas.manager.UserManager;
 import p.lodz.pl.pas.model.AccessLevel;
 
@@ -118,7 +119,7 @@ public class UserController {
 
     @GET
     @Produces(MediaType.APPLICATION_JSON)
-    public Response findUser(@QueryParam("UUID") UUID uuid) {
+    public Response findUserByUUID(@QueryParam("UUID") UUID uuid) {
         try {
             return Response.status(Response.Status.ACCEPTED).entity(
                     getGsonSerializer().toJson(userManager.findUser(uuid))
@@ -128,10 +129,33 @@ public class UserController {
         }
     }
 
+    /**
+     *
+     * @param uuid exact login to find user by
+     * @return user object
+     */
+    @GET
+    @Path("getEditUser")
+    @Produces(MediaType.APPLICATION_JSON)
+    public Response getEditUser(@QueryParam("UUID") UUID uuid) {
+        try {
+            return Response.status(Response.Status.ACCEPTED).entity(
+                    getGsonSerializer().toJson(userManager.findUser(uuid))
+            ).build();
+        } catch (ItemNotFoundException e) {
+            return Response.status(Response.Status.NOT_FOUND).entity(e.getMessage()).build();
+        }
+    }
+
+    /**
+     *
+     * @param login fragment or whole login of a user
+     * @return list of users that contains the login
+     */
     @GET
     @Path("searchByLogin")
     @Produces(MediaType.APPLICATION_JSON)
-    public Response findUserByLogin(@QueryParam("login") @NotNull String login) {
+    public Response findUsersByLogin(@QueryParam("login") @NotNull String login) {
         try {
             return Response.status(Response.Status.ACCEPTED).entity(getGsonSerializer().toJson(userManager.findUsersByLogin(login))).build();
         } catch (ItemNotFoundException e) {
@@ -139,10 +163,15 @@ public class UserController {
         }
     }
 
+    /**
+     *
+     * @param uuid fragment or whole UUID of a user
+     * @return list of users that contains the uuid
+     */
     @GET
     @Path("searchByUUID")
     @Produces(MediaType.APPLICATION_JSON)
-    public Response findUserByUUID(@QueryParam("UUID") @NotNull String uuid) {
+    public Response findUsersByUUID(@QueryParam("UUID") @NotNull String uuid) {
         try {
             return Response.status(Response.Status.ACCEPTED).entity(getGsonSerializer().toJson(userManager.searchByUUID(uuid))).build();
         } catch (ItemNotFoundException e) {
@@ -163,6 +192,4 @@ public class UserController {
             return Response.status(Response.Status.NOT_FOUND).entity(e.getMessage()).build();
         }
     }
-
-
 }

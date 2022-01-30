@@ -102,4 +102,9 @@ public class UserManager {
     public User findUserByLoginPasswordActive(String login, String password) throws ItemNotFoundException {
         return userDAO.findUserByLoginPasswordActive(login, password);
     }
+
+    public User findUserByLogin(String login) throws ItemNotFoundException {
+        return userDAO.findUserByLogin(login);
+    }
+
 }

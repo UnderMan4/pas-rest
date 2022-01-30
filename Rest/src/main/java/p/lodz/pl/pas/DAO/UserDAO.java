@@ -99,4 +99,12 @@ public class UserDAO implements DAO<User> {
         }
         return new ArrayList<User>(list);
     }
+
+    // find ONE user with login
+    public User findUserByLogin(String login) throws ItemNotFoundException {
+        Optional<User> optional = users.stream().filter(u -> u.getLogin().equals(login)).findFirst();
+        return optional.orElseThrow(() -> new ItemNotFoundException(
+                "User with login " + login + " not found"
+        ));
+    }
 }
