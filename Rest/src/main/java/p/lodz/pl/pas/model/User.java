@@ -1,13 +1,28 @@
 package p.lodz.pl.pas.model;
 
+import javax.validation.constraints.NotNull;
+import javax.validation.constraints.Pattern;
 import java.util.UUID;
+import static p.lodz.pl.pas.RegexList.SURNAME_PATTERN;
+import static p.lodz.pl.pas.RegexList.USERNAME_PATTERN;
 
 public abstract class User {
+
+    @NotNull
+    @Pattern(regexp = USERNAME_PATTERN, message = "Username must be between 2 and 20 characters")
     private String login;
+
+    @Pattern(regexp = SURNAME_PATTERN, message = "Name must be between 2 and 20 characters")
     private String name;
+
+    @Pattern(regexp = SURNAME_PATTERN, message = "Surname must be between 2 and 30 characters")
     private String surname;
+
     private UUID uuid;
+
     private Boolean active;
+
+    @Pattern(regexp = SURNAME_PATTERN, message = "Password must be between 2 and 30 characters")
     private String password;
 
     public User(UUID uuid, String login, String password, String name, String surname, Boolean active) {

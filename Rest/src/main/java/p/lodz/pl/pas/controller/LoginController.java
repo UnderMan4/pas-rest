@@ -3,6 +3,7 @@ package p.lodz.pl.pas.controller;
 
 import com.google.gson.JsonObject;
 import com.google.gson.JsonParser;
+import com.google.gson.JsonSyntaxException;
 import p.lodz.pl.pas.security.InMemoryIdentityStore;
 import p.lodz.pl.pas.security.JWTAuthenticator;
 
@@ -32,19 +33,22 @@ public class LoginController {
     @Consumes({MediaType.APPLICATION_XML, MediaType.APPLICATION_JSON})
     @Produces
     public Response authenticate(@NotNull String body) {
-        JsonObject jsonObject = JsonParser.parseString(body).getAsJsonObject();
-        String login = jsonObject.get("login").getAsString();
-        String password = jsonObject.get("password").getAsString();
-        Credential credential = new UsernamePasswordCredential(login, password);
-        CredentialValidationResult result = identityStoreHandler.validate(credential);
-
-        if (result.getStatus() == CredentialValidationResult.Status.VALID) {
-            return Response.accepted()
-                    .type("application/jwt")
-                    .entity(JWTAuthenticator.generateJWT(result))
-                    .build();
-        } else {
-            return Response.status(Response.Status.UNAUTHORIZED).build();
+        try {
+            JsonObject jsonObject = JsonParser.parseString(body).getAsJsonObject();
+            String login = jsonObject.get("login").getAsString();
+            String password = jsonObject.get("password").getAsString();
+            Credential credential = new UsernamePasswordCredential(login, password);
+            CredentialValidationResult result = identityStoreHandler.validate(credential);
+            if (result.getStatus() == CredentialValidationResult.Status.VALID) {
+                return Response.accepted()
+                        .type("application/jwt")
+                        .entity(JWTAuthenticator.generateJWT(result))
+                        .build();
+            } else {
+                return Response.status(Response.Status.UNAUTHORIZED).build();
+            }
+        } catch (JsonSyntaxException | NullPointerException e) {
+            return Response.status(Response.Status.BAD_REQUEST).entity("Invalid json name").build();
         }
     }
 }
