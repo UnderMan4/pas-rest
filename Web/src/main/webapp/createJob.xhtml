@@ -18,14 +18,39 @@
     <ui:define name="content">
         <h:form id="create-job-form">
             <h2>${msg["jobCreate"]}</h2>
+
+
             <a>${msg["column.name"]}</a>
-            <h:inputText value="#{jobCreateBean.newJob.name}" required="true" requiredMessage="#{msg['jobCreate.requiredMessage']}"/>
+            <h:inputText id="jobName" value="#{jobCreateBean.newJob.name}" required="true"
+                         requiredMessage="#{msg['jobCreate.requiredMessage']}"
+                         validatorMessage="#{msg['message.jobCreate.name']}"
+                         style="width: 20em">
+                <f:validateLength minimum="4" maximum="20"/>
+                <f:ajax event="keyup" render="jobNameMessage"/>
+            </h:inputText>
+
+
             <br/>
+
+
             <a>${msg["column.description"]}</a>
-            <h:inputText value="#{jobCreateBean.newJob.description}"/>
+            <h:inputTextarea id="jobDescription" value="#{jobCreateBean.newJob.description}"
+                             validatorMessage="#{msg['message.jobCreate.description']}"
+                             style="height: 10em; width: 30em">
+                <f:validateRegex pattern="[a-zA-Z0-9_\s\u002e]*"/>
+                <f:ajax event="keyup" render="jobDescriptionMessage"/>
+            </h:inputTextarea>
+
+
             <p>${msg['jobCreate.UUIDmessage']}</p>
+
+
             <br/>
             <h:commandButton action="#{jobCreateBean.createNewJob}" value="#{msg['jobCreate']}"/>
+            <div style="display: flex; flex-direction: column; color: red; font-weight: bold;">
+                <h:message id="jobNameMessage" for="jobName"/>
+                <h:message id="jobDescriptionMessage" for="jobDescription"/>
+            </div>
         </h:form>
     </ui:define>
 </ui:composition>
