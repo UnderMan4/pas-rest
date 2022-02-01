@@ -68,6 +68,7 @@ public class JobService implements Serializable {
         }
     }
 
+    // @JsModule
     public void deleteJob(String uuid) throws RESTException {
         LOGGER.log(Level.INFO, "Job to remove " + uuid.toString());
         Response response = getClientWebTarget().path("remove").queryParam("UUID", uuid).request().get();
