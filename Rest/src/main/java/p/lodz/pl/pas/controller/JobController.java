@@ -138,4 +138,16 @@ public class JobController {
             return Response.status(Response.Status.NOT_FOUND).entity(e.getMessage()).build();
         }
     }
+
+    @GET
+    @Path("search")
+    @Produces(MediaType.APPLICATION_JSON)
+    public Response search(@QueryParam("s") String s) {
+        try {
+            Gson gson = new Gson();
+            return Response.status(Response.Status.ACCEPTED).entity(gson.toJson(jobManager.search(s))).build();
+        } catch (ItemNotFoundException e) {
+            return Response.status(Response.Status.NOT_FOUND).entity(e.getMessage()).build();
+        }
+    }
 }

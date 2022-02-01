@@ -2,6 +2,7 @@ package p.lodz.pl.pas.services;
 
 import com.google.gson.Gson;
 import p.lodz.pl.pas.exceptions.RESTException;
+import p.lodz.pl.pas.model_web.Job;
 import p.lodz.pl.pas.model_web.User;
 import p.lodz.pl.pas.model_web.UserDTO;
 
@@ -94,4 +95,14 @@ public class UserService implements Serializable {
         return getUserWebTarget().path("searchByUUID").queryParam("UUID", uuid).request(MediaType.APPLICATION_JSON).get(new GenericType<List<User>>() {
         });
     }
+
+    public List<User> search(String s) {
+        return getUserWebTarget()
+                .path("search")
+                .queryParam("s", s)
+                .request(MediaType.APPLICATION_JSON)
+                .get(new GenericType<List<User>>() {
+                });
+    }
+
 }

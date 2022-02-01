@@ -1,5 +1,6 @@
 <?xml version='1.0' encoding='UTF-8' ?>
-<!DOCTYPE composition PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<!DOCTYPE composition PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+        "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
 <ui:composition xmlns:ui="http://java.sun.com/jsf/facelets"
                 xmlns="http://www.w3.org/1999/xhtml"
                 xmlns:h="http://java.sun.com/jsf/html" xmlns:f="http://java.sun.com/jsf/core"
@@ -15,8 +16,11 @@
 
     <ui:define name="content">
         <h:form id="user-form">
+            <h:inputText id="search" value="#{userListBean.search}">
+                <f:ajax event="keyup" render="userTable" listener="#{userListBean.init}"/>
+            </h:inputText>
             <h2>${msg["userList"]}</h2>
-            <h:dataTable value="#{userListBean.userList}" var="user">
+            <h:dataTable id="userTable" value="#{userListBean.userList}" var="user">
                 <h:column>
                     <f:facet name="header">${msg["column.login"]}</f:facet>
                     <h:outputText value="#{user.login}"/>
@@ -58,15 +62,10 @@
             </h:dataTable>
         </h:form>
         <h:form id="navigate-to-create-user">
-            <h:commandButton action="redirectToCreateUser" value="#{msg['userList.createUserButton']}" />
+            <h:commandButton action="redirectToCreateUser" value="#{msg['userList.createUserButton']}"/>
         </h:form>
         <br/>
-        <h:form id="navigate-to-search-user">
-            <h:commandButton action="redirectToSearchUser" value="#{msg['userList.searchUserButton']}" />
-        </h:form>
-        <h:form>
-            <h:commandButton action="#{userListBean.init()}" value="#{msg['refreshButton']}" />
-        </h:form>
-        <h:messages />
+        
+        <h:messages/>
     </ui:define>
 </ui:composition>

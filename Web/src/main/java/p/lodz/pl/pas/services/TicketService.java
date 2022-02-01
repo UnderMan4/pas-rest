@@ -2,6 +2,7 @@ package p.lodz.pl.pas.services;
 
 import p.lodz.pl.pas.conversion.GsonLocalDateTime;
 import p.lodz.pl.pas.exceptions.RESTException;
+import p.lodz.pl.pas.model_web.Job;
 import p.lodz.pl.pas.model_web.Ticket;
 import p.lodz.pl.pas.model_web.TicketDTO;
 
@@ -34,7 +35,7 @@ public class TicketService implements Serializable {
         return newTicket;
     }
 
-    private WebTarget getTicketWebTarget(){
+    private WebTarget getTicketWebTarget() {
         Client client = ClientBuilder.newClient();
         WebTarget target = client.target(Const.MAIN_URL);
         return target.path("api").path("ticket");
@@ -74,5 +75,14 @@ public class TicketService implements Serializable {
     public List<Ticket> getJobTicketList(String uuid) {
         return getTicketWebTarget().path("getJobTickets").queryParam("UUID", uuid).request().get(new GenericType<List<Ticket>>() {
         });
+    }
+
+    public List<Ticket> search(String s) {
+        return getTicketWebTarget()
+                .path("search")
+                .queryParam("s", s)
+                .request(MediaType.APPLICATION_JSON)
+                .get(new GenericType<List<Ticket>>() {
+                });
     }
 }

@@ -19,8 +19,7 @@ public class UserManager {
 
     private User createUserObject(UUID uuid, String login, String name, String surname, Boolean active, AccessLevel accessLevel) {
         User u;
-        switch (accessLevel)
-        {
+        switch (accessLevel) {
             case ResourceAdministrator -> u = new ResourceAdministrator(uuid, login, name, surname, active);
             case NormalUser -> u = new NormalUser(uuid, login, name, surname, active);
             case Admin -> u = new Admin(uuid, login, name, surname, active);
@@ -77,5 +76,9 @@ public class UserManager {
 
     public ArrayList<User> findUsersByLogin(String login) throws ItemNotFoundException {
         return userDAO.findUsersByLogin(login);
+    }
+
+    public ArrayList<User> search(String s) throws ItemNotFoundException {
+        return userDAO.search(s);
     }
 }

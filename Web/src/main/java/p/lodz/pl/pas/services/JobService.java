@@ -79,7 +79,20 @@ public class JobService implements Serializable {
     }
 
     public List<Job> searchByUUID(String uuid) {
-        return getClientWebTarget().path("searchByUUID").queryParam("UUID", uuid).request(MediaType.APPLICATION_JSON).get(new GenericType<List<Job>>() {
-        });
+        return getClientWebTarget()
+                .path("searchByUUID")
+                .queryParam("UUID", uuid)
+                .request(MediaType.APPLICATION_JSON)
+                .get(new GenericType<List<Job>>() {
+                });
+    }
+
+    public List<Job> search(String s) {
+        return getClientWebTarget()
+                .path("search")
+                .queryParam("s", s)
+                .request(MediaType.APPLICATION_JSON)
+                .get(new GenericType<List<Job>>() {
+                });
     }
 }

@@ -17,8 +17,11 @@
 
     <ui:define name="content">
         <h:form id="job-form">
+            <h:inputText id="search" value="#{jobListBean.search}">
+                <f:ajax event="keyup" render="jobTable" listener="#{jobListBean.init}"/>
+            </h:inputText>
             <h2>${msg["jobList"]}</h2>
-            <h:dataTable value="#{jobListBean.jobList}" var="job">
+            <h:dataTable id="jobTable" value="#{jobListBean.jobList}" var="job">
                 <h:column>
                     <f:facet name="header">${msg["column.name"]}</f:facet>
                     <h:outputText value="#{job.name}"/>
@@ -29,7 +32,6 @@
                 </h:column>
                 <h:column>
                     <f:facet name="header">${msg["column.uuid"]}</f:facet>
-
                     <h:outputText value="#{job.uuid}"/>
                 </h:column>
                 <h:column>
@@ -56,15 +58,10 @@
             <h:commandButton action="redirectToCreateJob" value="#{msg['jobList.createJobButton']}"/>
         </h:form>
         <br/>
-        <h:form id="navigate-to-search-job">
-            <h:commandButton action="redirectToSearchJob" value="#{msg['jobList.searchJobButton']}"/>
-        </h:form>
-        <h:form>
-            <h:commandButton action="#{jobListBean.init()}" value="#{msg['refreshButton']}"/>
-        </h:form>
         <h:messages/>
 
-        <div style="position: absolute; background-color: red; top: 50%; left: 50%; padding: 10px; border-radius: 10px; transform: translate(-50%,-50%); display: #{(jobListBean.showDeleteConfirmation)?'block':'none'}">
+        <div id="popup"
+             style="position: absolute; background-color: red; top: 50%; left: 50%; padding: 10px; border-radius: 10px; transform: translate(-50%,-50%); display: #{(jobListBean.showDeleteConfirmation)?'block':'none'}">
             <h:form>
                 <div style="display: flex; flex-direction: column; gap: 4px; justify-content: center;align-items: center">
 

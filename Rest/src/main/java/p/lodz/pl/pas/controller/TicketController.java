@@ -1,8 +1,10 @@
 package p.lodz.pl.pas.controller;
 
+import com.google.gson.Gson;
 import com.google.gson.JsonObject;
 import com.google.gson.JsonParser;
 import p.lodz.pl.pas.RegexList;
+import p.lodz.pl.pas.conversion.GsonLocalDateTime;
 import p.lodz.pl.pas.exceptions.DateException;
 import p.lodz.pl.pas.exceptions.ItemNotFoundException;
 import p.lodz.pl.pas.exceptions.JobAlreadyTaken;
@@ -33,7 +35,7 @@ public class TicketController {
     @POST
     @Path("create")
     @Consumes(MediaType.APPLICATION_JSON)
-    public Response createTicket(String json){
+    public Response createTicket(String json) {
         JsonObject jsonObject = JsonParser.parseString(json).getAsJsonObject();
         UUID user;
         UUID job;
@@ -48,7 +50,7 @@ public class TicketController {
 
         LocalDateTime jobStart;
         String description = jsonObject.get("description").getAsString();
-        
+
 
         DateTimeFormatter dtf = DateTimeFormatter.ISO_LOCAL_DATE_TIME;
         try {
@@ -60,8 +62,8 @@ public class TicketController {
         }
 
         if (!verifyDescription(description)) {
-             return Response.status(Response.Status.BAD_REQUEST).entity("Description not valid").build();
-         }
+            return Response.status(Response.Status.BAD_REQUEST).entity("Description not valid").build();
+        }
 
         try {
             ticketManager.createTicket(user, job, jobStart, null, description);
@@ -135,6 +137,18 @@ public class TicketController {
     public Response searchByUUID(@QueryParam("UUID") String uuid) {
         try {
             return Response.status(ACCEPTED).entity(ticketManager.searchByUUID(uuid)).build();
+        } catch (ItemNotFoundException e) {
+            return Response.status(Response.Status.NOT_FOUND).entity(e.getMessage()).build();
+        }
+    }
+
+    @GET
+    @Path("search")
+    @Produces(MediaType.APPLICATION_JSON)
+    public Response search(@QueryParam("s") String s) {
+        try {
+            // Gson gson = new Gson();
+            return Response.status(Response.Status.ACCEPTED).entity(GsonLocalDateTime.getGsonSerializer().toJson(ticketManager.search(s))).build();
         } catch (ItemNotFoundException e) {
             return Response.status(Response.Status.NOT_FOUND).entity(e.getMessage()).build();
         }

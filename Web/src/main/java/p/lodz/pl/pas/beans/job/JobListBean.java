@@ -39,6 +39,8 @@ public class JobListBean implements Serializable {
     private boolean showDeleteConfirmation = false;
     private String jobToDeleteUUID = null;
 
+    private String search = "";
+
     private List<Job> jobList;
 
     public JobListBean() {
@@ -46,7 +48,11 @@ public class JobListBean implements Serializable {
 
     @PostConstruct
     public void init() {
-        jobList = jobService.getAllJobs();
+        if (search == "") {
+            jobList = jobService.getAllJobs();
+        } else {
+            jobList = jobService.search(search);
+        }
         LOGGER.log(Level.INFO, jobList.toString());
     }
 
@@ -134,6 +140,13 @@ public class JobListBean implements Serializable {
         this.jobToDeleteUUID = jobToDeleteUUID;
     }
 
+    public String getSearch() {
+        return search;
+    }
+
+    public void setSearch(String search) {
+        this.search = search;
+    }
 
     public String detailsUser(Job job) {
         jobDetailsBean.setJob(job);

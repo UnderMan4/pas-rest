@@ -8,6 +8,7 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 import java.util.UUID;
+import java.util.function.Predicate;
 import java.util.stream.Collectors;
 
 @ApplicationScoped
@@ -80,6 +81,26 @@ public class UserDAO implements DAO<User> {
             );
         }
         return new ArrayList<User>(list);
+    }
+
+    @Override
+    public ArrayList<User> search(String s) throws ItemNotFoundException {
+        Predicate<User> login = user -> user.getLogin().toLowerCase().contains(s.toLowerCase());
+        Predicate<User> name = user -> user.getName().toLowerCase().contains(s.toLowerCase());
+        Predicate<User> surname = user -> user.getSurname().toLowerCase().contains(s.toLowerCase());
+        Predicate<User> uuid = user -> user.getUuid().toString().toLowerCase().contains(s.toLowerCase());
+
+        Predicate<User> filter = login.or(name).or(surname).or(uuid);
+
+        List<User> results = users.stream().filter(filter).collect(Collectors.toList());
+
+        // if (results.isEmpty()) {
+        //     throw new ItemNotFoundException(
+        //             "Users not found"
+        //     );
+        // }
+
+        return new ArrayList<User>(results);
     }
 
     // find users with matching login

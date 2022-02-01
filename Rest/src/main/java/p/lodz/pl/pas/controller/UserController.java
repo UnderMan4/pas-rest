@@ -25,7 +25,7 @@ public class UserController {
 
     @Inject
     TicketManager ticketManager;
-    
+
     private Response createUser(String json, AccessLevel userType) {
         JsonObject jsonObject = JsonParser.parseString(json).getAsJsonObject();
         String login = jsonObject.get("login").getAsString();
@@ -76,12 +76,15 @@ public class UserController {
     public Response createResourceAdministrator(String json) throws LoginNotUnique {
         return createUser(json, AccessLevel.ResourceAdministrator);
     }
+
     private boolean verifyLogin(String login) {
         return RegexList.Login.matcher(login).matches();
     }
+
     private boolean verifyName(String name) {
         return RegexList.Surname.matcher(name).matches();
     }
+
     private boolean verifySurname(String surname) {
         return RegexList.Surname.matcher(surname).matches();
     }
@@ -104,7 +107,7 @@ public class UserController {
         String login = jsonObject.get("login").getAsString();
         String name = jsonObject.get("name").getAsString();
         String surname = jsonObject.get("surname").getAsString();
-        Boolean active  = jsonObject.get("active").getAsBoolean();
+        Boolean active = jsonObject.get("active").getAsBoolean();
         AccessLevel accessLevel = AccessLevel.valueOf(jsonObject.get("accessLevel").getAsString());
 
         if (!verifyLogin(login)) {
@@ -163,6 +166,18 @@ public class UserController {
     public Response findUserByUUID(@QueryParam("UUID") String uuid) {
         try {
             return Response.status(Response.Status.ACCEPTED).entity(getGsonSerializer().toJson(userManager.searchByUUID(uuid))).build();
+        } catch (ItemNotFoundException e) {
+            return Response.status(Response.Status.NOT_FOUND).entity(e.getMessage()).build();
+        }
+    }
+
+    @GET
+    @Path("search")
+    @Produces(MediaType.APPLICATION_JSON)
+    public Response search(@QueryParam("s") String s) {
+        try {
+            Gson gson = new Gson();
+            return Response.status(Response.Status.ACCEPTED).entity(gson.toJson(userManager.search(s))).build();
         } catch (ItemNotFoundException e) {
             return Response.status(Response.Status.NOT_FOUND).entity(e.getMessage()).build();
         }
