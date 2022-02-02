@@ -4,21 +4,22 @@ import com.google.gson.Gson;
 import com.google.gson.JsonObject;
 import com.google.gson.JsonParser;
 import com.google.gson.JsonSyntaxException;
+import p.lodz.pl.pas.conversion.GsonLocalDateTime;
 import p.lodz.pl.pas.exceptions.ItemNotFoundException;
 import p.lodz.pl.pas.exceptions.LoginNotUnique;
-import p.lodz.pl.pas.filter.EditUserRequestFilter;
+import p.lodz.pl.pas.filter.SignatureValidatorFilter;
+import p.lodz.pl.pas.filter.SignatureVerifier;
 import p.lodz.pl.pas.manager.UserManager;
 import p.lodz.pl.pas.model.AccessLevel;
+import p.lodz.pl.pas.model.User;
 
 import javax.annotation.security.PermitAll;
 import javax.annotation.security.RolesAllowed;
 import javax.inject.Inject;
+import javax.validation.constraints.NotEmpty;
 import javax.validation.constraints.NotNull;
 import javax.ws.rs.*;
-import javax.ws.rs.core.Context;
-import javax.ws.rs.core.MediaType;
-import javax.ws.rs.core.Response;
-import javax.ws.rs.core.SecurityContext;
+import javax.ws.rs.core.*;
 import java.util.UUID;
 
 import static p.lodz.pl.pas.conversion.GsonLocalDateTime.getGsonSerializer;
@@ -80,27 +81,24 @@ public class UserController {
     @Path("list")
     @Produces(MediaType.APPLICATION_JSON)
     public Response getUserList() {
-        Gson gson = getGsonSerializer();
-        return Response.status(Response.Status.ACCEPTED).entity(gson.toJson(userManager.getUserList())).build();
+        return Response.status(Response.Status.ACCEPTED).entity(getGsonSerializer().toJson(userManager.getUserList())).build();
     }
 
     @POST
     @Path("editUserWithUUID")
+    @SignatureValidatorFilter
     @Consumes(MediaType.APPLICATION_JSON)
-    public Response editUserWithUUID(@NotNull String json) {
+    public Response editUserWithUUID(String json, @HeaderParam("If-match") @NotNull @NotEmpty String tagValue) {
         try {
-            JsonObject jsonObject = JsonParser.parseString(json).getAsJsonObject();
-            UUID uuid = UUID.fromString(jsonObject.get("uuid").getAsString());
-            String login = jsonObject.get("login").getAsString();
-            String password = jsonObject.get("password").getAsString();
-            String name = jsonObject.get("name").getAsString();
-            String surname = jsonObject.get("surname").getAsString();
-            Boolean active = jsonObject.get("active").getAsBoolean();
-            AccessLevel accessLevel = AccessLevel.valueOf(jsonObject.get("accessLevel").getAsString());
-            userManager.editUserWithUUID(uuid, login, password, name, surname, active, accessLevel);
+            User user = GsonLocalDateTime.getGsonSerializer().fromJson(json, User.class);
+
+            if (!SignatureVerifier.verifyEntityIntegrity(tagValue, user)) {
+                return Response.status(Response.Status.PRECONDITION_FAILED).build();
+            }
+            userManager.editUserWithUUID(user.getUuid(), user.getLogin(), user.getPassword(), user.getName(), user.getSurname(), user.getActive(), user.getUserAccessLevel());
             return Response.status(Response.Status.ACCEPTED).entity("User edited").build();
         } catch (JsonSyntaxException | NullPointerException e) {
-            return Response.status(Response.Status.BAD_REQUEST).entity("Invalid json name").build();
+            return Response.status(Response.Status.BAD_REQUEST).entity(e.getMessage()).build();
         } catch (ItemNotFoundException e) {
             return Response.status(Response.Status.BAD_REQUEST).entity(e.getMessage()).build();
         }
@@ -139,9 +137,11 @@ public class UserController {
     @Produces(MediaType.APPLICATION_JSON)
     public Response getEditUser(@QueryParam("UUID") UUID uuid) {
         try {
+            User user = userManager.findUser(uuid);
+            EntityTag tag = new EntityTag(SignatureVerifier.calculateEntitySignature(user));
             return Response.status(Response.Status.ACCEPTED).entity(
-                    getGsonSerializer().toJson(userManager.findUser(uuid))
-            ).build();
+                    getGsonSerializer().toJson(user)
+            ).tag(tag).build();
         } catch (ItemNotFoundException e) {
             return Response.status(Response.Status.NOT_FOUND).entity(e.getMessage()).build();
         }

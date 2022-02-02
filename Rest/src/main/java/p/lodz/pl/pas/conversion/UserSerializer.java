@@ -11,6 +11,7 @@ public class UserSerializer implements JsonSerializer<User> {
     public JsonElement serialize(User user, Type type, JsonSerializationContext jsonSerializationContext) {
         Gson gson = new Gson();
         JsonElement jsonElement = gson.toJsonTree(user);
+        jsonElement.getAsJsonObject().remove("password");
         jsonElement.getAsJsonObject().addProperty("accessLevel", user.getUserAccessLevel().toString());
         return jsonElement;
     }

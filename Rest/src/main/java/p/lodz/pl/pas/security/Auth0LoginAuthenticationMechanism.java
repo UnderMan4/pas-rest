@@ -1,6 +1,5 @@
 package p.lodz.pl.pas.security;
 
-import com.auth0.jwt.JWT;
 import com.auth0.jwt.exceptions.JWTVerificationException;
 import com.auth0.jwt.interfaces.DecodedJWT;
 
@@ -24,7 +23,7 @@ public class Auth0LoginAuthenticationMechanism implements HttpAuthenticationMech
 
 
     @Override
-    public AuthenticationStatus validateRequest(HttpServletRequest request, HttpServletResponse response, HttpMessageContext context) throws AuthenticationException {
+    public AuthenticationStatus validateRequest(HttpServletRequest request, HttpServletResponse response, HttpMessageContext context) {
 
         if (request.getRequestURL().toString().endsWith("/api/authenticate")) {
             return context.doNothing();
