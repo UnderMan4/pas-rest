@@ -23,8 +23,103 @@
         </session-timeout>
     </session-config>
     <welcome-file-list>
-        <welcome-file>index.xhtml</welcome-file>
-        <welcome-file>index.jsp</welcome-file>
-        <welcome-file>index.html</welcome-file>
+        <welcome-file>start.xhtml</welcome-file>
     </welcome-file-list>
+
+    <security-role>
+        <role-name>Admin</role-name>
+    </security-role>
+    <security-role>
+        <role-name>NormalUser</role-name>
+    </security-role>
+    <security-role>
+        <role-name>UserAdministrator</role-name>
+    </security-role>
+    <security-role>
+        <role-name>ResourceAdministrator</role-name>
+    </security-role>
+
+
+    <security-constraint>
+        <display-name>AuthenticatedUserResources</display-name>
+        <web-resource-collection>
+            <web-resource-name>AuthenticatedUserResources</web-resource-name>
+            <url-pattern>/api/user/_self</url-pattern>
+            <http-method-omission>GET</http-method-omission>
+        </web-resource-collection>
+        <auth-constraint>
+            <role-name>Admin</role-name>
+            <role-name>NormalUser</role-name>
+            <role-name>UserAdministrator</role-name>
+            <role-name>ResourceAdministrator</role-name>
+        </auth-constraint>
+        <user-data-constraint>
+            <transport-guarantee>CONFIDENTIAL</transport-guarantee>
+        </user-data-constraint>
+    </security-constraint>
+
+
+    <security-constraint>
+        <display-name>Admin</display-name>
+        <web-resource-collection>
+            <web-resource-name>Admin</web-resource-name>
+            <url-pattern>/faces/*</url-pattern>
+        </web-resource-collection>
+        <auth-constraint>
+            <role-name>Admin</role-name>
+        </auth-constraint>
+<!--        <user-data-constraint>-->
+<!--            <transport-guarantee>CONFIDENTIAL</transport-guarantee>-->
+<!--        </user-data-constraint>-->
+    </security-constraint>
+
+    <security-constraint>
+        <display-name>LoginPage</display-name>
+        <web-resource-collection>
+            <web-resource-name>LoginPage</web-resource-name>
+            <url-pattern>/faces/login.xhtml</url-pattern>
+        </web-resource-collection>
+    </security-constraint>
+
+<!--    <security-constraint>-->
+<!--        <display-name>NormalUser</display-name>-->
+<!--        <web-resource-collection>-->
+<!--            <web-resource-name>NormalUser</web-resource-name>-->
+<!--            <url-pattern>/faces/account/*</url-pattern>-->
+<!--        </web-resource-collection>-->
+<!--        <auth-constraint>-->
+<!--            <role-name>NormalUser</role-name>-->
+<!--        </auth-constraint>-->
+<!--        <user-data-constraint>-->
+<!--            <transport-guarantee>CONFIDENTIAL</transport-guarantee>-->
+<!--        </user-data-constraint>-->
+<!--    </security-constraint>-->
+
+<!--    <security-constraint>-->
+<!--        <display-name>UserAdministrator</display-name>-->
+<!--        <web-resource-collection>-->
+<!--            <web-resource-name>UserAdministrator</web-resource-name>-->
+<!--            <url-pattern>/faces/account/*</url-pattern>-->
+<!--        </web-resource-collection>-->
+<!--        <auth-constraint>-->
+<!--            <role-name>UserAdministrator</role-name>-->
+<!--        </auth-constraint>-->
+<!--        <user-data-constraint>-->
+<!--            <transport-guarantee>CONFIDENTIAL</transport-guarantee>-->
+<!--        </user-data-constraint>-->
+<!--    </security-constraint>-->
+
+<!--    <security-constraint>-->
+<!--        <display-name>ResourceAdministrator</display-name>-->
+<!--        <web-resource-collection>-->
+<!--            <web-resource-name>ResourceAdministrator</web-resource-name>-->
+<!--            <url-pattern>/faces/account/*</url-pattern>-->
+<!--        </web-resource-collection>-->
+<!--        <auth-constraint>-->
+<!--            <role-name>ResourceAdministrator</role-name>-->
+<!--        </auth-constraint>-->
+<!--        <user-data-constraint>-->
+<!--            <transport-guarantee>CONFIDENTIAL</transport-guarantee>-->
+<!--        </user-data-constraint>-->
+<!--    </security-constraint>-->
 </web-app>
