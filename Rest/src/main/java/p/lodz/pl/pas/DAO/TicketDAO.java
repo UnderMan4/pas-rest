@@ -17,13 +17,12 @@ import java.util.stream.Collectors;
 @ApplicationScoped
 public class TicketDAO implements DAO<Ticket> {
     ArrayList<Ticket> tickets;
-    DateTimeFormatter dtf = DateTimeFormatter.ISO_LOCAL_DATE_TIME;
+    final DateTimeFormatter dtf = DateTimeFormatter.ISO_LOCAL_DATE_TIME;
 
     public TicketDAO() {
         tickets = new ArrayList<>();
-        JobDAO jobDAO = new JobDAO();
         this.create(new Ticket(UUID.fromString("86600b3f-2d48-4d88-a26b-45ec2eeb4845"),
-                new NormalUser(UUID.fromString("54ceb043-5f89-41bb-a29b-f2c0e9909dad"), "jkowalski", "Jan", "Kowalski", true),
+                new NormalUser(UUID.fromString("54ceb043-5f89-41bb-a29b-f2c0e9909dad"), "jkowalski", "P@ssw0rd", "Jan", "Kowalski", true),
                 new Job(UUID.fromString("b8344cdb-dc2d-42a0-8c0f-d35f676b8074"), "Cleanup code", "Cleanup code in this program"),
                 LocalDateTime.parse("2021-12-09T08:00:00", dtf),
                 LocalDateTime.parse("2021-12-13T16:00:00", dtf),
@@ -31,7 +30,7 @@ public class TicketDAO implements DAO<Ticket> {
         ));
 
         this.create(new Ticket(UUID.fromString("229ef12a-13a9-4d0f-9ae7-239dfd4c17b9"),
-                new NormalUser(UUID.fromString("84d267cf-6dc4-40cd-b1d3-000733a85458"), "ttttt", "Tomasz", "Kowalski", true),
+                new NormalUser(UUID.fromString("84d267cf-6dc4-40cd-b1d3-000733a85458"), "ttttt", "P@ssw0rd", "Tomasz", "Kowalski", true),
                 new Job(UUID.fromString("858908da-ae32-4527-bdcb-13a91b0a49b9"), "Pass ISRP", "Pass ISRP and achive greatness"),
                 LocalDateTime.parse("2021-08-01T08:00:00", dtf),
                 null,

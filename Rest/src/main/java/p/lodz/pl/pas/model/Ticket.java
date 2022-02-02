@@ -1,17 +1,24 @@
 package p.lodz.pl.pas.model;
 
+import javax.validation.constraints.NotNull;
+import javax.validation.constraints.Size;
 import java.time.LocalDateTime;
-import java.util.Date;
 import java.util.UUID;
 
 import static p.lodz.pl.pas.model.TicketStatus.ToDo;
 
-public class Ticket {
+public class Ticket implements SingableEntity{
     private UUID uuid;
+
+    @NotNull
     private User user;
+    @NotNull
     private Job job;
+
     private LocalDateTime jobStart;
     private LocalDateTime jobEnd;
+
+    @Size(max = 400, message = "Max description length is 400")
     private String description;
     private TicketStatus status;
 
@@ -98,4 +105,10 @@ public class Ticket {
     }
 
     // ------------------------------------------------------------------------------------------------
+
+
+    @Override
+    public String getSingablePayload() {
+        return getUuid().toString() + getJob().getUuid().toString() + getUser().getUuid().toString();
+    }
 }

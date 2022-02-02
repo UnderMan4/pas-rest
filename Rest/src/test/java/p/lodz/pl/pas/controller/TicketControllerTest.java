@@ -1,10 +1,8 @@
 package p.lodz.pl.pas.controller;
 
-import com.google.gson.Gson;
 import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
-import p.lodz.pl.pas.model.Job;
 import p.lodz.pl.pas.model.Ticket;
 import p.lodz.pl.pas.model.TicketStatus;
 

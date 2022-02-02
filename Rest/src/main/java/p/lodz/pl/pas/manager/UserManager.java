@@ -17,21 +17,21 @@ public class UserManager {
         userDAO = new UserDAO();
     }
 
-    private User createUserObject(UUID uuid, String login, String name, String surname, Boolean active, AccessLevel accessLevel) {
+    private User createUserObject(UUID uuid, String login, String password, String name, String surname, Boolean active, AccessLevel accessLevel) {
         User u;
         switch (accessLevel) {
-            case ResourceAdministrator -> u = new ResourceAdministrator(uuid, login, name, surname, active);
-            case NormalUser -> u = new NormalUser(uuid, login, name, surname, active);
-            case Admin -> u = new Admin(uuid, login, name, surname, active);
-            case UserAdministrator -> u = new UserAdministrator(uuid, login, name, surname, active);
+            case ResourceAdministrator -> u = new ResourceAdministrator(uuid, login, password, name, surname, active);
+            case NormalUser -> u = new NormalUser(uuid, login, password, name, surname, active);
+            case Admin -> u = new Admin(uuid, login, password, name, surname, active);
+            case UserAdministrator -> u = new UserAdministrator(uuid, login, password, name, surname, active);
             default -> throw new IllegalStateException("Unexpected value: " + accessLevel);
         }
         return u;
     }
 
-    public synchronized boolean createUser(String login, String name, String surname, Boolean active, AccessLevel accessLevel) throws LoginNotUnique {
+    public synchronized boolean createUser(String login, String password, String name, String surname, Boolean active, AccessLevel accessLevel) throws LoginNotUnique {
         if (userDAO.checkLoginUnique(login)) {
-            return userDAO.create(createUserObject(null, login, name, surname, active, accessLevel));
+            return userDAO.create(createUserObject(null, login, password, name, surname, active, accessLevel));
         } else {
             throw new LoginNotUnique("Login " + login + " is not unique");
         }
@@ -50,19 +50,40 @@ public class UserManager {
         return userDAO.checkLoginUnique(login);
     }
 
-    public synchronized boolean editUserWithUUID(UUID uuid, String login, String name, String surname, Boolean active,
+    public synchronized boolean editUserWithUUID(UUID uuid, String login, String password, String name, String surname, Boolean active,
                                                  AccessLevel accessLevel) throws ItemNotFoundException {
+        User user = userDAO.readOne(uuid);
+        String updated_login = login;
+        if (login == null) {
+            updated_login = user.getLogin();
+        }
 
-        return userDAO.update(createUserObject(uuid, login, name, surname, active, accessLevel));
-//        if (userDAO.readOne(uuid).getUserAccessLevel().equals(accessLevel)) {
-//            // we dont change user role
-//
-//        } else {
-//
-//            return userDAO.updateRole(createUserObject(uuid, login, name, surname, active, accessLevel));
-//        }
-//
+        String updated_password = password;
+        if (login == null) {
+            updated_password = user.getPassword();
+        }
 
+        String updated_name = name;
+        if (login == null) {
+            updated_name = user.getName();
+        }
+
+        String updated_surname = surname;
+        if (login == null) {
+            updated_surname = user.getSurname();
+        }
+
+        Boolean updated_active = active;
+        if (login == null) {
+            updated_active = user.getActive();
+        }
+
+        AccessLevel updated_accessLevel = accessLevel;
+        if (login == null) {
+            updated_accessLevel = user.getUserAccessLevel();
+        }
+
+        return userDAO.update(createUserObject(uuid, updated_login, updated_password, updated_name, updated_surname, updated_active, updated_accessLevel));
     }
 
     public synchronized boolean setUserActive(UUID uuid, boolean active) throws ItemNotFoundException {
@@ -81,4 +102,13 @@ public class UserManager {
     public ArrayList<User> search(String s) throws ItemNotFoundException {
         return userDAO.search(s);
     }
+
+    public User findUserByLoginPasswordActive(String login, String password) throws ItemNotFoundException {
+        return userDAO.findUserByLoginPasswordActive(login, password);
+    }
+
+    public User findUserByLogin(String login) throws ItemNotFoundException {
+        return userDAO.findUserByLogin(login);
+    }
+
 }

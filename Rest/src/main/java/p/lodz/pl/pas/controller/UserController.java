@@ -1,134 +1,114 @@
 package p.lodz.pl.pas.controller;
 
-import com.google.gson.Gson;
 import com.google.gson.JsonObject;
 import com.google.gson.JsonParser;
-import p.lodz.pl.pas.RegexList;
+import com.google.gson.JsonSyntaxException;
+import p.lodz.pl.pas.conversion.GsonLocalDateTime;
 import p.lodz.pl.pas.exceptions.ItemNotFoundException;
 import p.lodz.pl.pas.exceptions.LoginNotUnique;
-import p.lodz.pl.pas.manager.TicketManager;
+import p.lodz.pl.pas.filter.SignatureValidatorFilter;
+import p.lodz.pl.pas.filter.SignatureVerifier;
 import p.lodz.pl.pas.manager.UserManager;
 import p.lodz.pl.pas.model.AccessLevel;
+import p.lodz.pl.pas.model.User;
 
+import javax.annotation.security.PermitAll;
+import javax.annotation.security.RolesAllowed;
 import javax.inject.Inject;
+import javax.validation.constraints.NotEmpty;
+import javax.validation.constraints.NotNull;
 import javax.ws.rs.*;
-import javax.ws.rs.core.MediaType;
-import javax.ws.rs.core.Response;
+import javax.ws.rs.core.*;
 import java.util.UUID;
 
 import static p.lodz.pl.pas.conversion.GsonLocalDateTime.getGsonSerializer;
 
 @Path("user")
+@RolesAllowed({"Admin", "UserAdministrator"})
 public class UserController {
     @Inject
     UserManager userManager;
-
-    @Inject
-    TicketManager ticketManager;
-
+    
     private Response createUser(String json, AccessLevel userType) {
-        JsonObject jsonObject = JsonParser.parseString(json).getAsJsonObject();
-        String login = jsonObject.get("login").getAsString();
-        String name = jsonObject.get("name").getAsString();
-        String surname = jsonObject.get("surname").getAsString();
-        Boolean active = jsonObject.get("active").getAsBoolean();
-        if (!verifyLogin(login)) {
-            return Response.status(Response.Status.BAD_REQUEST).entity("Invalid login").build();
-        } else if (!verifyName(name)) {
-            return Response.status(Response.Status.BAD_REQUEST).entity("Invalid name").build();
-        } else if (!verifySurname(surname)) {
-            return Response.status(Response.Status.BAD_REQUEST).entity("Invalid surname").build();
-        }
-
         try {
-            userManager.createUser(login, name, surname, active, userType);
+            JsonObject jsonObject = JsonParser.parseString(json).getAsJsonObject();
+            String login = jsonObject.get("login").getAsString();
+            String password = jsonObject.get("password").getAsString();
+            String name = jsonObject.get("name").getAsString();
+            String surname = jsonObject.get("surname").getAsString();
+            Boolean active = jsonObject.get("active").getAsBoolean();
+            userManager.createUser(login, password, name, surname, active, userType);
             return Response.status(Response.Status.CREATED).build();
+        } catch (JsonSyntaxException | NullPointerException e) {
+            return Response.status(Response.Status.BAD_REQUEST).entity("Invalid json name").build();
         } catch (LoginNotUnique e) {
             return Response.status(Response.Status.BAD_REQUEST).entity(e.getMessage()).build();
         }
     }
 
-
     @POST
     @Path("createNormalUser")
     @Consumes(MediaType.APPLICATION_JSON)
-    public Response createUserNormalUser(String json) throws LoginNotUnique {
+    public Response createUserNormalUser(@NotNull String json) {
         return createUser(json, AccessLevel.NormalUser);
     }
 
     @POST
     @Path("createUserAdministrator")
     @Consumes(MediaType.APPLICATION_JSON)
-    public Response createUserAdministrator(String json) throws LoginNotUnique {
+    public Response createUserAdministrator(@NotNull String json) {
         return createUser(json, AccessLevel.UserAdministrator);
     }
 
     @POST
     @Path("createAdmin")
     @Consumes(MediaType.APPLICATION_JSON)
-    public Response createAdmin(String json) throws LoginNotUnique {
+    public Response createAdmin(@NotNull String json) {
         return createUser(json, AccessLevel.Admin);
     }
 
     @POST
     @Path("createResourceAdministrator")
     @Consumes(MediaType.APPLICATION_JSON)
-    public Response createResourceAdministrator(String json) throws LoginNotUnique {
+    public Response createResourceAdministrator(@NotNull String json) {
         return createUser(json, AccessLevel.ResourceAdministrator);
     }
 
-    private boolean verifyLogin(String login) {
-        return RegexList.Login.matcher(login).matches();
-    }
-
-    private boolean verifyName(String name) {
-        return RegexList.Surname.matcher(name).matches();
-    }
-
-    private boolean verifySurname(String surname) {
-        return RegexList.Surname.matcher(surname).matches();
-    }
 
     @GET
+    @RolesAllowed({"Admin", "UserAdministrator", "ResourceAdministrator"})
     @Path("list")
     @Produces(MediaType.APPLICATION_JSON)
     public Response getUserList() {
-        Gson gson = getGsonSerializer();
-        return Response.status(Response.Status.ACCEPTED).entity(gson.toJson(userManager.getUserList())).build();
+        return Response.status(Response.Status.ACCEPTED).entity(getGsonSerializer().toJson(userManager.getUserList())).build();
     }
 
-
+    /**
+     *
+     * @param json user in json format with accessLevel to specify user class
+     * @param tagValue If-match tag from findUserByUUID
+     * @return result of user edit
+     */
     @POST
-    @Path("editUserWithUUID")
+    @Path("update")
+    @SignatureValidatorFilter
     @Consumes(MediaType.APPLICATION_JSON)
-    public Response editUserWithUUID(String json) {
-        JsonObject jsonObject = JsonParser.parseString(json).getAsJsonObject();
-        UUID uuid = UUID.fromString(jsonObject.get("uuid").getAsString());
-        String login = jsonObject.get("login").getAsString();
-        String name = jsonObject.get("name").getAsString();
-        String surname = jsonObject.get("surname").getAsString();
-        Boolean active = jsonObject.get("active").getAsBoolean();
-        AccessLevel accessLevel = AccessLevel.valueOf(jsonObject.get("accessLevel").getAsString());
-
-        if (!verifyLogin(login)) {
-            return Response.status(Response.Status.BAD_REQUEST).entity("Invalid login").build();
-        } else if (!verifyName(name)) {
-            return Response.status(Response.Status.BAD_REQUEST).entity("Invalid name").build();
-        } else if (!verifySurname(surname)) {
-            return Response.status(Response.Status.BAD_REQUEST).entity("Invalid surname").build();
-        }
-
+    public Response update(String json, @HeaderParam("If-match") @NotNull @NotEmpty String tagValue) {
         try {
-            userManager.editUserWithUUID(uuid, login, name, surname, active, accessLevel);
+            User user = GsonLocalDateTime.getGsonSerializer().fromJson(json, User.class);
+            if (!SignatureVerifier.verifyEntityIntegrity(tagValue, user)) {
+                return Response.status(Response.Status.PRECONDITION_FAILED).build();
+            }
+            userManager.editUserWithUUID(user.getUuid(), user.getLogin(), user.getPassword(), user.getName(), user.getSurname(), user.getActive(), user.getUserAccessLevel());
             return Response.status(Response.Status.ACCEPTED).entity("User edited").build();
-        } catch (ItemNotFoundException e) {
+        } catch (JsonSyntaxException | NullPointerException | ItemNotFoundException e) {
             return Response.status(Response.Status.BAD_REQUEST).entity(e.getMessage()).build();
         }
     }
 
     @GET
     @Path("setUserActive")
-    public Response setUserActive(@QueryParam("UUID") UUID uuid, @QueryParam("status") boolean status) {
+    public Response setUserActive(@QueryParam("UUID") @NotNull UUID uuid, @QueryParam("status") @NotNull boolean status) {
         try {
             userManager.setUserActive(uuid, status);
             return Response.status(Response.Status.ACCEPTED).entity("User activated").build();
@@ -137,22 +117,34 @@ public class UserController {
         }
     }
 
+    /**
+     *  Returns with etag for user editing
+     * @param uuid exact login to find user by
+     * @return user object
+     */
     @GET
     @Produces(MediaType.APPLICATION_JSON)
-    public Response findUser(@QueryParam("UUID") UUID uuid) {
+    public Response findUserByUUID(@QueryParam("UUID") UUID uuid) {
         try {
+            User user = userManager.findUser(uuid);
+            EntityTag tag = new EntityTag(SignatureVerifier.calculateEntitySignature(user));
             return Response.status(Response.Status.ACCEPTED).entity(
-                    getGsonSerializer().toJson(userManager.findUser(uuid))
-            ).build();
+                    getGsonSerializer().toJson(user)
+            ).tag(tag).build();
         } catch (ItemNotFoundException e) {
             return Response.status(Response.Status.NOT_FOUND).entity(e.getMessage()).build();
         }
     }
 
+    /**
+     *
+     * @param login fragment or whole login of a user
+     * @return list of users that contains the login
+     */
     @GET
     @Path("searchByLogin")
     @Produces(MediaType.APPLICATION_JSON)
-    public Response findUserByLogin(@QueryParam("login") String login) {
+    public Response findUsersByLogin(@QueryParam("login") @NotNull String login) {
         try {
             return Response.status(Response.Status.ACCEPTED).entity(getGsonSerializer().toJson(userManager.findUsersByLogin(login))).build();
         } catch (ItemNotFoundException e) {
@@ -160,10 +152,15 @@ public class UserController {
         }
     }
 
+    /**
+     *
+     * @param uuid fragment or whole UUID of a user
+     * @return list of users that contains the uuid
+     */
     @GET
     @Path("searchByUUID")
     @Produces(MediaType.APPLICATION_JSON)
-    public Response findUserByUUID(@QueryParam("UUID") String uuid) {
+    public Response findUsersByUUID(@QueryParam("UUID") @NotNull String uuid) {
         try {
             return Response.status(Response.Status.ACCEPTED).entity(getGsonSerializer().toJson(userManager.searchByUUID(uuid))).build();
         } catch (ItemNotFoundException e) {
@@ -184,4 +181,17 @@ public class UserController {
     }
 
 
+    @GET
+    @Path("_self")
+    @PermitAll
+    @Produces(MediaType.APPLICATION_JSON)
+    public Response findSelf(@Context SecurityContext securityContext) {
+        try {
+            return Response.status(Response.Status.ACCEPTED).entity(
+                    getGsonSerializer().toJson(userManager.findUsersByLogin(securityContext.getUserPrincipal().getName()))
+            ).build();
+        } catch (ItemNotFoundException e) {
+            return Response.status(Response.Status.NOT_FOUND).entity(e.getMessage()).build();
+        }
+    }
 }

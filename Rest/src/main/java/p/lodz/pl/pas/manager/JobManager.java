@@ -3,7 +3,6 @@ package p.lodz.pl.pas.manager;
 import p.lodz.pl.pas.DAO.JobDAO;
 import p.lodz.pl.pas.exceptions.ItemNotFoundException;
 import p.lodz.pl.pas.model.Job;
-import p.lodz.pl.pas.model.Ticket;
 
 import javax.inject.Inject;
 import java.util.ArrayList;

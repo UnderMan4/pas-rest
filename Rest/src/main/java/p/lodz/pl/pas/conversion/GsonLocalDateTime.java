@@ -16,6 +16,7 @@ public class GsonLocalDateTime {
                 .registerTypeAdapter(Admin.class, new UserSerializer())
                 .registerTypeAdapter(ResourceAdministrator.class, new UserSerializer())
                 .registerTypeAdapter(UserAdministrator.class, new UserSerializer())
+                .registerTypeAdapter(User.class, new UserDeserializer())
                 .create();
     }
 }
