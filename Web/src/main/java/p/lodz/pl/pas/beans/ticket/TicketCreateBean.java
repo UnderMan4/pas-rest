@@ -13,6 +13,9 @@ import javax.faces.context.FacesContext;
 import javax.inject.Inject;
 import javax.inject.Named;
 import java.io.Serializable;
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
+import java.util.Date;
 
 @Named
 @SessionScoped
@@ -25,6 +28,8 @@ public class TicketCreateBean implements Serializable {
 
     private User user;
     private Job job;
+
+    String date;
 
     public TicketCreateBean() {
         newTicket.setJobEnd(null);
@@ -50,13 +55,22 @@ public class TicketCreateBean implements Serializable {
         this.job = job;
     }
 
+    public String getDate() {
+        return date;
+    }
+
+    public void setDate(String date) {
+        this.date = date;
+    }
+
     public String createNewTicket() {
         try {
+            Date dateParsed = new SimpleDateFormat("dd.MM.yyyy").parse(date);
             newTicket.setJob(job.getUuid());
             newTicket.setUser(user.getUuid());
             FacesMessage message = ticketService.createTicket(newTicket);
             FacesContext.getCurrentInstance().addMessage(null, message);
-        } catch (RESTException e) {
+        } catch (RESTException | ParseException e) {
             FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(e.getMessage()));
         }
         return "ticket";

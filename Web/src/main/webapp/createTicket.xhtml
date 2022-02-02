@@ -37,8 +37,8 @@
             <br/>
             <a name="header">${msg["column.jobStart"]}</a>
             <h:inputText id="dateFrom" value="#{ticketCreateBean.newTicket.jobStart}">
-                <a:convertDateTime pattern="dd.mm.yyyy"/>
-                <a:ajax event="keyup" render="dateFromMessage"/>
+                <a:converter id="dateFromConverter" converterId="p.lodz.pl.pas.LocalDateTimeConverter"/>
+                <a:ajax event="keyup" render="dateFromMessage dateFromConverterMessage"/>
             </h:inputText>
 
             <br/>
@@ -59,6 +59,7 @@
             <h:commandButton action="#{ticketCreateBean.createNewTicket}" value="#{msg['saveButton']}"/>
             <div style="display: flex; flex-direction: column; color: red; font-weight: bold;">
                 <h:message id="dateFromMessage" for="dateFrom"/>
+                <h:message id="dateFromConverterMessage" for="dateFromConverter"/>
                 <h:message id="descriptionMessage" for="description"/>
             </div>
         </h:form>
