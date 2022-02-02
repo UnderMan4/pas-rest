@@ -84,6 +84,12 @@ public class UserController {
         return Response.status(Response.Status.ACCEPTED).entity(getGsonSerializer().toJson(userManager.getUserList())).build();
     }
 
+    /**
+     *
+     * @param json user in json format with accessLevel to specify user class
+     * @param tagValue If-match tag from findUserByUUID
+     * @return result of user edit
+     */
     @POST
     @Path("editUserWithUUID")
     @SignatureValidatorFilter
@@ -91,7 +97,6 @@ public class UserController {
     public Response editUserWithUUID(String json, @HeaderParam("If-match") @NotNull @NotEmpty String tagValue) {
         try {
             User user = GsonLocalDateTime.getGsonSerializer().fromJson(json, User.class);
-
             if (!SignatureVerifier.verifyEntityIntegrity(tagValue, user)) {
                 return Response.status(Response.Status.PRECONDITION_FAILED).build();
             }
@@ -115,27 +120,14 @@ public class UserController {
         }
     }
 
-    @GET
-    @Produces(MediaType.APPLICATION_JSON)
-    public Response findUserByUUID(@QueryParam("UUID") UUID uuid) {
-        try {
-            return Response.status(Response.Status.ACCEPTED).entity(
-                    getGsonSerializer().toJson(userManager.findUser(uuid))
-            ).build();
-        } catch (ItemNotFoundException e) {
-            return Response.status(Response.Status.NOT_FOUND).entity(e.getMessage()).build();
-        }
-    }
-
     /**
-     *
+     *  Returns with etag for user editing
      * @param uuid exact login to find user by
      * @return user object
      */
     @GET
-    @Path("getEditUser")
     @Produces(MediaType.APPLICATION_JSON)
-    public Response getEditUser(@QueryParam("UUID") UUID uuid) {
+    public Response findUserByUUID(@QueryParam("UUID") UUID uuid) {
         try {
             User user = userManager.findUser(uuid);
             EntityTag tag = new EntityTag(SignatureVerifier.calculateEntitySignature(user));

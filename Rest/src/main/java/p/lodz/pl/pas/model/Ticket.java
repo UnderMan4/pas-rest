@@ -7,7 +7,7 @@ import java.util.UUID;
 
 import static p.lodz.pl.pas.model.TicketStatus.ToDo;
 
-public class Ticket {
+public class Ticket implements SingableEntity{
     private UUID uuid;
 
     @NotNull
@@ -105,4 +105,10 @@ public class Ticket {
     }
 
     // ------------------------------------------------------------------------------------------------
+
+
+    @Override
+    public String getSingablePayload() {
+        return getUuid().toString() + getJob().getUuid().toString() + getUser().getUuid().toString();
+    }
 }

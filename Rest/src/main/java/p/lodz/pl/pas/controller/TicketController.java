@@ -3,16 +3,23 @@ package p.lodz.pl.pas.controller;
 import com.google.gson.JsonObject;
 import com.google.gson.JsonParser;
 import com.google.gson.JsonSyntaxException;
+import p.lodz.pl.pas.conversion.GsonLocalDateTime;
 import p.lodz.pl.pas.exceptions.DateException;
 import p.lodz.pl.pas.exceptions.ItemNotFoundException;
 import p.lodz.pl.pas.exceptions.JobAlreadyTaken;
 import p.lodz.pl.pas.exceptions.cantDeleteException;
+import p.lodz.pl.pas.filter.SignatureValidatorFilter;
+import p.lodz.pl.pas.filter.SignatureVerifier;
 import p.lodz.pl.pas.manager.TicketManager;
+import p.lodz.pl.pas.model.Ticket;
+import p.lodz.pl.pas.model.User;
 
 import javax.annotation.security.RolesAllowed;
 import javax.inject.Inject;
+import javax.validation.constraints.NotEmpty;
 import javax.validation.constraints.NotNull;
 import javax.ws.rs.*;
+import javax.ws.rs.core.EntityTag;
 import javax.ws.rs.core.MediaType;
 import javax.ws.rs.core.Response;
 import java.time.LocalDateTime;
@@ -77,11 +84,18 @@ public class TicketController {
         ).build();
     }
 
+    /**
+     *  Returns with etag for ticket editing
+     * @param uuid ticket uuid
+     * @return one ticket with exact uuid
+     */
     @GET
     @Produces(MediaType.APPLICATION_JSON)
     public Response findTicket(@QueryParam("UUID") @NotNull UUID uuid) {
         try {
-            return Response.status(ACCEPTED).entity(ticketManager.findByUUID(uuid)).build();
+            Ticket ticket = ticketManager.findByUUID(uuid);
+            EntityTag tag = new EntityTag(SignatureVerifier.calculateEntitySignature(ticket));
+            return Response.status(ACCEPTED).entity(getGsonSerializer().toJson(ticket)).tag(tag).build();
         } catch (ItemNotFoundException e) {
             return Response.status(Response.Status.NOT_FOUND).entity(e.getMessage()).build();
         }
@@ -130,6 +144,13 @@ public class TicketController {
         } catch (ItemNotFoundException e) {
             return Response.status(Response.Status.NOT_FOUND).entity(e.getMessage()).build();
         }
+    }
+
+    @POST
+    @SignatureValidatorFilter
+    @Path("editTicketWithUUID")
+    public Response editWithUUID(String json, @HeaderParam("If-match") @NotNull @NotEmpty String tagValue) {
+        return Response.status(NOT_IMPLEMENTED).build();
     }
 
 }

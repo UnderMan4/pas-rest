@@ -7,7 +7,7 @@ import java.util.UUID;
 import static p.lodz.pl.pas.RegexList.JOB_NAME_PATTERN;
 
 
-public class Job {
+public class Job implements SingableEntity{
     private UUID uuid;
 
     @Pattern(regexp = JOB_NAME_PATTERN, message = "Name must be between 2 and 20 characters")
@@ -52,4 +52,10 @@ public class Job {
     }
 
     // ------------------------------------------------------------------------------------------------
+
+
+    @Override
+    public String getSingablePayload() {
+        return getUuid().toString();
+    }
 }

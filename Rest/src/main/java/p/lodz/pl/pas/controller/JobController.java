@@ -5,12 +5,16 @@ import com.google.gson.JsonObject;
 import com.google.gson.JsonParser;
 import com.google.gson.JsonSyntaxException;
 import p.lodz.pl.pas.exceptions.ItemNotFoundException;
+import p.lodz.pl.pas.filter.SignatureValidatorFilter;
+import p.lodz.pl.pas.filter.SignatureVerifier;
 import p.lodz.pl.pas.manager.JobManager;
 import p.lodz.pl.pas.manager.TicketManager;
+import p.lodz.pl.pas.model.Job;
 import p.lodz.pl.pas.model.Ticket;
 
 import javax.annotation.security.RolesAllowed;
 import javax.inject.Inject;
+import javax.validation.constraints.NotEmpty;
 import javax.validation.constraints.NotNull;
 import javax.ws.rs.*;
 import javax.ws.rs.core.MediaType;
@@ -57,6 +61,11 @@ public class JobController {
         return Response.status(Response.Status.ACCEPTED).entity(gson.toJson(jobManager.getJobs())).build();
     }
 
+    /**
+     *  Returns one job with etag for editing
+     * @param uuid exact uuid of the job
+     * @return job
+     */
     @GET
     @Produces(MediaType.APPLICATION_JSON)
     public Response findJob(@QueryParam("UUID") @NotNull UUID uuid) {
@@ -70,14 +79,14 @@ public class JobController {
 
     @POST
     @Path("update")
+    @SignatureValidatorFilter
     @Consumes(MediaType.APPLICATION_JSON)
-    public Response updateJob(@NotNull String json) {
+    public Response updateJob(@NotNull Job job, @HeaderParam("If-match") @NotNull @NotEmpty String tagValue) {
         try {
-            JsonObject jsonObject = JsonParser.parseString(json).getAsJsonObject();
-            UUID uuid = UUID.fromString(jsonObject.get("uuid").getAsString());
-            String name = jsonObject.get("name").getAsString();
-            String description = jsonObject.get("description").getAsString();
-            jobManager.updateJob(uuid, name, description);
+            if (!SignatureVerifier.verifyEntityIntegrity(tagValue, job)) {
+                return Response.status(Response.Status.PRECONDITION_FAILED).build();
+            }
+            jobManager.updateJob(job.getUuid(), job.getName(), job.getDescription());
             return Response.status(Response.Status.ACCEPTED).entity("Job updated").build();
         } catch (JsonSyntaxException | NullPointerException e) {
             return Response.status(Response.Status.BAD_REQUEST).entity("Invalid json name").build();
