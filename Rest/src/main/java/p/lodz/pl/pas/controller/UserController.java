@@ -1,5 +1,6 @@
 package p.lodz.pl.pas.controller;
 
+import com.google.gson.Gson;
 import com.google.gson.JsonObject;
 import com.google.gson.JsonParser;
 import com.google.gson.JsonSyntaxException;
@@ -28,7 +29,7 @@ import static p.lodz.pl.pas.conversion.GsonLocalDateTime.getGsonSerializer;
 public class UserController {
     @Inject
     UserManager userManager;
-    
+
     private Response createUser(String json, AccessLevel userType) {
         try {
             JsonObject jsonObject = JsonParser.parseString(json).getAsJsonObject();
@@ -84,8 +85,7 @@ public class UserController {
     }
 
     /**
-     *
-     * @param json user in json format with accessLevel to specify user class
+     * @param json     user in json format with accessLevel to specify user class
      * @param tagValue If-match tag from findUserByUUID
      * @return result of user edit
      */
@@ -118,7 +118,8 @@ public class UserController {
     }
 
     /**
-     *  Returns with etag for user editing
+     * Returns with etag for user editing
+     *
      * @param uuid exact login to find user by
      * @return user object
      */
@@ -137,7 +138,6 @@ public class UserController {
     }
 
     /**
-     *
      * @param login fragment or whole login of a user
      * @return list of users that contains the login
      */
@@ -153,7 +153,6 @@ public class UserController {
     }
 
     /**
-     *
      * @param uuid fragment or whole UUID of a user
      * @return list of users that contains the uuid
      */

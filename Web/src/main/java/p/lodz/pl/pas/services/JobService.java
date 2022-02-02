@@ -44,7 +44,9 @@ public class JobService implements Serializable {
         Response response = getClientWebTarget().path("create").request()
                 .post(Entity.json(new Gson().toJson(newJob)));
         LOGGER.log(Level.INFO, response.toString());
-        if (response.getStatus() != 202) {
+
+        // do weryfikacji rownanie
+        if (response.getStatus() == 202) {
             return new FacesMessage(response.readEntity(String.class));
         } else {
             throw new RESTException(response.readEntity(String.class));
