@@ -19,26 +19,35 @@
         <h:form id="create-ticket-form">
             <h2>${msg["ticketList"]}</h2>
 
-            <a name="header">${msg["column.userUUID"]}</a>
-            <h:inputText value="#{ticketCreateBean.newTicket.user}" required="true" requiredMessage="User uuid is required">
-                <a:converter converterId="p.lodz.pl.pas.UUIDConverter"/>
-            </h:inputText>
+            <a name="header">${msg["column.user"]}</a>
+            <h:selectOneMenu value="#{ticketCreateBean.user}" required="true"
+                             requiredMessage="User uuid is required">
+                <a:selectItems value="${userListBean.userList}" var="user" itemValue="#{user}"
+                               itemLabel="#{user.login += ' - ' += user.uuid}"/>
+            </h:selectOneMenu>
 
             <br/>
-            <a name="header">${msg["column.jobUUID"]}</a>
-            <h:inputText value="#{ticketCreateBean.newTicket.job}" required="true" requiredMessage="Job uuid is required">
-                <a:converter converterId="p.lodz.pl.pas.UUIDConverter"/>
-            </h:inputText>
+            <a name="header">${msg["column.job"]}</a>
+            <h:selectOneMenu value="#{ticketCreateBean.job}" required="true"
+                             requiredMessage="Job uuid is required">
+                <a:selectItems value="${jobListBean.jobList}" var="job" itemValue="#{job}"
+                               itemLabel="#{job.name += ' - ' += job.uuid}"/>
+            </h:selectOneMenu>
 
             <br/>
             <a name="header">${msg["column.jobStart"]}</a>
-            <h:inputText value="#{ticketCreateBean.newTicket.jobStart}">
-                <a:converter converterId="p.lodz.pl.pas.LocalDateTimeConverter"/>
+            <h:inputText id="dateFrom" value="#{ticketCreateBean.newTicket.jobStart}">
+                <a:converter id="dateFromConverter" converterId="p.lodz.pl.pas.LocalDateTimeConverter"/>
+                <a:ajax event="keyup" render="dateFromMessage dateFromConverterMessage"/>
             </h:inputText>
 
             <br/>
             <a name="header">${msg["column.description"]}</a>
-            <h:inputText value="#{ticketCreateBean.newTicket.description}"/>
+            <h:inputTextarea id="description" value="#{ticketCreateBean.newTicket.description}"
+                             style="height: 10em; width: 30em">
+                <a:validateLength minimum="2" maximum="5"/>
+                <a:ajax event="keyup" render="descriptionMessage"/>
+            </h:inputTextarea>
 
             <br/>
             <a name="header">${msg["column.ticketStatus"]}</a>
@@ -48,6 +57,11 @@
             </h:selectOneMenu>
             <br/>
             <h:commandButton action="#{ticketCreateBean.createNewTicket}" value="#{msg['saveButton']}"/>
+            <div style="display: flex; flex-direction: column; color: red; font-weight: bold;">
+                <h:message id="dateFromMessage" for="dateFrom"/>
+                <h:message id="dateFromConverterMessage" for="dateFromConverter"/>
+                <h:message id="descriptionMessage" for="description"/>
+            </div>
         </h:form>
     </ui:define>
 </ui:composition>

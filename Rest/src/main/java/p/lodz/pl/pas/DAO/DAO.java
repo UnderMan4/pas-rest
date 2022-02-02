@@ -19,4 +19,6 @@ public interface DAO<T> {
 
     // return if T.uuid contains String UUID
     List<T> searchByUUID(String uuid) throws ItemNotFoundException;
+
+    List<T> search(String s) throws ItemNotFoundException;
 }

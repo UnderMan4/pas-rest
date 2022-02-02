@@ -99,6 +99,10 @@ public class UserManager {
         return userDAO.findUsersByLogin(login);
     }
 
+    public ArrayList<User> search(String s) throws ItemNotFoundException {
+        return userDAO.search(s);
+    }
+
     public User findUserByLoginPasswordActive(String login, String password) throws ItemNotFoundException {
         return userDAO.findUserByLoginPasswordActive(login, password);
     }

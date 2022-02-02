@@ -1,5 +1,6 @@
 <?xml version='1.0' encoding='UTF-8' ?>
-<!DOCTYPE composition PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<!DOCTYPE composition PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+        "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
 <ui:composition xmlns:ui="http://java.sun.com/jsf/facelets"
                 xmlns="http://www.w3.org/1999/xhtml"
                 xmlns:h="http://java.sun.com/jsf/html"
@@ -16,14 +17,17 @@
 
     <ui:define name="content">
         <h:form id="job-form">
+            <h:inputText id="search" value="#{jobListBean.search}">
+                <f:ajax event="keyup" render="jobTable" listener="#{jobListBean.init}"/>
+            </h:inputText>
             <h2>${msg["jobList"]}</h2>
-            <h:dataTable value="#{jobListBean.jobList}" var="job">
+            <h:dataTable id="jobTable" value="#{jobListBean.jobList}" var="job">
                 <h:column>
                     <f:facet name="header">${msg["column.name"]}</f:facet>
                     <h:outputText value="#{job.name}"/>
                 </h:column>
-                    <f:facet name="header">${msg["column.description"]}</f:facet>
                 <h:column>
+                    <f:facet name="header">${msg["column.description"]}</f:facet>
                     <h:outputText value="#{job.description}"/>
                 </h:column>
                 <h:column>
@@ -31,11 +35,18 @@
                     <h:outputText value="#{job.uuid}"/>
                 </h:column>
                 <h:column>
-                    <h:commandButton id="deleteJobButton" action="#{jobListBean.deleteJob}" value="#{msg['jobList.deleteJobButton']}" binding="#{jobListBean.deleteJobButton}">
+
+
+                    <h:commandButton id="deleteJobButton" action="#{jobListBean.showDeleteConfirmationButtons}"
+                                     value="#{msg['jobList.deleteJobButton']}"
+                                     binding="#{jobListBean.deleteJobButton}">
                         <f:param name="jobUUID" value="#{job.uuid}"/>
+                        <f:ajax event="keyup" render="alert"/>
                     </h:commandButton>
+
+
                 </h:column>
-                <h:message for="deleteJobButton" />
+                <h:message for="deleteJobButton"/>
                 <h:column>
                     <h:commandButton action="#{jobListBean.editJob(job)}" value="#{msg['jobList.editJobButton']}"/>
                 </h:column>
@@ -45,15 +56,42 @@
             </h:dataTable>
         </h:form>
         <h:form id="navigate-to-create-job">
-        <h:commandButton action="redirectToCreateJob" value="#{msg['jobList.createJobButton']}" />
+            <h:commandButton action="redirectToCreateJob" value="#{msg['jobList.createJobButton']}"/>
         </h:form>
         <br/>
-        <h:form id="navigate-to-search-job">
-            <h:commandButton action="redirectToSearchJob" value="#{msg['jobList.searchJobButton']}" />
-        </h:form>
-        <h:form>
-            <h:commandButton action="#{jobListBean.init()}" value="#{msg['refreshButton']}" />
-        </h:form>
-        <h:messages />
+        <h:messages/>
+
+
+        <div id="alert"
+             style="position: absolute; background-color: red; top: 50%; left: 50%; padding: 10px; border-radius: 10px; transform: translate(-50%,-50%); display: #{(jobListBean.showDeleteConfirmation)?'block':'none'}">
+            <h:form>
+                <div style="display: flex; flex-direction: column; gap: 4px; justify-content: center;align-items: center">
+
+                    <div>
+                        <h:outputText value="#{msg['jobList.deleteJobButtonQuestion']}"/>
+                    </div>
+                    <div>
+                        <h:outputText value="#{jobListBean.jobToDeleteUUID}"/>
+                    </div>
+                    <div style="display: flex; flex-direction: row; gap: 10px; margin-top: 10px">
+
+
+                        <h:commandButton id="deleteJobButtonCancel"
+                                         action="#{jobListBean.hideDeleteConfirmationButtons}"
+                                         value="#{msg['jobList.deleteJobButtonCancel']}"
+                                         binding="#{jobListBean.deleteJobButtonCancel}" style="width:100px">
+                            <f:param name="jobUUID" value="#{job.uuid}"/>
+                        </h:commandButton>
+                        <h:commandButton id="deleteJobButtonConfirm" action="#{jobListBean.deleteJob}"
+                                         value="#{msg['jobList.deleteJobButtonConfirm']}"
+                                         binding="#{jobListBean.deleteJobButtonConfirm}" style="width:100px">
+                            <f:param name="jobUUID" value="#{job.uuid}"/>
+                        </h:commandButton>
+                    </div>
+                </div>
+            </h:form>
+        </div>
+
+
     </ui:define>
 </ui:composition>

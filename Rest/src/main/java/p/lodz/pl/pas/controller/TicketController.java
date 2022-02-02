@@ -1,8 +1,11 @@
 package p.lodz.pl.pas.controller;
 
+import com.google.gson.Gson;
 import com.google.gson.JsonObject;
 import com.google.gson.JsonParser;
 import com.google.gson.JsonSyntaxException;
+import p.lodz.pl.pas.RegexList;
+import p.lodz.pl.pas.conversion.GsonLocalDateTime;
 import p.lodz.pl.pas.exceptions.DateException;
 import p.lodz.pl.pas.exceptions.ItemNotFoundException;
 import p.lodz.pl.pas.exceptions.JobAlreadyTaken;
@@ -149,6 +152,18 @@ public class TicketController {
     @Path("editTicketWithUUID")
     public Response editWithUUID(String json, @HeaderParam("If-match") @NotNull @NotEmpty String tagValue) {
         return Response.status(NOT_IMPLEMENTED).build();
+    }
+
+    @GET
+    @Path("search")
+    @Produces(MediaType.APPLICATION_JSON)
+    public Response search(@QueryParam("s") String s) {
+        try {
+            // Gson gson = new Gson();
+            return Response.status(Response.Status.ACCEPTED).entity(GsonLocalDateTime.getGsonSerializer().toJson(ticketManager.search(s))).build();
+        } catch (ItemNotFoundException e) {
+            return Response.status(Response.Status.NOT_FOUND).entity(e.getMessage()).build();
+        }
     }
 
 }

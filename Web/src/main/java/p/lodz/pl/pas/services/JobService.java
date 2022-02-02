@@ -44,7 +44,9 @@ public class JobService implements Serializable {
         Response response = getClientWebTarget().path("create").request()
                 .post(Entity.json(new Gson().toJson(newJob)));
         LOGGER.log(Level.INFO, response.toString());
-        if (response.getStatus() != 202) {
+
+        // do weryfikacji rownanie
+        if (response.getStatus() == 202) {
             return new FacesMessage(response.readEntity(String.class));
         } else {
             throw new RESTException(response.readEntity(String.class));
@@ -68,6 +70,7 @@ public class JobService implements Serializable {
         }
     }
 
+    // @JsModule
     public void deleteJob(String uuid) throws RESTException {
         LOGGER.log(Level.INFO, "Job to remove " + uuid.toString());
         Response response = getClientWebTarget().path("remove").queryParam("UUID", uuid).request().get();
@@ -78,7 +81,20 @@ public class JobService implements Serializable {
     }
 
     public List<Job> searchByUUID(String uuid) {
-        return getClientWebTarget().path("searchByUUID").queryParam("UUID", uuid).request(MediaType.APPLICATION_JSON).get(new GenericType<List<Job>>() {
-        });
+        return getClientWebTarget()
+                .path("searchByUUID")
+                .queryParam("UUID", uuid)
+                .request(MediaType.APPLICATION_JSON)
+                .get(new GenericType<List<Job>>() {
+                });
+    }
+
+    public List<Job> search(String s) {
+        return getClientWebTarget()
+                .path("search")
+                .queryParam("s", s)
+                .request(MediaType.APPLICATION_JSON)
+                .get(new GenericType<List<Job>>() {
+                });
     }
 }

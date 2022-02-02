@@ -21,16 +21,31 @@
 
             <a name="header">${msg["column.login"]}</a>
             <br/>
-            <h:inputText value="#{userCreateBean.newUser.login}" required="true" requiredMessage="#{msg['userCreate.loginrequired']}"/>
+            <h:inputText id="login" value="#{userCreateBean.newUser.login}" required="true"
+                         requiredMessage="#{msg['userCreate.loginrequired']}"
+                         validatorMessage="#{msg['message.userCreate.login']}">
+                <f:validateLength minimum="2" maximum="20"/>
+                <f:ajax event="keyup" render="loginMessage"/>
+            </h:inputText>
             <br/>
 
             <a name="header">${msg["column.name"]}</a>
             <br/>
-            <h:inputText value="#{userCreateBean.newUser.name}"/>
+            <h:inputText id="name" value="#{userCreateBean.newUser.name}"
+                         validatorMessage="#{msg['message.userCreate.name']}">
+
+                <f:validateLength minimum="2" maximum="20"/>
+                <f:ajax event="keyup" render="nameMessage"/>
+            </h:inputText>
             <br/>
             <a name="header">${msg["column.surname"]}</a>
             <br/>
-            <h:inputText value="#{userCreateBean.newUser.surname}"/>
+            <h:inputText id="surname" value="#{userCreateBean.newUser.surname}"
+                         validatorMessage="#{msg['message.userCreate.Surname']}">
+
+                <f:validateLength minimum="2" maximum="20"/>
+                <f:ajax event="keyup" render="surnameMessage"/>
+            </h:inputText>
             <br/>
             <h:selectBooleanCheckbox value="#{userCreateBean.newUser.active}"/>
             <br/>
@@ -40,7 +55,12 @@
             </h:selectOneMenu>
             <br/>
             <h:commandButton action="#{userCreateBean.createNewUser}" value="#{msg['saveButton']}"/>
+            <div style="display: flex; flex-direction: column; color: red; font-weight: bold;">
+                <h:message id="loginMessage" for="login"/>
+                <h:message id="nameMessage" for="name"/>
+                <h:message id="surnameMessage" for="surname"/>
+            </div>
         </h:form>
-        <h:messages />
+        <h:messages/>
     </ui:define>
 </ui:composition>

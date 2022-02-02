@@ -8,6 +8,7 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 import java.util.UUID;
+import java.util.function.Predicate;
 import java.util.stream.Collectors;
 
 @ApplicationScoped
@@ -66,5 +67,23 @@ public class JobDAO implements DAO<Job> {
             );
         }
         return new ArrayList<Job>(list);
+    }
+
+    @Override
+    public ArrayList<Job> search(String s) throws ItemNotFoundException {
+        Predicate<Job> name = job -> job.getName().toLowerCase().contains(s.toLowerCase());
+        Predicate<Job> description = job -> job.getDescription().toLowerCase().contains(s.toLowerCase());
+        Predicate<Job> uuid = job -> job.getUuid().toString().toLowerCase().contains(s.toLowerCase());
+
+        Predicate<Job> filter = name.or(description).or(uuid);
+
+        List<Job> result = jobs.stream().filter(filter).collect(Collectors.toList());
+
+        // if (result.isEmpty()) {
+        //     throw new ItemNotFoundException(
+        //             "Job with not found"
+        //     );
+        // }
+        return new ArrayList<Job>(result);
     }
 }

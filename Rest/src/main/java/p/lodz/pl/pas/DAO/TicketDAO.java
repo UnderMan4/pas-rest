@@ -11,6 +11,7 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 import java.util.UUID;
+import java.util.function.Predicate;
 import java.util.stream.Collectors;
 
 @ApplicationScoped
@@ -109,6 +110,25 @@ public class TicketDAO implements DAO<Ticket> {
             );
         }
         return new ArrayList<Ticket>(list);
+    }
+
+    @Override
+    public ArrayList<Ticket> search(String s) throws ItemNotFoundException {
+        Predicate<Ticket> userName = ticket -> ticket.getUser().getLogin().toLowerCase().contains(s.toLowerCase());
+        Predicate<Ticket> userUUID = ticket -> ticket.getUser().getUuid().toString().toLowerCase().contains(s.toLowerCase());
+        Predicate<Ticket> jobName = ticket -> ticket.getJob().getName().toLowerCase().contains(s.toLowerCase());
+        Predicate<Ticket> jobUUID = ticket -> ticket.getUuid().toString().toLowerCase().contains(s.toLowerCase());
+        Predicate<Ticket> UUID = ticket -> ticket.getUuid().toString().toLowerCase().contains(s.toLowerCase());
+        Predicate<Ticket> status = ticket -> ticket.getStatus().toString().toLowerCase().contains(s.toLowerCase());
+
+        Predicate<Ticket> filter = userName.or(userUUID).or(jobName).or(jobUUID).or(UUID).or(status);
+        // Predicate<Ticket> filter = UUID;
+        List<Ticket> result = tickets.stream().filter(filter).collect(Collectors.toList());
+        // if (result.isEmpty()) {
+        //     throw new ItemNotFoundException("Tickets not found");
+        // }
+        return new ArrayList<Ticket>(result);
+        // return tickets;
     }
 
     // return ticket that has the job in specified time

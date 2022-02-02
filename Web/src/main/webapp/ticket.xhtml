@@ -1,5 +1,6 @@
 <?xml version='1.0' encoding='UTF-8' ?>
-<!DOCTYPE composition PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<!DOCTYPE composition PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+        "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
 <ui:composition xmlns:ui="http://java.sun.com/jsf/facelets"
                 xmlns="http://www.w3.org/1999/xhtml"
                 xmlns:h="http://java.sun.com/jsf/html"
@@ -16,8 +17,11 @@
 
     <ui:define name="content">
         <h:form id="ticket-form">
+            <h:inputText id="search" value="#{ticketListBean.search}">
+                <f:ajax event="keyup" render="ticketTable" listener="#{ticketListBean.init}"/>
+            </h:inputText>
             <h2>${msg["ticketList"]}</h2>
-            <h:dataTable value="#{ticketListBean.ticketList}" var="ticket">
+            <h:dataTable id="ticketTable" value="#{ticketListBean.ticketList}" var="ticket">
                 <h:column>
                     <f:facet name="header">${msg["column.uuid"]}</f:facet>
                     <h:outputText value="#{ticket.uuid}"/>
@@ -49,13 +53,10 @@
             </h:dataTable>
         </h:form>
         <h:form id="navigate-to-create-ticket">
-            <h:commandButton action="redirectToCreateTicket" value="Create ticket page" />
+            <h:commandButton action="redirectToCreateTicket" value="Create ticket page"/>
         </h:form>
         <br/>
-        <h:form id="navigate-to-search-ticket">
-            <h:commandButton action="redirectToSearchTicket" value="Search ticket page" />
-        </h:form>
-        <h:messages />
+        <h:messages/>
     </ui:define>
 
 </ui:composition>

@@ -20,13 +20,13 @@ import java.util.UUID;
 public class TicketManager {
     @Inject
     TicketDAO ticketDAO;
-    
+
     @Inject
     UserDAO userDAO;
-    
+
     @Inject
     JobDAO jobDAO;
-    
+
 
     public synchronized boolean createTicket(UUID userUUID, UUID jobUUID, LocalDateTime jobStart, LocalDateTime jobEnd, String description) throws DateException, ItemNotFoundException, JobAlreadyTaken {
         if (jobEnd != null) {
@@ -51,7 +51,7 @@ public class TicketManager {
     public ArrayList<Ticket> getTicketList() {
         return ticketDAO.readAll();
     }
-    
+
     public boolean delete(UUID uuid) throws ItemNotFoundException, cantDeleteException {
         return ticketDAO.delete(uuid);
     }
@@ -67,5 +67,9 @@ public class TicketManager {
     // search by UUID and return all matching results
     public ArrayList<Ticket> searchByUUID(String userUUID) throws ItemNotFoundException {
         return ticketDAO.searchByUUID(userUUID);
+    }
+
+    public ArrayList<Ticket> search(String s) throws ItemNotFoundException {
+        return ticketDAO.search(s);
     }
 }

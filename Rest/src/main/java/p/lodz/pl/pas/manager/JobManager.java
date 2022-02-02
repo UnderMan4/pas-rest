@@ -19,7 +19,7 @@ public class JobManager {
 
     public synchronized UUID createJob(String name, String description) {
         UUID uuid = UUID.randomUUID();
-        if (jobDAO.create(new Job(name, description))){
+        if (jobDAO.create(new Job(name, description))) {
             return uuid;
         } else {
             return null;
@@ -46,5 +46,9 @@ public class JobManager {
     // search by UUID and return all matching results
     public ArrayList<Job> searchByUUID(String uuid) throws ItemNotFoundException {
         return jobDAO.searchByUUID(uuid);
+    }
+
+    public ArrayList<Job> search(String s) throws ItemNotFoundException {
+        return jobDAO.search(s);
     }
 }
