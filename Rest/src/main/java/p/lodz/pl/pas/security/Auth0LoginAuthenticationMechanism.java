@@ -25,7 +25,7 @@ public class Auth0LoginAuthenticationMechanism implements HttpAuthenticationMech
     @Override
     public AuthenticationStatus validateRequest(HttpServletRequest request, HttpServletResponse response, HttpMessageContext context) {
 
-        if (request.getRequestURL().toString().endsWith("/api/authenticate")) {
+        if (request.getRequestURL().toString().endsWith("/api/authenticate") || request.getRequestURL().toString().endsWith("/login.xhtml")) {
             return context.doNothing();
         }
 
