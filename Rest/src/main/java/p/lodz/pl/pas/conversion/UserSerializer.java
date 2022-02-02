@@ -1,7 +1,6 @@
 package p.lodz.pl.pas.conversion;
 
 import com.google.gson.*;
-import p.lodz.pl.pas.model.NormalUser;
 import p.lodz.pl.pas.model.User;
 
 import java.lang.reflect.Type;

@@ -9,8 +9,8 @@ import java.util.Map;
 
 public class UserDeserializer implements JsonDeserializer<User> {
 
-    String userTypeElementName = "accessLevel";
-    Map<String, Class<? extends User>> userTypeRegistry;
+    final String userTypeElementName = "accessLevel";
+    final Map<String, Class<? extends User>> userTypeRegistry;
 
     public UserDeserializer() {
         userTypeRegistry = new HashMap<>();

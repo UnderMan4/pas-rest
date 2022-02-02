@@ -2,7 +2,6 @@ package p.lodz.pl.pas.DAO;
 
 import p.lodz.pl.pas.exceptions.ItemNotFoundException;
 import p.lodz.pl.pas.model.Job;
-import p.lodz.pl.pas.model.Ticket;
 
 import javax.enterprise.context.ApplicationScoped;
 import java.util.ArrayList;

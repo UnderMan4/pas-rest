@@ -1,7 +1,5 @@
 package p.lodz.pl.pas.model;
 
-import com.fasterxml.jackson.annotation.JsonTypeName;
-
 import javax.annotation.security.DeclareRoles;
 import java.util.UUID;
 

@@ -48,12 +48,8 @@ public class JWTAuthenticator {
 
         // https://github.com/auth0/java-jwt#time-validation
         // When verifying a token the time validation occurs automatically, resulting in a JWTVerificationException being
-        // throw when the values are invalid. If any of the previous fields are missing they won't be considered in this validation.
-        try {
-            return verifier.verify(jwtSerializedToken);
-        } catch (JWTVerificationException e) {
-            throw e;
-        }
+        // thrown when the values are invalid. If any of the previous fields are missing they won't be considered in this validation.
+        return verifier.verify(jwtSerializedToken);
     }
 }
 

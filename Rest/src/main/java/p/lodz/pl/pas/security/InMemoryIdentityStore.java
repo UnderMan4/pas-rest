@@ -39,11 +39,6 @@ public class InMemoryIdentityStore implements IdentityStore {
     }
 
     @Override
-    public int priority() {
-        return IdentityStore.super.priority();
-    }
-
-    @Override
     public Set<ValidationType> validationTypes() {
         return IdentityStore.super.validationTypes();
     }

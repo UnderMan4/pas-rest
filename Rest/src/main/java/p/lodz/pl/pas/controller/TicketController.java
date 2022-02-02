@@ -3,7 +3,6 @@ package p.lodz.pl.pas.controller;
 import com.google.gson.JsonObject;
 import com.google.gson.JsonParser;
 import com.google.gson.JsonSyntaxException;
-import p.lodz.pl.pas.conversion.GsonLocalDateTime;
 import p.lodz.pl.pas.exceptions.DateException;
 import p.lodz.pl.pas.exceptions.ItemNotFoundException;
 import p.lodz.pl.pas.exceptions.JobAlreadyTaken;
@@ -12,7 +11,6 @@ import p.lodz.pl.pas.filter.SignatureValidatorFilter;
 import p.lodz.pl.pas.filter.SignatureVerifier;
 import p.lodz.pl.pas.manager.TicketManager;
 import p.lodz.pl.pas.model.Ticket;
-import p.lodz.pl.pas.model.User;
 
 import javax.annotation.security.RolesAllowed;
 import javax.inject.Inject;
@@ -66,7 +64,7 @@ public class TicketController {
             ticketManager.createTicket(user, job, jobStart, null, description);
             return Response.status(CREATED).entity("Ticket created").build();
         } catch (DateException e) {
-            // if user inputs wrong date in correct format, ex. day that does not exists
+            // if user inputs wrong date in correct format, ex. day that does not exist
             return Response.status(BAD_REQUEST).entity(e.getMessage()).build();
         } catch (ItemNotFoundException e) {
             return Response.status(NOT_FOUND).entity(e.getMessage()).build();

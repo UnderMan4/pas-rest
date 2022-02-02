@@ -1,6 +1,5 @@
 package p.lodz.pl.pas.controller;
 
-import com.google.gson.Gson;
 import com.google.gson.JsonObject;
 import com.google.gson.JsonParser;
 import com.google.gson.JsonSyntaxException;
@@ -77,7 +76,7 @@ public class UserController {
 
 
     @GET
-    @RolesAllowed({"Admin", "UserAdministrator"})
+    @RolesAllowed({"Admin", "UserAdministrator", "ResourceAdministrator"})
     @Path("list")
     @Produces(MediaType.APPLICATION_JSON)
     public Response getUserList() {
@@ -91,10 +90,10 @@ public class UserController {
      * @return result of user edit
      */
     @POST
-    @Path("editUserWithUUID")
+    @Path("update")
     @SignatureValidatorFilter
     @Consumes(MediaType.APPLICATION_JSON)
-    public Response editUserWithUUID(String json, @HeaderParam("If-match") @NotNull @NotEmpty String tagValue) {
+    public Response update(String json, @HeaderParam("If-match") @NotNull @NotEmpty String tagValue) {
         try {
             User user = GsonLocalDateTime.getGsonSerializer().fromJson(json, User.class);
             if (!SignatureVerifier.verifyEntityIntegrity(tagValue, user)) {
@@ -102,9 +101,7 @@ public class UserController {
             }
             userManager.editUserWithUUID(user.getUuid(), user.getLogin(), user.getPassword(), user.getName(), user.getSurname(), user.getActive(), user.getUserAccessLevel());
             return Response.status(Response.Status.ACCEPTED).entity("User edited").build();
-        } catch (JsonSyntaxException | NullPointerException e) {
-            return Response.status(Response.Status.BAD_REQUEST).entity(e.getMessage()).build();
-        } catch (ItemNotFoundException e) {
+        } catch (JsonSyntaxException | NullPointerException | ItemNotFoundException e) {
             return Response.status(Response.Status.BAD_REQUEST).entity(e.getMessage()).build();
         }
     }

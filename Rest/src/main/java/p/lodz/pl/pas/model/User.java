@@ -1,10 +1,5 @@
 package p.lodz.pl.pas.model;
 
-import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
-import com.fasterxml.jackson.annotation.JsonSubTypes;
-import com.fasterxml.jackson.annotation.JsonTypeInfo;
-import com.google.gson.annotations.Expose;
-
 import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Pattern;
 import java.io.Serializable;
@@ -12,14 +7,6 @@ import java.util.UUID;
 import static p.lodz.pl.pas.RegexList.SURNAME_PATTERN;
 import static p.lodz.pl.pas.RegexList.USERNAME_PATTERN;
 
-@JsonIgnoreProperties(ignoreUnknown = true)
-@JsonTypeInfo(use = JsonTypeInfo.Id.NAME, include = JsonTypeInfo.As.PROPERTY, property = "type")
-@JsonSubTypes({
-        @JsonSubTypes.Type(value=NormalUser.class, name = "NormalUser"),
-        @JsonSubTypes.Type(value=ResourceAdministrator.class, name = "ResourceAdministrator"),
-        @JsonSubTypes.Type(value=UserAdministrator.class, name = "UserAdministrator"),
-        @JsonSubTypes.Type(value=Admin.class, name = "Admin")
-})
 public abstract class User implements SingableEntity, Serializable {
 
     @NotNull
@@ -37,7 +24,6 @@ public abstract class User implements SingableEntity, Serializable {
     private Boolean active;
 
     @Pattern(regexp = SURNAME_PATTERN, message = "Password must be between 2 and 30 characters")
-    @Expose(serialize = false)
     private String password;
 
     public User(UUID uuid, String login, String password, String name, String surname, Boolean active) {
@@ -106,11 +92,10 @@ public abstract class User implements SingableEntity, Serializable {
         this.password = password;
     }
 
+    // ------------------------------------------------------------------------------------------------
+
     @Override
     public String getSingablePayload() {
         return login + uuid.toString();
     }
-
-    // ------------------------------------------------------------------------------------------------
-
 }

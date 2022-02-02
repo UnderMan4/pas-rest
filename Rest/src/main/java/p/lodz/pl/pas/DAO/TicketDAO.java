@@ -16,11 +16,10 @@ import java.util.stream.Collectors;
 @ApplicationScoped
 public class TicketDAO implements DAO<Ticket> {
     ArrayList<Ticket> tickets;
-    DateTimeFormatter dtf = DateTimeFormatter.ISO_LOCAL_DATE_TIME;
+    final DateTimeFormatter dtf = DateTimeFormatter.ISO_LOCAL_DATE_TIME;
 
     public TicketDAO() {
         tickets = new ArrayList<>();
-        JobDAO jobDAO = new JobDAO();
         this.create(new Ticket(UUID.fromString("86600b3f-2d48-4d88-a26b-45ec2eeb4845"),
                 new NormalUser(UUID.fromString("54ceb043-5f89-41bb-a29b-f2c0e9909dad"), "jkowalski", "P@ssw0rd", "Jan", "Kowalski", true),
                 new Job(UUID.fromString("b8344cdb-dc2d-42a0-8c0f-d35f676b8074"), "Cleanup code", "Cleanup code in this program"),
