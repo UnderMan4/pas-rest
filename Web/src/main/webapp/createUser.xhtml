@@ -18,48 +18,92 @@
     <ui:define name="content">
         <h:form id="edit-user-form">
             <h2>${msg["userCreate"]}</h2>
+            <table>
+                <tr>
+                    <td>
+                        <a name="header">${msg["column.login"]}</a>
+                    </td>
+                    <td>
+                        <h:inputText id="login" value="#{userCreateBean.newUser.login}" required="true"
+                                     requiredMessage="#{msg['userCreate.loginrequired']}"
+                                     validatorMessage="#{msg['message.userCreate.login']}">
+                            <f:validateLength minimum="2" maximum="20"/>
+                            <f:ajax event="keyup" render="loginMessage"/>
+                        </h:inputText>
+                    </td>
 
-            <a name="header">${msg["column.login"]}</a>
-            <br/>
-            <h:inputText id="login" value="#{userCreateBean.newUser.login}" required="true"
-                         requiredMessage="#{msg['userCreate.loginrequired']}"
-                         validatorMessage="#{msg['message.userCreate.login']}">
-                <f:validateLength minimum="2" maximum="20"/>
-                <f:ajax event="keyup" render="loginMessage"/>
-            </h:inputText>
-            <br/>
+                </tr>
+                <tr>
+                    <td>
+                        <a name="header">${msg["column.name"]}</a>
+                    </td>
+                    <td>
+                        <h:inputText id="name" value="#{userCreateBean.newUser.name}"
+                                     validatorMessage="#{msg['message.userCreate.name']}">
 
-            <a name="header">${msg["column.name"]}</a>
-            <br/>
-            <h:inputText id="name" value="#{userCreateBean.newUser.name}"
-                         validatorMessage="#{msg['message.userCreate.name']}">
+                            <f:validateLength minimum="2" maximum="20"/>
+                            <f:ajax event="keyup" render="nameMessage"/>
+                        </h:inputText>
+                    </td>
+                </tr>
+                <tr>
+                    <td>
+                        <a name="header">${msg["column.surname"]}</a>
+                    </td>
+                    <td>
+                        <h:inputText id="surname" value="#{userCreateBean.newUser.surname}"
+                                     validatorMessage="#{msg['message.userCreate.Surname']}">
 
-                <f:validateLength minimum="2" maximum="20"/>
-                <f:ajax event="keyup" render="nameMessage"/>
-            </h:inputText>
-            <br/>
-            <a name="header">${msg["column.surname"]}</a>
-            <br/>
-            <h:inputText id="surname" value="#{userCreateBean.newUser.surname}"
-                         validatorMessage="#{msg['message.userCreate.Surname']}">
+                            <f:validateLength minimum="2" maximum="30"/>
+                            <f:ajax event="keyup" render="surnameMessage"/>
+                        </h:inputText>
+                    </td>
+                </tr>
+                <tr>
+                    <td>
+                        <a name="header">${msg["column.password"]}</a>
+                    </td>
+                    <td>
+                        <h:inputSecret id="password" value="#{userCreateBean.newUser.password}"
+                                       validatorMessage="#{msg['message.userCreate.Surname']}">
 
-                <f:validateLength minimum="2" maximum="20"/>
-                <f:ajax event="keyup" render="surnameMessage"/>
-            </h:inputText>
-            <br/>
-            <h:selectBooleanCheckbox value="#{userCreateBean.newUser.active}"/>
-            <br/>
-            <h:selectOneMenu value="#{userCreateBean.newUser.accessLevel}">
-                <f:selectItems value="#{accessLevelBean.accessLevelsList}" var="level"
-                               itemValue="#{level}" itemLabel="#{msg['accessLevel.' += level]}"/>
-            </h:selectOneMenu>
-            <br/>
-            <h:commandButton action="#{userCreateBean.createNewUser}" value="#{msg['saveButton']}"/>
+                            <f:validateLength minimum="2" maximum="30"/>
+                            <f:ajax event="keyup" render="surnameMessage"/>
+                        </h:inputSecret>
+                    </td>
+                </tr>
+                <tr>
+                    <td>
+                    </td>
+                    <td>
+                        <h:selectBooleanCheckbox value="#{userCreateBean.newUser.active}"/>
+                    </td>
+                </tr>
+                <tr>
+                    <td>
+                    </td>
+                    <td>
+                        <h:selectOneMenu value="#{userCreateBean.newUser.accessLevel}">
+                            <f:selectItems value="#{accessLevelBean.accessLevelsList}" var="level"
+                                           itemValue="#{level}" itemLabel="#{msg['accessLevel.' += level]}"/>
+                        </h:selectOneMenu>
+                    </td>
+                </tr>
+                <tr>
+                    <td>
+                    </td>
+                    <td>
+                        <h:commandButton action="#{userCreateBean.createNewUser}" value="#{msg['saveButton']}"/>
+                    </td>
+                </tr>
+            </table>
+
             <div style="display: flex; flex-direction: column; color: red; font-weight: bold;">
                 <h:message id="loginMessage" for="login"/>
                 <h:message id="nameMessage" for="name"/>
                 <h:message id="surnameMessage" for="surname"/>
             </div>
+
         </h:form>
         <h:messages/>
     </ui:define>

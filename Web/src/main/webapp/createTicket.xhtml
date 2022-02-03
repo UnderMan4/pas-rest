@@ -47,7 +47,8 @@
             <a name="header">${msg["column.description"]}</a>
             <h:inputTextarea id="description" value="#{ticketCreateBean.newTicket.description}"
                              style="height: 10em; width: 30em">
-                <a:validateLength minimum="2" maximum="5"/>
+                <a:validateRegex pattern="[a-zA-Z0-9_\s\u002e]*"/>
+                <a:validateLength maximum="400"/>
                 <a:ajax event="keyup" render="descriptionMessage"/>
             </h:inputTextarea>
 
