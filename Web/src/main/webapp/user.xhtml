@@ -45,15 +45,15 @@
                     <f:facet name="header">${msg["column.accessLevel"]}</f:facet>
                     <h:outputText value="#{user.accessLevel}"/>
                 </h:column>
-                <h:column>
+                <h:column rendered="#{activeUserBean.administrator or activeUserBean.userAdministrator}">
                     <h:commandButton action="#{userListBean.setUserActive(user, true)}"
                                      value="#{msg['userList.activateUserButton']}" disabled="#{user.active}"/>
                 </h:column>
-                <h:column>
+                <h:column rendered="#{activeUserBean.administrator or activeUserBean.userAdministrator}">
                     <h:commandButton action="#{userListBean.setUserActive(user, false)}"
                                      value="#{msg['userList.deactivateUserButton']}" disabled="#{!user.active}"/>
                 </h:column>
-                <h:column>
+                <h:column rendered="#{activeUserBean.administrator or activeUserBean.userAdministrator}">
                     <h:commandButton action="#{userListBean.editUser(user)}" value="#{msg['editButton']}"/>
                 </h:column>
                 <h:column>
@@ -61,7 +61,8 @@
                 </h:column>
             </h:dataTable>
         </h:form>
-        <h:form id="navigate-to-create-user">
+        <h:form id="navigate-to-create-user"
+                rendered="#{activeUserBean.administrator or activeUserBean.userAdministrator}">
             <h:commandButton action="redirectToCreateUser" value="#{msg['userList.createUserButton']}"/>
         </h:form>
         <br/>

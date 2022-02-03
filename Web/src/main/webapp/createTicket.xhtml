@@ -19,12 +19,14 @@
         <h:form id="create-ticket-form">
             <h2>${msg["ticketList"]}</h2>
 
-            <a name="header">${msg["column.user"]}</a>
-            <h:selectOneMenu value="#{ticketCreateBean.user}" required="true"
-                             requiredMessage="User uuid is required">
-                <a:selectItems value="${userListBean.userListAll}" var="user" itemValue="#{user}"
-                               itemLabel="#{user.login += ' - ' += user.uuid}"/>
-            </h:selectOneMenu>
+            <h:panelGroup rendered="#{activeUserBean.administrator or activeUserBean.resourceAdministrator}">
+                <a name="header">${msg["column.user"]}</a>
+                <h:selectOneMenu value="#{ticketCreateBean.user}" required="true"
+                                 requiredMessage="User uuid is required">
+                    <a:selectItems value="${userListBean.userListAll}" var="user" itemValue="#{user}"
+                                   itemLabel="#{user.login += ' - ' += user.uuid}"/>
+                </h:selectOneMenu>
+            </h:panelGroup>
 
             <br/>
             <a name="header">${msg["column.job"]}</a>
