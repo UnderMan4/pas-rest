@@ -179,6 +179,8 @@ public class UserController {
         }
     }
 
+    // ------------------------------------------------------------------------------------------------
+
 
     @GET
     @Path("_self")
@@ -188,6 +190,20 @@ public class UserController {
         try {
             return Response.status(Response.Status.ACCEPTED).entity(
                     getGsonSerializer().toJson(userManager.findUsersByLogin(securityContext.getUserPrincipal().getName()))
+            ).build();
+        } catch (ItemNotFoundException e) {
+            return Response.status(Response.Status.NOT_FOUND).entity(e.getMessage()).build();
+        }
+    }
+
+    @POST
+    @Path("changePassword")
+    @PermitAll
+    @Consumes(MediaType.APPLICATION_JSON)
+    public Response changePassword(@Context SecurityContext securityContext, @NotNull @NotEmpty String password) {
+        try {
+            return Response.status(Response.Status.ACCEPTED).entity(
+                    getGsonSerializer().toJson(userManager.changePassword(securityContext.getUserPrincipal().getName(), password))
             ).build();
         } catch (ItemNotFoundException e) {
             return Response.status(Response.Status.NOT_FOUND).entity(e.getMessage()).build();

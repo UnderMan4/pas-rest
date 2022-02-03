@@ -128,4 +128,13 @@ public class UserDAO implements DAO<User> {
                 "User with login " + login + " not found"
         ));
     }
+
+    public boolean changePassword(String login, String password) throws ItemNotFoundException {
+        Optional<User> optional = users.stream().filter(u -> u.getLogin().equals(login)).findFirst();
+        User user = optional.orElseThrow(() -> new ItemNotFoundException(
+                "User with login " + login + " not found"
+        ));
+        user.setPassword(password);
+        return true;
+    }
 }

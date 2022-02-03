@@ -111,4 +111,8 @@ public class UserManager {
         return userDAO.findUserByLogin(login);
     }
 
+    public synchronized boolean changePassword(String login, String password) throws ItemNotFoundException {
+        return userDAO.changePassword(login, password);
+    }
+
 }
