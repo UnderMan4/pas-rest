@@ -3,8 +3,8 @@
 <!-- =========== FULL CONFIGURATION FILE ================================== -->
 
 <faces-config version="2.0"
-              xmlns="http://java.sun.com/xml/ns/javaee" 
-              xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" 
+              xmlns="http://java.sun.com/xml/ns/javaee"
+              xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
               xsi:schemaLocation="http://java.sun.com/xml/ns/javaee http://java.sun.com/xml/ns/javaee/web-facesconfig_2_0.xsd">
 
     <application>
@@ -24,12 +24,12 @@
         <navigation-case>
             <from-outcome>redirectToCreateJob</from-outcome>
             <to-view-id>/createJob.xhtml</to-view-id>
-            <redirect />
+            <redirect/>
         </navigation-case>
         <navigation-case>
             <from-outcome>redirectToSearchJob</from-outcome>
             <to-view-id>/searchJob.xhtml</to-view-id>
-            <redirect />
+            <redirect/>
         </navigation-case>
     </navigation-rule>
 
@@ -38,12 +38,12 @@
         <navigation-case>
             <from-outcome>redirectToCreateUser</from-outcome>
             <to-view-id>/createUser.xhtml</to-view-id>
-            <redirect />
+            <redirect/>
         </navigation-case>
         <navigation-case>
             <from-outcome>redirectToSearchUser</from-outcome>
             <to-view-id>/searchUser.xhtml</to-view-id>
-            <redirect />
+            <redirect/>
         </navigation-case>
     </navigation-rule>
 
@@ -52,16 +52,29 @@
         <navigation-case>
             <from-outcome>redirectToCreateTicket</from-outcome>
             <to-view-id>/createTicket.xhtml</to-view-id>
-            <redirect />
+            <redirect/>
         </navigation-case>
         <navigation-case>
             <from-outcome>redirectToSearchTicket</from-outcome>
             <to-view-id>/searchTicket.xhtml</to-view-id>
-            <redirect />
+            <redirect/>
         </navigation-case>
     </navigation-rule>
 
-
+    <navigation-rule>
+        <from-view-id>/login.xhtml</from-view-id>
+        <navigation-case>
+            <from-action>#{loginBean.login}</from-action>
+            <from-outcome>true</from-outcome>
+            <to-view-id>/start.xhtml</to-view-id>
+            <redirect/>
+        </navigation-case>
+        <navigation-case>
+            <from-action>#{loginBean.login}</from-action>
+            <from-outcome>false</from-outcome>
+            <to-view-id>/login.xhtml</to-view-id>
+        </navigation-case>
+    </navigation-rule>
 
 
 </faces-config>

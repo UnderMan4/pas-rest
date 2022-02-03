@@ -9,20 +9,36 @@
 
 
     <ui:define name="content">
-        <h:form id="login" method="post" action="j_security_check">
-            <h:panelGrid>
+        <h:form id="loginForm" method="post" action="j_security_check">
+            <div style="display: flex; flex-direction: column; width: 400px;">
                 <table>
                     <tr>
-                        <td>${msg['login.username']}</td>
-                        <td><input type="text" name="j_username"/></td>
+                        <td>
+                            <h:outputLabel for="loginInput"
+                                           style="width: auto;">#{msg['login.username']}</h:outputLabel>
+                        </td>
+                        <td>
+                            <h:inputText id="loginInput" value="#{loginBean.username}"/>
+                        </td>
                     </tr>
                     <tr>
-                        <td>${msg['login.password']}</td>
-                        <td><input type="password" name="j_password"/></td>
+                        <td>
+                            <h:outputLabel for="passwordInput">#{msg['login.password']}</h:outputLabel>
+                        </td>
+                        <td>
+                            <h:inputSecret id="passwordInput" value="#{loginBean.password}"/>
+                        </td>
+                    </tr>
+                    <tr>
+                        <td/>
+                        <td>
+                            <h:commandButton id="loginButton" value="#{msg['login.submit']}"
+                                             action="#{loginBean.login}"/>
+                        </td>
                     </tr>
                 </table>
-                <input type="submit" name="login" value="${msg['login.submit']}"/>
-            </h:panelGrid>
+            </div>
+
         </h:form>
 
     </ui:define>

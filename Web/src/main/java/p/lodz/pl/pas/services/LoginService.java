@@ -1,6 +1,9 @@
 package p.lodz.pl.pas.services;
 
 
+import p.lodz.pl.pas.exceptions.RESTException;
+import p.lodz.pl.pas.exceptions.WrongLoginException;
+
 import javax.json.Json;
 import javax.json.JsonObject;
 import javax.ws.rs.client.Client;
@@ -9,6 +12,7 @@ import javax.ws.rs.client.Entity;
 import javax.ws.rs.client.WebTarget;
 import javax.ws.rs.core.Response;
 import java.io.Serializable;
+import java.util.logging.Level;
 import java.util.logging.Logger;
 
 public class LoginService implements Serializable {
@@ -24,7 +28,7 @@ public class LoginService implements Serializable {
 
     }
 
-    public void login(String login, String password) {
+    public void login(String login, String password) throws WrongLoginException, RESTException {
         Response response = getClientWebTarget()
                 .request()
                 .post(
@@ -35,8 +39,13 @@ public class LoginService implements Serializable {
                                         .build()
                         )
                 );
-        if (response.getStatus() == 202) {
+        LOGGER.log(Level.INFO, "RRequest status: " + response.getStatus());
+        if (response.getStatus() == 202 || response.getStatus() == 200) {
             token = response.readEntity(String.class);
+        } else if (response.getStatus() == 401) {
+            throw new WrongLoginException("Wrong login or password");
+        } else {
+            throw new RESTException("Something went wrong");
         }
     }
 
