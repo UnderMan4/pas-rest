@@ -1,6 +1,8 @@
 package p.lodz.pl.pas.services;
 
 
+import com.nimbusds.jwt.SignedJWT;
+import p.lodz.pl.pas.beans.ActiveUserBean;
 import p.lodz.pl.pas.exceptions.RESTException;
 import p.lodz.pl.pas.exceptions.WrongLoginException;
 
@@ -16,6 +18,7 @@ import javax.ws.rs.client.Entity;
 import javax.ws.rs.client.WebTarget;
 import javax.ws.rs.core.Response;
 import java.io.Serializable;
+import java.text.ParseException;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
@@ -26,6 +29,9 @@ public class LoginService implements Serializable {
     private final Logger LOGGER = Logger.getLogger(getClass().getName());
 
     private String token;
+    // private String role;
+    @Inject
+    ActiveUserBean activeUserBean;
 
     private WebTarget getClientWebTarget() {
         Client client = ClientBuilder.newClient();
@@ -49,6 +55,26 @@ public class LoginService implements Serializable {
         if (response.getStatus() == 202) {
             token = response.readEntity(String.class);
             LOGGER.log(Level.INFO, "Token: " + token);
+            SignedJWT jwt = null;
+            try {
+                jwt = SignedJWT.parse(token);
+            } catch (ParseException e) {
+                e.printStackTrace();
+            }
+            try {
+                assert jwt != null;
+                LOGGER.log(Level.INFO, "ClaimSet: " + jwt.getJWTClaimsSet().getClaims().toString());
+                String role = jwt.getJWTClaimsSet().getClaims().get("auth").toString();
+                activeUserBean.setRole(role);
+                activeUserBean.setUsername(jwt.getJWTClaimsSet().getClaims().get("sub").toString());
+                activeUserBean.setAdministrator(role.equals("Admin"));
+                activeUserBean.setResourceAdministrator(role.equals("ResourceAdministrator"));
+                activeUserBean.setUserAdministrator(role.equals("UserAdministrator"));
+                activeUserBean.setNormalUser(role.equals("NormalUser"));
+            } catch (ParseException e) {
+                e.printStackTrace();
+            }
+
         } else if (response.getStatus() == 401) {
             throw new WrongLoginException("Wrong login or password");
         } else {
@@ -69,4 +95,20 @@ public class LoginService implements Serializable {
     public void setToken(String token) {
         this.token = token;
     }
+
+    // public String getRole() {
+    //     return role;
+    // }
+    //
+    // public void setRole(String role) {
+    //     this.role = role;
+    // }
+    //
+    // public String getUsername() {
+    //     return username;
+    // }
+    //
+    // public void setUsername(String username) {
+    //     this.username = username;
+    // }
 }

@@ -12,6 +12,7 @@ import p.lodz.pl.pas.manager.TicketManager;
 import p.lodz.pl.pas.model.Job;
 import p.lodz.pl.pas.model.Ticket;
 
+import javax.annotation.security.PermitAll;
 import javax.annotation.security.RolesAllowed;
 import javax.inject.Inject;
 import javax.validation.constraints.NotEmpty;
@@ -55,6 +56,7 @@ public class JobController {
 
     @GET
     @Path("list")
+    @PermitAll
     @Produces(MediaType.APPLICATION_JSON)
     public Response getList() {
         Gson gson = new Gson();
@@ -62,7 +64,8 @@ public class JobController {
     }
 
     /**
-     *  Returns one job with etag for editing
+     * Returns one job with etag for editing
+     *
      * @param uuid exact uuid of the job
      * @return job
      */
@@ -123,6 +126,7 @@ public class JobController {
 
     @GET
     @Path("searchByUUID")
+    @PermitAll
     @Produces(MediaType.APPLICATION_JSON)
     public Response searchByUUID(@QueryParam("UUID") @NotNull String uuid) {
         try {
@@ -135,6 +139,7 @@ public class JobController {
 
     @GET
     @Path("search")
+    @PermitAll
     @Produces(MediaType.APPLICATION_JSON)
     public Response search(@QueryParam("s") String s) {
         try {

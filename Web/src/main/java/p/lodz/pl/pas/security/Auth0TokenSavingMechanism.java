@@ -17,10 +17,15 @@ import javax.servlet.http.HttpServletResponse;
 import java.text.ParseException;
 import java.util.Arrays;
 import java.util.HashSet;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 
 // @Alternative
 // @ApplicationScoped
 public class Auth0TokenSavingMechanism implements HttpAuthenticationMechanism {
+
+    private final Logger LOGGER = Logger.getLogger(getClass().getName());
+
 
     @Inject
     LoginService loginService;
@@ -38,6 +43,7 @@ public class Auth0TokenSavingMechanism implements HttpAuthenticationMechanism {
             SignedJWT jwt = SignedJWT.parse(token);
             String login = jwt.getJWTClaimsSet().getSubject();
             String groups = jwt.getJWTClaimsSet().getStringClaim("role");
+            LOGGER.log(Level.INFO, "ClaimSet: " + jwt.getJWTClaimsSet().getClaims().toString());
 
             return context.notifyContainerAboutLogin(login, new HashSet<>(Arrays.asList(groups.split(","))));
         } catch (JWTVerificationException | ParseException e) {

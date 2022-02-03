@@ -34,7 +34,8 @@
                     <f:facet name="header">${msg["column.uuid"]}</f:facet>
                     <h:outputText value="#{job.uuid}"/>
                 </h:column>
-                <h:column>
+                <h:column
+                        rendered="#{activeUserBean.administrator or activeUserBean.resourceAdministrator}">
 
 
                     <h:commandButton id="deleteJobButton" action="#{jobListBean.showDeleteConfirmationButtons}"
@@ -47,15 +48,17 @@
 
                 </h:column>
                 <h:message for="deleteJobButton"/>
-                <h:column>
-                    <h:commandButton action="#{jobListBean.editJob(job)}" value="#{msg['jobList.editJobButton']}"/>
+                <h:column rendered="#{activeUserBean.administrator or activeUserBean.resourceAdministrator}">
+                    <h:commandButton action="#{jobListBean.editJob(job)}" value="#{msg['jobList.editJobButton']}"
+                                     rendered="#{activeUserBean.administrator or activeUserBean.resourceAdministrator}"/>
                 </h:column>
                 <h:column>
                     <h:commandButton action="#{jobListBean.detailsUser(job)}" value="#{msg['detailsButton']}"/>
                 </h:column>
             </h:dataTable>
         </h:form>
-        <h:form id="navigate-to-create-job">
+        <h:form id="navigate-to-create-job"
+                rendered="#{activeUserBean.administrator or activeUserBean.resourceAdministrator}">
             <h:commandButton action="redirectToCreateJob" value="#{msg['jobList.createJobButton']}"/>
         </h:form>
         <br/>

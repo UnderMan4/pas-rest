@@ -26,16 +26,32 @@ public class LoginBean implements Serializable {
     private String password;
     private boolean loggedIn = false;
 
+
     @Inject
     LoginService loginService;
+
+    // private boolean isAdministrator;
+    // private boolean isResourceAdministrator;
+    // private boolean isUserAdministrator;
+    // private boolean isNormalUser;
 
 
     public boolean login() {
         try {
             loginService.login(username, password);
-            LOGGER.log(Level.INFO, username + "logged in");
+            LOGGER.log(Level.INFO, username + " logged in");
             // ExternalContext context = FacesContext.getCurrentInstance().getExternalContext();
             // context.redirect(context.getRequestContextPath() + "/start.xhtml");
+            // LOGGER.log(Level.INFO, "Role: " + loginService.getRole());
+            //
+            // boolean isAdministrator = loginService.getRole().equals("Admin");
+            // LOGGER.log(Level.INFO, "Admin: " + isAdministrator);
+            // boolean isResourceAdministrator = loginService.getRole().equals("ResourceAdministrator");
+            // LOGGER.log(Level.INFO, "ResourceAdministrator: " + isResourceAdministrator);
+            // boolean isUserAdministrator = loginService.getRole().equals("UserAdministrator");
+            // LOGGER.log(Level.INFO, "UserAdministrator: " + isUserAdministrator);
+            // boolean isNormalUser = loginService.getRole().equals("NormalUser");
+            // LOGGER.log(Level.INFO, "NormalUser: " + isNormalUser());
             loggedIn = true;
             return true;
         } catch (WrongLoginException | RESTException e) {
@@ -73,4 +89,27 @@ public class LoginBean implements Serializable {
     public void setLoggedIn(boolean loggedIn) {
         this.loggedIn = loggedIn;
     }
+
+    public LoginService getLoginService() {
+        return loginService;
+    }
+
+    // public boolean isAdministrator() {
+    //     LOGGER.log(Level.INFO, "Admin2: " + isAdministrator);
+    //
+    //     return isAdministrator;
+    //     // return true;
+    // }
+    //
+    // public boolean isResourceAdministrator() {
+    //     return isResourceAdministrator;
+    // }
+    //
+    // public boolean isUserAdministrator() {
+    //     return isUserAdministrator;
+    // }
+    //
+    // public boolean isNormalUser() {
+    //     return isNormalUser;
+    // }
 }

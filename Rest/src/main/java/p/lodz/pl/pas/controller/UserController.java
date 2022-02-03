@@ -82,7 +82,7 @@ public class UserController {
 
 
     @GET
-    @RolesAllowed({"Admin", "UserAdministrator", "ResourceAdministrator"})
+    @PermitAll
     @Path("list")
     @Produces(MediaType.APPLICATION_JSON)
     public Response getUserList() {
@@ -174,6 +174,7 @@ public class UserController {
 
     @GET
     @Path("search")
+    @PermitAll
     @Produces(MediaType.APPLICATION_JSON)
     public Response search(@QueryParam("s") String s) {
         try {

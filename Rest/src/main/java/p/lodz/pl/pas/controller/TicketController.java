@@ -79,6 +79,7 @@ public class TicketController {
 
     @GET
     @Path("list")
+    @PermitAll
     @Produces(MediaType.APPLICATION_JSON)
     public Response getTicketList() {
         return Response.status(ACCEPTED).entity(
@@ -87,7 +88,8 @@ public class TicketController {
     }
 
     /**
-     *  Returns with etag for ticket editing
+     * Returns with etag for ticket editing
+     *
      * @param uuid ticket uuid
      * @return one ticket with exact uuid
      */
@@ -139,6 +141,7 @@ public class TicketController {
 
     @GET
     @Path("searchByUUID")
+    @PermitAll
     @Produces(MediaType.APPLICATION_JSON)
     public Response searchByUUID(@QueryParam("UUID") @NotNull String uuid) {
         try {
@@ -157,6 +160,7 @@ public class TicketController {
 
     @GET
     @Path("search")
+    @PermitAll
     @Produces(MediaType.APPLICATION_JSON)
     public Response search(@QueryParam("s") String s) {
         try {
