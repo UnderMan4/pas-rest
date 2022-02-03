@@ -85,7 +85,7 @@ public class LoginService implements Serializable {
     public String logout() {
         HttpSession session = (HttpSession) FacesContext.getCurrentInstance().getExternalContext().getSession(true);
         session.invalidate();
-        return "/index?faces-redirect=true";
+        return "/login?faces-redirect=true";
     }
 
     public String getToken() {
