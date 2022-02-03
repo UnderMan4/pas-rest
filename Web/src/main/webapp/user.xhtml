@@ -56,7 +56,7 @@
                 <h:column rendered="#{activeUserBean.administrator or activeUserBean.userAdministrator}">
                     <h:commandButton action="#{userListBean.editUser(user)}" value="#{msg['editButton']}"/>
                 </h:column>
-                <h:column>
+                <h:column rendered="#{activeUserBean.administrator or activeUserBean.userAdministrator}">
                     <h:commandButton action="#{userListBean.detailsUser(user)}" value="#{msg['detailsButton']}"/>
                 </h:column>
             </h:dataTable>

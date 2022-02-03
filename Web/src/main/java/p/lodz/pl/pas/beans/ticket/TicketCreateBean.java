@@ -1,5 +1,7 @@
 package p.lodz.pl.pas.beans.ticket;
 
+import p.lodz.pl.pas.beans.ActiveUserBean;
+import p.lodz.pl.pas.beans.user.UserListBean;
 import p.lodz.pl.pas.exceptions.RESTException;
 import p.lodz.pl.pas.model_web.Job;
 import p.lodz.pl.pas.model_web.Ticket;
@@ -23,6 +25,12 @@ public class TicketCreateBean implements Serializable {
 
     @Inject
     TicketService ticketService;
+
+    @Inject
+    ActiveUserBean activeUserBean;
+
+    @Inject
+    UserListBean userListBean;
 
     private final TicketDTO newTicket = new TicketDTO();
 
@@ -67,7 +75,11 @@ public class TicketCreateBean implements Serializable {
         try {
             Date dateParsed = new SimpleDateFormat("dd.MM.yyyy").parse(date);
             newTicket.setJob(job.getUuid());
-            newTicket.setUser(user.getUuid());
+            if (activeUserBean.isAdministrator() || activeUserBean.isResourceAdministrator()) {
+                newTicket.setUser(user.getUuid());
+            } else {
+                newTicket.setUser(userListBean.getUserListAll().stream().filter(e -> e.getLogin().equals(activeUserBean.getUsername())).findFirst().get().getUuid());
+            }
             FacesMessage message = ticketService.createTicket(newTicket);
             FacesContext.getCurrentInstance().addMessage(null, message);
         } catch (RESTException | ParseException e) {

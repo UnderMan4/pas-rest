@@ -1,7 +1,7 @@
 
 #top {
     position: relative;
-    background-color: #56FF00;
+    background-color: #56FF00bb;
     color: black;
     padding: 5px;
     margin: 0px 0px 10px 0px;
@@ -11,7 +11,7 @@
 
 #bottom {
     position: relative;
-    background-color: #FF00EF;
+    background-color: #FF00EFbb;
     padding: 5px;
     margin: 10px 0px 0px 0px;
     border-radius: 20px;
@@ -19,7 +19,7 @@
 
 #left {
     float: left;
-    background-color: #6A7E25;
+    background-color: #6A7E25bb;
     padding: 5px;
     width: 150px;
     min-height: 480px;
@@ -48,7 +48,7 @@
 }
 
 .right_content {
-    background-color: #5159c7;
+    background-color: #5159c7bb;
     padding: 5px;
     margin: 20px 20px 20px 170px;
     min-height: 480px;

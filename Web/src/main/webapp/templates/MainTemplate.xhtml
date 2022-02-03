@@ -13,8 +13,10 @@
     <title>Facelets Template</title>
 </h:head>
 
-<h:body>
+<h:body style="margin: 0; padding:10">
     <f:view locale="#{languageBean.locale}"/>
+    <img src="../resources/download.jpg" alt="Graphic design is my passion"
+         style="position: absolute; z-index: -100; width: 100vw; height: 100vh; margin-left: -10px; margin-top: -10px"/>
 
     <div id="top">
         <ui:insert name="top">Top</ui:insert>
