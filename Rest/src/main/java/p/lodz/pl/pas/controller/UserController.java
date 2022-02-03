@@ -189,7 +189,7 @@ public class UserController {
     public Response findSelf(@Context SecurityContext securityContext) {
         try {
             return Response.status(Response.Status.ACCEPTED).entity(
-                    getGsonSerializer().toJson(userManager.findUsersByLogin(securityContext.getUserPrincipal().getName()))
+                    getGsonSerializer().toJson(userManager.findUserByLogin(securityContext.getUserPrincipal().getName()))
             ).build();
         } catch (ItemNotFoundException e) {
             return Response.status(Response.Status.NOT_FOUND).entity(e.getMessage()).build();
