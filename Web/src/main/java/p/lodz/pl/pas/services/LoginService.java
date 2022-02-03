@@ -45,7 +45,7 @@ public class LoginService implements Serializable {
                                         .build()
                         )
                 );
-        LOGGER.log(Level.INFO, "RRequest status: " + response.getStatus());
+        LOGGER.log(Level.INFO, "Request status: " + response.getStatus());
         if (response.getStatus() == 202) {
             token = response.readEntity(String.class);
             LOGGER.log(Level.INFO, "Token: " + token);

@@ -21,12 +21,17 @@ import javax.validation.constraints.NotNull;
 import javax.ws.rs.*;
 import javax.ws.rs.core.*;
 import java.util.UUID;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 
 import static p.lodz.pl.pas.conversion.GsonLocalDateTime.getGsonSerializer;
 
 @Path("user")
 @RolesAllowed({"Admin", "UserAdministrator"})
 public class UserController {
+
+    private final Logger LOGGER = Logger.getLogger(getClass().getName());
+
     @Inject
     UserManager userManager;
 
@@ -199,9 +204,11 @@ public class UserController {
     @POST
     @Path("changePassword")
     @PermitAll
-    @Consumes(MediaType.APPLICATION_JSON)
+    @Consumes(MediaType.TEXT_PLAIN)
     public Response changePassword(@Context SecurityContext securityContext, @NotNull @NotEmpty String password) {
         try {
+            LOGGER.log(Level.INFO, "Password: " + password);
+            Gson gson = new Gson();
             return Response.status(Response.Status.ACCEPTED).entity(
                     getGsonSerializer().toJson(userManager.changePassword(securityContext.getUserPrincipal().getName(), password))
             ).build();

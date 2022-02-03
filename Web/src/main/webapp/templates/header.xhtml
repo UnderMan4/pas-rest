@@ -8,8 +8,9 @@
 
     <div style="display:flex; flex-direction:row; justify-content:space-between; width:100%; align-items:center;">
         <p>${msg["main.page"]}</p>
-
-        <h:commandButton value="Log Out" action="#{loginBean.logout}"/>
+        <h:form>
+            <h:commandButton value="Log Out" action="#{loginBean.logout}"/>
+        </h:form>
     </div>
 
 </ui:composition>
