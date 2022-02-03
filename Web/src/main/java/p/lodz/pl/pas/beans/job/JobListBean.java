@@ -50,12 +50,12 @@ public class JobListBean implements Serializable {
     @PostConstruct
     public void init() {
         jobListAll = jobService.getAllJobs();
+        LOGGER.log(Level.INFO, "just message");
         if (search == "") {
             jobList = jobService.getAllJobs();
         } else {
             jobList = jobService.search(search);
         }
-        LOGGER.log(Level.INFO, jobList.toString());
     }
 
     public List<Job> getJobList() {
