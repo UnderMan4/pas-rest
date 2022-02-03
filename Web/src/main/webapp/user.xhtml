@@ -26,6 +26,10 @@
                     <h:outputText value="#{user.login}"/>
                 </h:column>
                 <h:column>
+                    <f:facet name="header">${msg["column.password"]}</f:facet>
+                    <h:outputText value="#{user.password}"/>
+                </h:column>
+                <h:column>
                     <f:facet name="header">${msg["column.name"]}</f:facet>
                     <h:outputText value="#{user.name}"/>
                 </h:column>
