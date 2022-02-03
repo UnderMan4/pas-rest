@@ -60,7 +60,7 @@ public class TicketService implements Serializable {
         LOGGER.log(Level.INFO, newTicket.toString());
         if (newTicket.getUser() != null && newTicket.getJob() != null) {
             Response response = getTicketWebTarget()
-                    .path("create")
+                    .path("createAdvanced")
                     .request()
                     .header("Authorization", "Bearer " + loginService.getToken())
                     .post(Entity.json(gsonLocalDateTime.getGsonSerializer().toJson(newTicket)));
