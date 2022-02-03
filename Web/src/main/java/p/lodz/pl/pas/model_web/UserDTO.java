@@ -6,6 +6,7 @@ public class UserDTO {
     private String surname;
     private Boolean active;
     private AccessLevel accessLevel;
+    private String password;
 
     public String getLogin() {
         return login;
@@ -45,6 +46,14 @@ public class UserDTO {
 
     public void setAccessLevel(AccessLevel accessLevel) {
         this.accessLevel = accessLevel;
+    }
+
+    public String getPassword() {
+        return password;
+    }
+
+    public void setPassword(String password) {
+        this.password = password;
     }
 
     @Override

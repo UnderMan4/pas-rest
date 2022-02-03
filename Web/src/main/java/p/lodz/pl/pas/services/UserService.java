@@ -68,6 +68,7 @@ public class UserService implements Serializable {
         String requestString;
         User u = new User(
                 user.getLogin(),
+                user.getPassword(),
                 user.getName(),
                 user.getSurname(),
                 user.getActive()

@@ -9,17 +9,20 @@ public class User {
     private UUID uuid;
     private Boolean active;
     private AccessLevel accessLevel;
+    private String password;
 
-    public User(UUID uuid, String login, String name, String surname, Boolean active) {
+    public User(UUID uuid, String login, String password, String name, String surname, Boolean active) {
         this.uuid = uuid;
         this.login = login;
+        this.password = password;
         this.name = name;
         this.surname = surname;
         this.active = active;
     }
 
-    public User(String login, String name, String surname, Boolean active) {
+    public User(String login, String password, String name, String surname, Boolean active) {
         this.login = login;
+        this.password = password;
         this.name = name;
         this.surname = surname;
         this.active = active;
@@ -75,6 +78,14 @@ public class User {
 
     public void setAccessLevel(AccessLevel accessLevel) {
         this.accessLevel = accessLevel;
+    }
+
+    public String getPassword() {
+        return password;
+    }
+
+    public void setPassword(String password) {
+        this.password = password;
     }
 
     @Override
