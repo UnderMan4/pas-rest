@@ -30,11 +30,14 @@ public class UserListBean implements Serializable {
     UserEditBean userEditBean;
 
     private List<User> userList;
+    private List<User> userListAll;
 
     private String search = "";
 
     @PostConstruct
     public void init() {
+
+        userListAll = userService.getAllUsers();
         if (search == "") {
             userList = userService.getAllUsers();
 
@@ -49,6 +52,15 @@ public class UserListBean implements Serializable {
 
     public List<User> getUserList() {
         return userList;
+    }
+
+
+    public List<User> getUserListAll() {
+        return userListAll;
+    }
+
+    public void setUserListAll(List<User> userListAll) {
+        this.userListAll = userListAll;
     }
 
     public UserListBean() {

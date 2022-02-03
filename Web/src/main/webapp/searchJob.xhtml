@@ -8,7 +8,7 @@
                 xmlns:f="http://java.sun.com/jsf/core">
 
     <ui:define name="top">
-        <p>${msg["main.page"]}</p>
+        <ui:include src="templates/header.xhtml"/>
     </ui:define>
 
     <ui:define name="left">
@@ -44,7 +44,8 @@
                     <h:outputText value="#{job.uuid}"/>
                 </h:column>
                 <h:column>
-                    <h:commandButton id="deleteJobButton" action="#{jobListBean.deleteJob(job)}" value="#{msg['jobList.deleteJobButton']}"
+                    <h:commandButton id="deleteJobButton" action="#{jobListBean.deleteJob(job)}"
+                                     value="#{msg['jobList.deleteJobButton']}"
                                      binding="#{jobListBean.deleteJobButton}"/>
                 </h:column>
                 <h:message for="deleteJobButton"/>

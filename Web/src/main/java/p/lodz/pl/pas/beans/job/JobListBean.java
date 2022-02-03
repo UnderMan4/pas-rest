@@ -42,12 +42,14 @@ public class JobListBean implements Serializable {
     private String search = "";
 
     private List<Job> jobList;
+    private List<Job> jobListAll;
 
     public JobListBean() {
     }
 
     @PostConstruct
     public void init() {
+        jobListAll = jobService.getAllJobs();
         if (search == "") {
             jobList = jobService.getAllJobs();
         } else {
@@ -138,6 +140,14 @@ public class JobListBean implements Serializable {
 
     public void setJobToDeleteUUID(String jobToDeleteUUID) {
         this.jobToDeleteUUID = jobToDeleteUUID;
+    }
+
+    public List<Job> getJobListAll() {
+        return jobListAll;
+    }
+
+    public void setJobListAll(List<Job> jobListAll) {
+        this.jobListAll = jobListAll;
     }
 
     public String getSearch() {

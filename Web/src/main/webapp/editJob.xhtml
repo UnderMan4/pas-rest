@@ -8,7 +8,7 @@
                 xmlns:f="http://java.sun.com/jsf/core">
 
     <ui:define name="top">
-        <p>${msg["main.page"]}</p>
+        <ui:include src="templates/header.xhtml"/>
     </ui:define>
 
     <ui:define name="left">
@@ -20,7 +20,8 @@
             <h2>#{msg['jobEdit']}</h2>
             <a name="header">${msg["column.name"]}</a>
             <br/>
-            <h:inputText value="#{jobEditBean.editedJob.name}" required="true" requiredMessage="#{msg['jobCreate.requiredMessage']}"/>
+            <h:inputText value="#{jobEditBean.editedJob.name}" required="true"
+                         requiredMessage="#{msg['jobCreate.requiredMessage']}"/>
             <br/>
             <a name="header">${msg["column.description"]}</a>
             <br/>
@@ -32,6 +33,6 @@
             <br/>
             <h:commandButton action="#{jobEditBean.saveEditedJob}" value="#{msg['saveButton']}"/>
         </h:form>
-        <h:messages />
+        <h:messages/>
     </ui:define>
 </ui:composition>

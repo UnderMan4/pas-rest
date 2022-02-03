@@ -18,10 +18,14 @@ import javax.ws.rs.Path;
 import javax.ws.rs.Produces;
 import javax.ws.rs.core.MediaType;
 import javax.ws.rs.core.Response;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 
 
 @Path("authenticate")
 public class LoginController {
+
+    private final Logger LOGGER = Logger.getLogger(getClass().getName());
 
     public LoginController() {
     }
@@ -40,6 +44,7 @@ public class LoginController {
             Credential credential = new UsernamePasswordCredential(login, password);
             CredentialValidationResult result = identityStoreHandler.validate(credential);
             if (result.getStatus() == CredentialValidationResult.Status.VALID) {
+                LOGGER.log(Level.INFO, "Result: " + JWTAuthenticator.generateJWT(result));
                 return Response.accepted()
                         .type("application/jwt")
                         .entity(JWTAuthenticator.generateJWT(result))

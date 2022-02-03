@@ -6,6 +6,7 @@ import p.lodz.pl.pas.services.TicketService;
 
 import javax.annotation.PostConstruct;
 import javax.enterprise.context.SessionScoped;
+import javax.enterprise.inject.Model;
 import javax.inject.Inject;
 import javax.inject.Named;
 import java.io.Serializable;
@@ -13,6 +14,7 @@ import java.util.List;
 
 @SessionScoped
 @Named
+// @Model
 public class TicketListBean implements Serializable {
     @Inject
     TicketService ticketService;

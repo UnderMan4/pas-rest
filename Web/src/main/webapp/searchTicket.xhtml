@@ -8,7 +8,7 @@
                 xmlns:f="http://java.sun.com/jsf/core">
 
     <ui:define name="top">
-        <p>${msg["main.page"]}</p>
+        <ui:include src="templates/header.xhtml"/>
     </ui:define>
 
     <ui:define name="left">
@@ -61,6 +61,6 @@
                 </h:column>
             </h:dataTable>
         </h:form>
-        <h:messages />
+        <h:messages/>
     </ui:define>
 </ui:composition>

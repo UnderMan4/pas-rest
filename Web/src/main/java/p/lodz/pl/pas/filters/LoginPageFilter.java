@@ -24,10 +24,9 @@ public class LoginPageFilter implements Filter {
         boolean isLoggedIn = (session != null && session.getAttribute("user") != null);
         boolean isLoginPage = req.getRequestURI().endsWith("login.xhtml");
 
-        if (isLoggedIn || isLoginPage || session != null){
+        if (isLoggedIn || isLoginPage || session != null) {
             chain.doFilter(request, response);
-        }
-        else{
+        } else {
             res.sendRedirect("/faces/login.xhtml");
         }
     }

@@ -44,6 +44,11 @@ public class LoginBean implements Serializable {
         }
     }
 
+    public boolean logout() {
+        loginService.logout();
+        return true;
+    }
+
 
     public String getUsername() {
         return username;

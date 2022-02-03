@@ -8,7 +8,7 @@
                 xmlns:a="http://java.sun.com/jsf/core">
 
     <ui:define name="top">
-        <p>${msg["main.page"]}</p>
+        <ui:include src="templates/header.xhtml"/>
     </ui:define>
 
     <ui:define name="left">
@@ -22,7 +22,7 @@
             <a name="header">${msg["column.user"]}</a>
             <h:selectOneMenu value="#{ticketCreateBean.user}" required="true"
                              requiredMessage="User uuid is required">
-                <a:selectItems value="${userListBean.userList}" var="user" itemValue="#{user}"
+                <a:selectItems value="${userListBean.userListAll}" var="user" itemValue="#{user}"
                                itemLabel="#{user.login += ' - ' += user.uuid}"/>
             </h:selectOneMenu>
 
@@ -30,7 +30,7 @@
             <a name="header">${msg["column.job"]}</a>
             <h:selectOneMenu value="#{ticketCreateBean.job}" required="true"
                              requiredMessage="Job uuid is required">
-                <a:selectItems value="${jobListBean.jobList}" var="job" itemValue="#{job}"
+                <a:selectItems value="${jobListBean.jobListAll}" var="job" itemValue="#{job}"
                                itemLabel="#{job.name += ' - ' += job.uuid}"/>
             </h:selectOneMenu>
 
