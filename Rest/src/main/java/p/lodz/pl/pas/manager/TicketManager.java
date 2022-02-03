@@ -72,4 +72,8 @@ public class TicketManager {
     public ArrayList<Ticket> search(String s) throws ItemNotFoundException {
         return ticketDAO.search(s);
     }
+
+    public synchronized boolean endJob(UUID uuid, LocalDateTime jobEnd) throws ItemNotFoundException{
+        return ticketDAO.endJob(uuid, jobEnd);
+    }
 }

@@ -158,4 +158,10 @@ public class TicketDAO implements DAO<Ticket> {
             return optional.get();
         }
     }
+
+    public boolean endJob(UUID uuid, LocalDateTime jobEnd) throws ItemNotFoundException {
+        Ticket ticket = readOne(uuid);
+        ticket.setJobEnd(jobEnd);
+        return true;
+    }
 }

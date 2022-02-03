@@ -1,10 +1,8 @@
 package p.lodz.pl.pas.controller;
 
-import com.google.gson.Gson;
 import com.google.gson.JsonObject;
 import com.google.gson.JsonParser;
 import com.google.gson.JsonSyntaxException;
-import p.lodz.pl.pas.RegexList;
 import p.lodz.pl.pas.conversion.GsonLocalDateTime;
 import p.lodz.pl.pas.exceptions.DateException;
 import p.lodz.pl.pas.exceptions.ItemNotFoundException;
@@ -13,16 +11,16 @@ import p.lodz.pl.pas.exceptions.cantDeleteException;
 import p.lodz.pl.pas.filter.SignatureValidatorFilter;
 import p.lodz.pl.pas.filter.SignatureVerifier;
 import p.lodz.pl.pas.manager.TicketManager;
+import p.lodz.pl.pas.manager.UserManager;
 import p.lodz.pl.pas.model.Ticket;
 
+import javax.annotation.security.PermitAll;
 import javax.annotation.security.RolesAllowed;
 import javax.inject.Inject;
 import javax.validation.constraints.NotEmpty;
 import javax.validation.constraints.NotNull;
 import javax.ws.rs.*;
-import javax.ws.rs.core.EntityTag;
-import javax.ws.rs.core.MediaType;
-import javax.ws.rs.core.Response;
+import javax.ws.rs.core.*;
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
 import java.util.UUID;
@@ -37,8 +35,11 @@ public class TicketController {
     @Inject
     TicketManager ticketManager;
 
+    @Inject
+    UserManager userManager;
+
     @POST
-    @Path("create")
+    @Path("createAdvanced")
     @Consumes(MediaType.APPLICATION_JSON)
     public Response createTicket(String json) {
         // TODO CLEANUP
@@ -159,8 +160,58 @@ public class TicketController {
     @Produces(MediaType.APPLICATION_JSON)
     public Response search(@QueryParam("s") String s) {
         try {
-            // Gson gson = new Gson();
             return Response.status(Response.Status.ACCEPTED).entity(GsonLocalDateTime.getGsonSerializer().toJson(ticketManager.search(s))).build();
+        } catch (ItemNotFoundException e) {
+            return Response.status(Response.Status.NOT_FOUND).entity(e.getMessage()).build();
+        }
+    }
+
+
+    @POST
+    @Path("createTicket")
+    @RolesAllowed({"Admin", "ResourceAdministrator", "NormalUser"})
+    @Consumes(MediaType.APPLICATION_JSON)
+    public Response changePassword(@Context SecurityContext securityContext, @NotNull @NotEmpty String json) {
+        JsonObject jsonObject;
+        UUID user;
+        UUID job;
+        String description;
+        try {
+            jsonObject = JsonParser.parseString(json).getAsJsonObject();
+            description = jsonObject.get("description").getAsString();
+            user = userManager.findUserByLogin(securityContext.getUserPrincipal().getName()).getUuid();
+            job = UUID.fromString(jsonObject.get("job").getAsString());
+        } catch (JsonSyntaxException | NullPointerException | ItemNotFoundException e) {
+            return Response.status(Response.Status.BAD_REQUEST).entity("Invalid json name").build();
+        }
+
+        LocalDateTime jobStart;
+        try {
+            DateTimeFormatter dtf = DateTimeFormatter.ISO_LOCAL_DATE_TIME;
+            jobStart = LocalDateTime.parse(jsonObject.get("jobStart").getAsString(), dtf);
+        } catch (Exception e) { // catch all possible exceptions for parsing dates
+            return Response.status(BAD_REQUEST).entity("jobStart is in wrong format").build();
+        }
+
+        try {
+            ticketManager.createTicket(user, job, jobStart, null, description);
+            return Response.status(CREATED).entity("Ticket created").build();
+        } catch (DateException e) {
+            // if user inputs wrong date in correct format, ex. day that does not exist
+            return Response.status(BAD_REQUEST).entity(e.getMessage()).build();
+        } catch (ItemNotFoundException e) {
+            return Response.status(NOT_FOUND).entity(e.getMessage()).build();
+        } catch (JobAlreadyTaken e) {
+            return Response.status(NOT_ACCEPTABLE).entity(e.getMessage()).build();
+        }
+    }
+
+    @POST
+    @Path("endTicket")
+    public Response search(@QueryParam("UUID") @NotNull UUID uuid, @NotNull @NotEmpty String endDate) {
+        try {
+            LocalDateTime jobEnd = getGsonSerializer().fromJson(endDate, LocalDateTime.class);
+            return Response.status(Response.Status.ACCEPTED).entity(GsonLocalDateTime.getGsonSerializer().toJson(ticketManager.endJob(uuid, jobEnd))).build();
         } catch (ItemNotFoundException e) {
             return Response.status(Response.Status.NOT_FOUND).entity(e.getMessage()).build();
         }
