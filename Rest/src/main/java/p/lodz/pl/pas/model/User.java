@@ -4,8 +4,8 @@ import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Pattern;
 import java.io.Serializable;
 import java.util.UUID;
-import static p.lodz.pl.pas.RegexList.SURNAME_PATTERN;
-import static p.lodz.pl.pas.RegexList.USERNAME_PATTERN;
+
+import static p.lodz.pl.pas.RegexList.*;
 
 public abstract class User implements SingableEntity, Serializable {
 
@@ -23,7 +23,7 @@ public abstract class User implements SingableEntity, Serializable {
 
     private Boolean active;
 
-    @Pattern(regexp = SURNAME_PATTERN, message = "Password must be between 2 and 30 characters")
+    @Pattern(regexp = PASSWORD_PATTERN, message = "Password must be between 2 and 30 characters")
     private String password;
 
     public User(UUID uuid, String login, String password, String name, String surname, Boolean active) {
