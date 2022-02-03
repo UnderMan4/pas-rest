@@ -51,7 +51,7 @@ public class UserService implements Serializable {
 
     public FacesMessage saveEditedUser(User user) throws RESTException {
         Response response = getUserWebTarget()
-                .path("editUserWithUUID")
+                .path("update")
                 .request()
                 .header("Authorization", "Bearer " + loginService.getToken())
                 .post(Entity.json(new Gson().toJson(user)));
